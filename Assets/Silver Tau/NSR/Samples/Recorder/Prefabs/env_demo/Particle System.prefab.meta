@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e104451973b734e64b85ad463401b128
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Samples/Recorder/Prefabs/env_demo/Particle System.prefab
+  uploadId: 837838

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 8d0237c3e193c45ce91526ff18971491
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Samples/Recorder/Scripts/SimpleCamera/SCFilterWorker.cs
+  uploadId: 837838

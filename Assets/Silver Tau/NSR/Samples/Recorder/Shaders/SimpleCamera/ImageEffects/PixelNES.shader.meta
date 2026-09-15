@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ded0d890f52931c4eb400cf2ef9b1121
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Samples/Recorder/Shaders/SimpleCamera/ImageEffects/PixelNES.shader
+  uploadId: 837838

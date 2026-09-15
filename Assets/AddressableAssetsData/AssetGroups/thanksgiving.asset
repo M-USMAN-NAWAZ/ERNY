@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: thanksgiving
+  m_EditorClassIdentifier: 
+  m_GroupName: thanksgiving
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 933bd1329ead3de42b4b92e6350d2dc0
+  m_SerializeEntries:
+  - m_GUID: 512e4a9e35b12d2439679872025c713e
+    m_Address: Assets/Prefab/Thankgiving.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    - Remote
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 024f54854a443d24eae4503ca56b267d, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 0d6cc0647e6c9fc4e8b4c13809d94227, type: 2}
+    - {fileID: 11400000, guid: b35c82ab7d1039f438bb5e18b5cc1d57, type: 2}

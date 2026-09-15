@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: bf17788d601dd4b89b816c62b1ffc2d8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Runtime/Scripts/System/Platforms/iOS/iOSRecorderSettings.cs
+  uploadId: 837838

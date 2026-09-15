@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 0
+    path: Assets/NatSuite/Examples/ReplayCam/ReplayCam.unity
+    guid: d3534cd9262b64c779e2d78c6ee5a5b1
+  - enabled: 0
+    path: Assets/Scene/test 1.unity
+    guid: 042b61958276a7441bb4eb1847132562
+  - enabled: 0
+    path: Assets/Scene/vuforia.unity
+    guid: a1e183ec0fde0704fbb606747bd2d305
+  - enabled: 1
+    path: Assets/Scene/1. Splash Scene.unity
+    guid: f87ab539798ed3a4c94af259c0f4cc4a
+  - enabled: 1
+    path: Assets/Scene/2. TutorialS.unity
+    guid: b1c180257dd89d8439118ee390435677
+  - enabled: 1
+    path: Assets/Scene/3. LoginScene.unity
+    guid: dd65e28f114d09e4586d71e48c9f29dc
+  - enabled: 1
+    path: Assets/Scene/4. MainScreens.unity
+    guid: 6c1f6db2a3bba9643b31a8bef7f072b5
+  - enabled: 0
+    path: Assets/Scene/4. MainScreens 2.unity
+    guid: 038c7929a682c784d901f59d40f09bde
+  - enabled: 0
+    path: Assets/Scene/5.guestlogin.unity
+    guid: 5d8da37a62d419342bdb8a82e8980649
+  - enabled: 0
+    path: Assets/Scene/5.AR.unity
+    guid: 1182d093e1e01ce4cb41082e0fed5e5d
+  - enabled: 0
+    path: Assets/Scene/test.unity
+    guid: c7b35c7dbb6389840bc7a127a74fc551
+  - enabled: 0
+    path: Assets/AppleAuthSample/SampleScene.unity
+    guid: 6f48e3993e1264b21b0fc1e486a1641e
+  - enabled: 0
+    path: Assets/Scenes/SampleScene.unity
+    guid: 4755b35b590504809a7525fd2109c2e2
+  - enabled: 0
+    path: Assets/Scenes/TestScene.unity
+    guid: 11f5e2eb4018435458e584f7e2009cf9
+  m_configObjects:
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 776a160e07f63fe41be9996ae3a34425, type: 2}
+    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 0cbf73b32ce97ce4da4b60fe850ecaea, type: 2}
+    com.unity.adaptivePerformance.basic.provider_settings: {fileID: 11400000, guid: ec307f77cfa689c479ee50654feec276, type: 2}
+    com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: 74a99bf5d4b55b44fb4fb6a6fd77f2f7, type: 2}
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 013283ab6e4c6334c945f3f93a740afa, type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: e6e32dd669fbf49428a05dc223461039, type: 2}
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 31e923c2582f37a4c8de16262605a3c2, type: 2}
+    com.unity.addressableassets: {fileID: 11400000, guid: 2417f4f28c8ffb543a8d177ce02046b2, type: 2}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 8de27cc4994fec94f858394bc7166d02, type: 2}
+    com.unity.xr.magicleap.magic_leap_settings: {fileID: 11400000, guid: bfd15ffd0b899bf419f81a8364cb4d5a, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 7d869325c113c884296bbeeb209081f0, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 74691f2ae0f721b46a239425efbc280f, type: 2}
+  m_UseUCBPForAssetBundles: 0

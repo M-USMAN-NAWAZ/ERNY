@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "892544376758",
+    "project_id": "blingar-app",
+    "storage_bucket": "blingar-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892544376758:android:89e0f64c6825f45a532b17",
+        "android_client_info": {
+          "package_name": "com.blingar.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "892544376758-5cbm6o6ohqu2kl70pf25sb81ul283ld6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blingar.app",
+            "certificate_hash": "667229f511c7b9ccdaaa23d336e222de6218a5bc"
+          }
+        },
+        {
+          "client_id": "892544376758-7jqorfgn45aik2nphos1c4k6210atalq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-RYAiIQ8Mh5mgyIiJYEhKniZkbJqDQWc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "892544376758-7jqorfgn45aik2nphos1c4k6210atalq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "892544376758-bhs2p6qr1a7i0jjtv82r54e540mgd6ak.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ElytraStudios.Blingar",
+                "app_store_id": "1617612120"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

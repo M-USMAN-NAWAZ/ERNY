@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 4c750b423452fbf4188ee3ee9a3dbf47
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - FONTSPRING DEMO - Gambler Scr Print
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: da5df472d4a84c1428d517fbc2bbe24b, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

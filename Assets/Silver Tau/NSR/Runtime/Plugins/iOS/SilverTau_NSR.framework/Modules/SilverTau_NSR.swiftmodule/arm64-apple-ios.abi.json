@@ -1,0 +1,1185 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "SilverTau_NSR",
+    "printedName": "SilverTau_NSR",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "AVFoundation",
+        "printedName": "AVFoundation",
+        "declKind": "Import",
+        "moduleName": "SilverTau_NSR",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CoreMedia",
+        "printedName": "CoreMedia",
+        "declKind": "Import",
+        "moduleName": "SilverTau_NSR"
+      },
+      {
+        "kind": "Import",
+        "name": "CoreVideo",
+        "printedName": "CoreVideo",
+        "declKind": "Import",
+        "moduleName": "SilverTau_NSR"
+      },
+      {
+        "kind": "Import",
+        "name": "Accelerate",
+        "printedName": "Accelerate",
+        "declKind": "Import",
+        "moduleName": "SilverTau_NSR"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "NSRVideoRecorder_iOS",
+        "printedName": "NSRVideoRecorder_iOS",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "shared",
+            "printedName": "shared",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "NSRVideoRecorder_iOS",
+                "printedName": "SilverTau_NSR.NSRVideoRecorder_iOS",
+                "usr": "c:@M@SilverTau_NSR@objc(cs)NSRVideoRecorder_iOS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC6sharedACvpZ",
+            "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC6sharedACvpZ",
+            "moduleName": "SilverTau_NSR",
+            "static": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "Final",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "NSRVideoRecorder_iOS",
+                    "printedName": "SilverTau_NSR.NSRVideoRecorder_iOS",
+                    "usr": "c:@M@SilverTau_NSR@objc(cs)NSRVideoRecorder_iOS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC6sharedACvgZ",
+                "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC6sharedACvgZ",
+                "moduleName": "SilverTau_NSR",
+                "static": true,
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "videoPixelBufferAdaptor",
+            "printedName": "videoPixelBufferAdaptor",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "ImplicitlyUnwrappedOptional",
+                "printedName": "AVFoundation.AVAssetWriterInputPixelBufferAdaptor?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AVAssetWriterInputPixelBufferAdaptor",
+                    "printedName": "AVFoundation.AVAssetWriterInputPixelBufferAdaptor",
+                    "usr": "c:objc(cs)AVAssetWriterInputPixelBufferAdaptor"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC23videoPixelBufferAdaptorSo018AVAssetWriterInputhiJ0CSgvp",
+            "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC23videoPixelBufferAdaptorSo018AVAssetWriterInputhiJ0CSgvp",
+            "moduleName": "SilverTau_NSR",
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ImplicitlyUnwrappedOptional",
+                    "printedName": "AVFoundation.AVAssetWriterInputPixelBufferAdaptor?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "AVAssetWriterInputPixelBufferAdaptor",
+                        "printedName": "AVFoundation.AVAssetWriterInputPixelBufferAdaptor",
+                        "usr": "c:objc(cs)AVAssetWriterInputPixelBufferAdaptor"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC23videoPixelBufferAdaptorSo018AVAssetWriterInputhiJ0CSgvg",
+                "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC23videoPixelBufferAdaptorSo018AVAssetWriterInputhiJ0CSgvg",
+                "moduleName": "SilverTau_NSR",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ImplicitlyUnwrappedOptional",
+                    "printedName": "AVFoundation.AVAssetWriterInputPixelBufferAdaptor?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "AVAssetWriterInputPixelBufferAdaptor",
+                        "printedName": "AVFoundation.AVAssetWriterInputPixelBufferAdaptor",
+                        "usr": "c:objc(cs)AVAssetWriterInputPixelBufferAdaptor"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC23videoPixelBufferAdaptorSo018AVAssetWriterInputhiJ0CSgvs",
+                "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC23videoPixelBufferAdaptorSo018AVAssetWriterInputhiJ0CSgvs",
+                "moduleName": "SilverTau_NSR",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC23videoPixelBufferAdaptorSo018AVAssetWriterInputhiJ0CSgvM",
+                "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC23videoPixelBufferAdaptorSo018AVAssetWriterInputhiJ0CSgvM",
+                "moduleName": "SilverTau_NSR",
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "prepQueue",
+            "printedName": "prepQueue",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "DispatchQueue",
+                "printedName": "Dispatch.DispatchQueue",
+                "usr": "c:objc(cs)OS_dispatch_queue"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC9prepQueueSo0F15_dispatch_queueCvp",
+            "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC9prepQueueSo0F15_dispatch_queueCvp",
+            "moduleName": "SilverTau_NSR",
+            "declAttributes": [
+              "HasInitialValue",
+              "Final",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "DispatchQueue",
+                    "printedName": "Dispatch.DispatchQueue",
+                    "usr": "c:objc(cs)OS_dispatch_queue"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC9prepQueueSo0F15_dispatch_queueCvg",
+                "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC9prepQueueSo0F15_dispatch_queueCvg",
+                "moduleName": "SilverTau_NSR",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "isPreparing",
+            "printedName": "isPreparing",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC11isPreparingSbvp",
+            "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC11isPreparingSbvp",
+            "moduleName": "SilverTau_NSR",
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC11isPreparingSbvg",
+                "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC11isPreparingSbvg",
+                "moduleName": "SilverTau_NSR",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC11isPreparingSbvs",
+                "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC11isPreparingSbvs",
+                "moduleName": "SilverTau_NSR",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC11isPreparingSbvM",
+                "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC11isPreparingSbvM",
+                "moduleName": "SilverTau_NSR",
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "wasStopRequestedDuringPrepare",
+            "printedName": "wasStopRequestedDuringPrepare",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC29wasStopRequestedDuringPrepareSbvp",
+            "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC29wasStopRequestedDuringPrepareSbvp",
+            "moduleName": "SilverTau_NSR",
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC29wasStopRequestedDuringPrepareSbvg",
+                "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC29wasStopRequestedDuringPrepareSbvg",
+                "moduleName": "SilverTau_NSR",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC29wasStopRequestedDuringPrepareSbvs",
+                "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC29wasStopRequestedDuringPrepareSbvs",
+                "moduleName": "SilverTau_NSR",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC29wasStopRequestedDuringPrepareSbvM",
+                "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC29wasStopRequestedDuringPrepareSbvM",
+                "moduleName": "SilverTau_NSR",
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "useAsyncSetup",
+            "printedName": "useAsyncSetup",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC13useAsyncSetupSbvp",
+            "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC13useAsyncSetupSbvp",
+            "moduleName": "SilverTau_NSR",
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC13useAsyncSetupSbvg",
+                "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC13useAsyncSetupSbvg",
+                "moduleName": "SilverTau_NSR",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC13useAsyncSetupSbvs",
+                "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC13useAsyncSetupSbvs",
+                "moduleName": "SilverTau_NSR",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC13useAsyncSetupSbvM",
+                "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC13useAsyncSetupSbvM",
+                "moduleName": "SilverTau_NSR",
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "setupRecorder",
+            "printedName": "setupRecorder(outputURL:width:height:frameRate:videoCodec:videoFormat:keyframeInterval:audioCodec:videoBitRate:audioBitRate:audioSampleRate:channelCount:audioBitDepth:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "URL",
+                "printedName": "Foundation.URL",
+                "usr": "s:10Foundation3URLV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int32",
+                "printedName": "Swift.Int32",
+                "usr": "s:s5Int32V"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int32",
+                "printedName": "Swift.Int32",
+                "usr": "s:s5Int32V"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int32",
+                "printedName": "Swift.Int32",
+                "usr": "s:s5Int32V"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int32",
+                "printedName": "Swift.Int32",
+                "usr": "s:s5Int32V"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int32",
+                "printedName": "Swift.Int32",
+                "usr": "s:s5Int32V"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int32",
+                "printedName": "Swift.Int32",
+                "usr": "s:s5Int32V"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int32",
+                "printedName": "Swift.Int32",
+                "usr": "s:s5Int32V"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int32",
+                "printedName": "Swift.Int32",
+                "usr": "s:s5Int32V"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int32",
+                "printedName": "Swift.Int32",
+                "usr": "s:s5Int32V"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC05setupE09outputURL5width6height9frameRate10videoCodec0N6Format16keyframeInterval05audioO00n3BitM00stM00s6SampleM012channelCount0sT5Depthy10Foundation0I0V_s5Int32VA2VS2SAVSSA5VtF",
+            "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC05setupE09outputURL5width6height9frameRate10videoCodec0N6Format16keyframeInterval05audioO00n3BitM00stM00s6SampleM012channelCount0sT5Depthy10Foundation0I0V_s5Int32VA2VS2SAVSSA5VtF",
+            "moduleName": "SilverTau_NSR",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "startRecording",
+            "printedName": "startRecording()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC14startRecordingyyF",
+            "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC14startRecordingyyF",
+            "moduleName": "SilverTau_NSR",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "stopRecording",
+            "printedName": "stopRecording()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC13stopRecordingyyF",
+            "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC13stopRecordingyyF",
+            "moduleName": "SilverTau_NSR",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "appendVideoFrame",
+            "printedName": "appendVideoFrame(pixelBuffer:withPresentationTime:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "CVBuffer",
+                "printedName": "CoreVideo.CVBuffer",
+                "usr": "c:@T@CVBufferRef"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "CMTime",
+                "printedName": "CoreMedia.CMTime",
+                "usr": "c:@SA@CMTime"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC16appendVideoFrame11pixelBuffer20withPresentationTimeySo11CVBufferRefa_So6CMTimeatF",
+            "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC16appendVideoFrame11pixelBuffer20withPresentationTimeySo11CVBufferRefa_So6CMTimeatF",
+            "moduleName": "SilverTau_NSR",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "appendAudioSamples",
+            "printedName": "appendAudioSamples(sampleBuffer:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "CMSampleBuffer",
+                "printedName": "CoreMedia.CMSampleBuffer",
+                "usr": "c:@T@CMSampleBufferRef"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:13SilverTau_NSR20NSRVideoRecorder_iOSC18appendAudioSamples12sampleBufferySo08CMSampleK3Refa_tF",
+            "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC18appendAudioSamples12sampleBufferySo08CMSampleK3Refa_tF",
+            "moduleName": "SilverTau_NSR",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@SilverTau_NSR@objc(cs)NSRVideoRecorder_iOS",
+        "mangledName": "$s13SilverTau_NSR20NSRVideoRecorder_iOSC",
+        "moduleName": "SilverTau_NSR",
+        "declAttributes": [
+          "AccessControl",
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "hasMissingDesignatedInitializers": true,
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "SilverTau_NSR",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "AVFoundation",
+        "printedName": "AVFoundation",
+        "declKind": "Import",
+        "moduleName": "SilverTau_NSR"
+      },
+      {
+        "kind": "Import",
+        "name": "CoreVideo",
+        "printedName": "CoreVideo",
+        "declKind": "Import",
+        "moduleName": "SilverTau_NSR"
+      },
+      {
+        "kind": "Import",
+        "name": "Accelerate",
+        "printedName": "Accelerate",
+        "declKind": "Import",
+        "moduleName": "SilverTau_NSR"
+      },
+      {
+        "kind": "Function",
+        "name": "silvertau_nsr_start_recording",
+        "printedName": "silvertau_nsr_start_recording(_:_:_:_:_:_:_:_:_:_:_:_:)",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "UnsafePointer",
+            "printedName": "Swift.UnsafePointer<Swift.Int8>",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Int8",
+                "printedName": "Swift.Int8",
+                "usr": "s:s4Int8V"
+              }
+            ],
+            "usr": "s:SP"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "UnsafePointer",
+            "printedName": "Swift.UnsafePointer<Swift.Int8>",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Int8",
+                "printedName": "Swift.Int8",
+                "usr": "s:s4Int8V"
+              }
+            ],
+            "usr": "s:SP"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "UnsafePointer",
+            "printedName": "Swift.UnsafePointer<Swift.Int8>",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Int8",
+                "printedName": "Swift.Int8",
+                "usr": "s:s4Int8V"
+              }
+            ],
+            "usr": "s:SP"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "Int32",
+            "printedName": "Swift.Int32",
+            "usr": "s:s5Int32V"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "Int32",
+            "printedName": "Swift.Int32",
+            "usr": "s:s5Int32V"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "Float",
+            "printedName": "Swift.Float",
+            "usr": "s:Sf"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "Int32",
+            "printedName": "Swift.Int32",
+            "usr": "s:s5Int32V"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "Int32",
+            "printedName": "Swift.Int32",
+            "usr": "s:s5Int32V"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "UnsafePointer",
+            "printedName": "Swift.UnsafePointer<Swift.Int8>",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Int8",
+                "printedName": "Swift.Int8",
+                "usr": "s:s4Int8V"
+              }
+            ],
+            "usr": "s:SP"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "Int32",
+            "printedName": "Swift.Int32",
+            "usr": "s:s5Int32V"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "Int32",
+            "printedName": "Swift.Int32",
+            "usr": "s:s5Int32V"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "Int32",
+            "printedName": "Swift.Int32",
+            "usr": "s:s5Int32V"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)silvertau_nsr_start_recording::::::::::::",
+        "mangledName": "$s13SilverTau_NSR29silvertau_nsr_start_recordingyySPys4Int8VG_A2Es5Int32VAGSfA2ge3GtF",
+        "moduleName": "SilverTau_NSR",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "silvertau_nsr_stop_recording",
+        "printedName": "silvertau_nsr_stop_recording()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)silvertau_nsr_stop_recording",
+        "mangledName": "$s13SilverTau_NSR28silvertau_nsr_stop_recordingyyF",
+        "moduleName": "SilverTau_NSR",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "silvertau_nsr_send_video_frame",
+        "printedName": "silvertau_nsr_send_video_frame(_:_:_:)",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "UnsafePointer",
+            "printedName": "Swift.UnsafePointer<Swift.UInt8>",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "UInt8",
+                "printedName": "Swift.UInt8",
+                "usr": "s:s5UInt8V"
+              }
+            ],
+            "usr": "s:SP"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "Int32",
+            "printedName": "Swift.Int32",
+            "usr": "s:s5Int32V"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "UInt64",
+            "printedName": "Swift.UInt64",
+            "usr": "s:s6UInt64V"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)silvertau_nsr_send_video_frame:::",
+        "mangledName": "$s13SilverTau_NSR30silvertau_nsr_send_video_frameyySPys5UInt8VG_s5Int32Vs6UInt64VtF",
+        "moduleName": "SilverTau_NSR",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "silvertau_nsr_send_audio_frame",
+        "printedName": "silvertau_nsr_send_audio_frame(_:_:_:)",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "UnsafePointer",
+            "printedName": "Swift.UnsafePointer<Swift.Float>",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Float",
+                "printedName": "Swift.Float",
+                "usr": "s:Sf"
+              }
+            ],
+            "usr": "s:SP"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "Int32",
+            "printedName": "Swift.Int32",
+            "usr": "s:s5Int32V"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "UInt64",
+            "printedName": "Swift.UInt64",
+            "usr": "s:s6UInt64V"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)silvertau_nsr_send_audio_frame:::",
+        "mangledName": "$s13SilverTau_NSR30silvertau_nsr_send_audio_frameyySPySfG_s5Int32Vs6UInt64VtF",
+        "moduleName": "SilverTau_NSR",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "cmTimeFrom",
+        "printedName": "cmTimeFrom(nanoTimestamp:)",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "CMTime",
+            "printedName": "CoreMedia.CMTime",
+            "usr": "c:@SA@CMTime"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "UInt64",
+            "printedName": "Swift.UInt64",
+            "usr": "s:s6UInt64V"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "s:13SilverTau_NSR10cmTimeFrom13nanoTimestampSo6CMTimeas6UInt64V_tF",
+        "mangledName": "$s13SilverTau_NSR10cmTimeFrom13nanoTimestampSo6CMTimeas6UInt64V_tF",
+        "moduleName": "SilverTau_NSR",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "SilverTau_NSR",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "AudioToolbox",
+        "printedName": "AudioToolbox",
+        "declKind": "Import",
+        "moduleName": "SilverTau_NSR"
+      },
+      {
+        "kind": "Import",
+        "name": "AVFoundation",
+        "printedName": "AVFoundation",
+        "declKind": "Import",
+        "moduleName": "SilverTau_NSR"
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/oleksandrtrofymchuk\/Personal\/Personal Workspace\/Personal\/Packages\/NSR-ScreenRecorder\/v2_0_1\/Frameworks\/iOS\/SilverTau_NSR\/SilverTau_NSR\/SilverTau_NSR\/NSRVideoRecorder_iOS.swift",
+      "kind": "BooleanLiteral",
+      "offset": 545,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/oleksandrtrofymchuk\/Personal\/Personal Workspace\/Personal\/Packages\/NSR-ScreenRecorder\/v2_0_1\/Frameworks\/iOS\/SilverTau_NSR\/SilverTau_NSR\/SilverTau_NSR\/NSRVideoRecorder_iOS.swift",
+      "kind": "IntegerLiteral",
+      "offset": 586,
+      "length": 2,
+      "value": "30"
+    },
+    {
+      "filePath": "\/Users\/oleksandrtrofymchuk\/Personal\/Personal Workspace\/Personal\/Packages\/NSR-ScreenRecorder\/v2_0_1\/Frameworks\/iOS\/SilverTau_NSR\/SilverTau_NSR\/SilverTau_NSR\/NSRVideoRecorder_iOS.swift",
+      "kind": "IntegerLiteral",
+      "offset": 630,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/oleksandrtrofymchuk\/Personal\/Personal Workspace\/Personal\/Packages\/NSR-ScreenRecorder\/v2_0_1\/Frameworks\/iOS\/SilverTau_NSR\/SilverTau_NSR\/SilverTau_NSR\/NSRVideoRecorder_iOS.swift",
+      "kind": "IntegerLiteral",
+      "offset": 669,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/oleksandrtrofymchuk\/Personal\/Personal Workspace\/Personal\/Packages\/NSR-ScreenRecorder\/v2_0_1\/Frameworks\/iOS\/SilverTau_NSR\/SilverTau_NSR\/SilverTau_NSR\/NSRVideoRecorder_iOS.swift",
+      "kind": "IntegerLiteral",
+      "offset": 705,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/oleksandrtrofymchuk\/Personal\/Personal Workspace\/Personal\/Packages\/NSR-ScreenRecorder\/v2_0_1\/Frameworks\/iOS\/SilverTau_NSR\/SilverTau_NSR\/SilverTau_NSR\/NSRVideoRecorder_iOS.swift",
+      "kind": "IntegerLiteral",
+      "offset": 743,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/oleksandrtrofymchuk\/Personal\/Personal Workspace\/Personal\/Packages\/NSR-ScreenRecorder\/v2_0_1\/Frameworks\/iOS\/SilverTau_NSR\/SilverTau_NSR\/SilverTau_NSR\/NSRVideoRecorder_iOS.swift",
+      "kind": "StringLiteral",
+      "offset": 965,
+      "length": 27,
+      "value": "\"com.silvertau.nsr.prepare\""
+    },
+    {
+      "filePath": "\/Users\/oleksandrtrofymchuk\/Personal\/Personal Workspace\/Personal\/Packages\/NSR-ScreenRecorder\/v2_0_1\/Frameworks\/iOS\/SilverTau_NSR\/SilverTau_NSR\/SilverTau_NSR\/NSRVideoRecorder_iOS.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1044,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/oleksandrtrofymchuk\/Personal\/Personal Workspace\/Personal\/Packages\/NSR-ScreenRecorder\/v2_0_1\/Frameworks\/iOS\/SilverTau_NSR\/SilverTau_NSR\/SilverTau_NSR\/NSRVideoRecorder_iOS.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1097,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/oleksandrtrofymchuk\/Personal\/Personal Workspace\/Personal\/Packages\/NSR-ScreenRecorder\/v2_0_1\/Frameworks\/iOS\/SilverTau_NSR\/SilverTau_NSR\/SilverTau_NSR\/NSRVideoRecorder_iOS.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1139,
+      "length": 4,
+      "value": "true"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 92b3d43a9b07b48dfbb43be4ee485512
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Samples/Recorder/Prefabs/SimpleCamera/Effects/effect_3.prefab
+  uploadId: 837838

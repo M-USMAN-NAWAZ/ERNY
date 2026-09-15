@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a3389ad785b7246e391e17f84dde361a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Samples/Recorder/Prefabs/env_demo/env_cube_world.prefab
+  uploadId: 837838

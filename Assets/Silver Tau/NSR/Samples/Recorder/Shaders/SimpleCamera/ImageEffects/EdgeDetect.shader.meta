@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 1b95ce79bcee5ed42b2f950cd7b7310b
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Samples/Recorder/Shaders/SimpleCamera/ImageEffects/EdgeDetect.shader
+  uploadId: 837838

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 2db984693759f684f90c23d678c96605
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Samples/Recorder/Shaders/SimpleCamera/ImageEffects/PixelGB.shader
+  uploadId: 837838

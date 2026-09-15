@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ca1e1b85e69284d49af1699e76dcfdd4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Samples/Recorder/Materials/SimpleCamera/Effects/effect_2_trials.mat
+  uploadId: 837838

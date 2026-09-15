@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Spartanbadge
+  m_EditorClassIdentifier: 
+  m_GroupName: Spartanbadge
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 83cd1eb4ebda787459b09e1e373af630
+  m_SerializeEntries:
+  - m_GUID: d8f30c68fa66c944e945552800db5d55
+    m_Address: Assets/Prefabs/Spartan.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    - Remote
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 024f54854a443d24eae4503ca56b267d, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 53f409482f6ed2143bf42692cd96f2c9, type: 2}
+    - {fileID: 11400000, guid: c7a0f9adeaa0b684db4dd1d745c604f7, type: 2}

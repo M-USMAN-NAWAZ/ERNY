@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 798f9f47487774666a62591053937ea1
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Editor/SilverTau.STNativeScreenRecorder.Editor.asmdef
+  uploadId: 837838

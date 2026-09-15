@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: dae0ab0559adb4f1283ab420d7bdc6e6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Runtime/Prefabs/FileManager/FileManager.prefab
+  uploadId: 837838

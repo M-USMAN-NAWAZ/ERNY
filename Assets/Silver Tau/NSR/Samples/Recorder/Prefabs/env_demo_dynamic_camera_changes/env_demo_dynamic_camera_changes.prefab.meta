@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 02c9433fc92684006a9d64c177c2a203
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Samples/Recorder/Prefabs/env_demo_dynamic_camera_changes/env_demo_dynamic_camera_changes.prefab
+  uploadId: 837838

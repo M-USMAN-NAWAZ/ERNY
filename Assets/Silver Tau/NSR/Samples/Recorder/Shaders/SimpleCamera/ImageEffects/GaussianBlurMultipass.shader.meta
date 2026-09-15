@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ffdbe1a51bb49354ba9adb6a5fd9cacc
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Samples/Recorder/Shaders/SimpleCamera/ImageEffects/GaussianBlurMultipass.shader
+  uploadId: 837838

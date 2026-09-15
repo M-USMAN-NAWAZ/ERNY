@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>892544376758-bhs2p6qr1a7i0jjtv82r54e540mgd6ak.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.892544376758-bhs2p6qr1a7i0jjtv82r54e540mgd6ak</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>892544376758-5cbm6o6ohqu2kl70pf25sb81ul283ld6.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBRf9skFVWtM8wjrQOhhn_51Vgmvkn78fY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>892544376758</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ElytraStudios.Blingar</string>
+	<key>PROJECT_ID</key>
+	<string>blingar-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>blingar-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:892544376758:ios:45366724056c9047532b17</string>
+</dict>
+</plist>

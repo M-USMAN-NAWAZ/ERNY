@@ -1,0 +1,5 @@
+C:/Usman/BlingAR/BlingAR/.utmp/RelWithDebInfo/ps6y161f/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Usman/BlingAR/BlingAR/.utmp/RelWithDebInfo/ps6y161f/arm64-v8a/CMakeFiles/rebuild_cache.dir
+C:/Usman/BlingAR/BlingAR/.utmp/RelWithDebInfo/ps6y161f/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+C:/Usman/BlingAR/BlingAR/.utmp/RelWithDebInfo/ps6y161f/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+C:/Usman/BlingAR/BlingAR/.utmp/RelWithDebInfo/ps6y161f/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir
