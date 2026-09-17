@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23fdc619dbf57034e8cbc426f77bfbfd, type: 3}
+  m_Name: New M Text_Settings
+  m_EditorClassIdentifier: 
+  selectedTab: Getting Started
+  tabSelectedColor: {r: 1, g: 1, b: 1, a: 1}
+  tabUnselectedColor: {r: 0.9, g: 0.9, b: 0.9, a: 1}
+  gridItemColor: {r: 0.9, g: 0.9, b: 0.9, a: 1}
+  defaultFont: {fileID: 0}
+  defaultTextSize: {x: 8, y: 8, z: 2}
+  defaultTextMaterial: {fileID: 0}
+  defaultBackgroundMaterial: {fileID: 0}
+  autoCreateInEditorMode: 1
+  autoCreateInPlayMode: 1
+  vertexDensity: 1
+  sizeXY: 1
+  sizeZ: 1
+  smoothingAngle: 30
+  meshExportStyle: 0
+  smallHorizontalFieldSize: 72.5
+  normalltHorizontalFieldSize: 100
+  largeHorizontalFieldSize: 132.5
+  extraLargeHorizontalFieldSize: 150
+  charInputStyle: 0
+  startChar: 33
+  endChar: 126
+  startUnicode: 0021
+  endUnicode: 007E
+  customCharacters: '!"#$%&''()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
+  unicodeSequence: \u0021-\u007E

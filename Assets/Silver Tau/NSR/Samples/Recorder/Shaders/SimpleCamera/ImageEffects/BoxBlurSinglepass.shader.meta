@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 0f4348f3942457940bd3c07617b153a0
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Samples/Recorder/Shaders/SimpleCamera/ImageEffects/BoxBlurSinglepass.shader
+  uploadId: 837838

@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 08f2bda1088a41ed98962573515dc910
+timeCreated: 1713257249
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Runtime/Scripts/System/Audio/MicrophoneAudioRecorder.cs
+  uploadId: 837838

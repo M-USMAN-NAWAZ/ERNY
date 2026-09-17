@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 54b62247dc367a240b8061c954264ff0
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Samples/Recorder/Scripts/SimpleCamera/ImageEffects/IEGaussian.cs
+  uploadId: 837838

@@ -1,0 +1,23 @@
+# ninja log v5
+28	2291	7963389054110929	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	cf661034ead8059f
+83	418	7963389035470622	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	6b16646805b49727
+37	1870	7963389049935683	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	3d38c2049c31f0e1
+419	683	7963389037915660	C:/Usman/BlingAR/BlingARBackup/BlingAR/BlingAR/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/681j3l4w/obj/arm64-v8a/libswappywrapper.so	d169bcf590b90674
+62	1866	7963389049901727	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	b69caf68ead5a8ed
+72	2281	7963389054090691	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	c8917f847f931119
+7	1905	7963389050299291	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	93fc8f5f91348189
+16	1958	7963389050828892	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	ef71db13d790ec38
+52	1918	7963389050460515	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	19532ed2c303476a
+2291	2420	7963389055453367	C:/Usman/BlingAR/BlingARBackup/BlingAR/BlingAR/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/681j3l4w/obj/arm64-v8a/libgame.so	371b5826ae732012
+44	2155	7963389052815104	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	e739288169833bc
+80	256	7963391472616133	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	6b16646805b49727
+256	413	7963391474042592	C:/Usman/BlingAR/BlingARBackup/BlingAR/BlingAR/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/681j3l4w/obj/arm64-v8a/libswappywrapper.so	d169bcf590b90674
+14	1263	7963391482638571	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	3d38c2049c31f0e1
+30	1294	7963391482959569	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	93fc8f5f91348189
+59	1325	7963391483274237	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	b69caf68ead5a8ed
+39	1358	7963391483579916	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	19532ed2c303476a
+6	1405	7963391484065202	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	ef71db13d790ec38
+69	1512	7963391485148014	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	c8917f847f931119
+48	1622	7963391486285152	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	e739288169833bc
+22	1709	7963391487112950	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	cf661034ead8059f
+1709	1822	7963391488279215	C:/Usman/BlingAR/BlingARBackup/BlingAR/BlingAR/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/681j3l4w/obj/arm64-v8a/libgame.so	371b5826ae732012

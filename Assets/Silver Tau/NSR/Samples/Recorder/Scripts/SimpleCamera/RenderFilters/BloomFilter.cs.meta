@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 6d2ea85a8fe4542a295fed1b89dd55fc
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Samples/Recorder/Scripts/SimpleCamera/RenderFilters/BloomFilter.cs
+  uploadId: 837838

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 48043d8b09e5e4fcb94b75210a6d9ec2
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Editor/Scripts/WindowsRecorderSettingsEditor.cs
+  uploadId: 837838

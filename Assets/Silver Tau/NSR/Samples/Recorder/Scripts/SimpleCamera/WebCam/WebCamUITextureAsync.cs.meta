@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 43ad04cda0b8543f3a621bfa1c29209f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Samples/Recorder/Scripts/SimpleCamera/WebCam/WebCamUITextureAsync.cs
+  uploadId: 837838

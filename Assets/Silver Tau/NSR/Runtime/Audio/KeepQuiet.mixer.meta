@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3a081fabeb42a48ae9e13624d9784a61
+timeCreated: 1467153153
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Runtime/Audio/KeepQuiet.mixer
+  uploadId: 837838

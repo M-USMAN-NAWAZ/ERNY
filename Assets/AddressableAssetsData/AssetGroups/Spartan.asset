@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Spartan
+  m_EditorClassIdentifier: 
+  m_GroupName: Spartan
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 1125b2b574c87ab4090554c727b5361a
+  m_SerializeEntries:
+  - m_GUID: 26adee674d530c5409be5f8657053341
+    m_Address: Assets/Prefab/Spartan.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    - Remote
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 024f54854a443d24eae4503ca56b267d, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 32d16fce552aee94b97cfa1540c80fbb, type: 2}
+    - {fileID: 11400000, guid: dcef1729e8dc1ca45af2879f31fddb12, type: 2}

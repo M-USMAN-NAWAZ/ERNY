@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: winter
+  m_EditorClassIdentifier: 
+  m_GroupName: winter
+  m_Data:
+    m_SerializedData: []
+  m_GUID: ba18ff8db61a88f41bbd6a071f5bf184
+  m_SerializeEntries:
+  - m_GUID: e8c7bb78b17cb4de2be0a58287a7842d
+    m_Address: Assets/Prefab/winter.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    - Remote
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 024f54854a443d24eae4503ca56b267d, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 2c968004ac437234aba10e6f2f0f9e79, type: 2}
+    - {fileID: 11400000, guid: 2016db9cab2ecfc45b6b4287efa382b5, type: 2}

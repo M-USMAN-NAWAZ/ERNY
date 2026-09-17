@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7c2962dc84ee947728b272daf463e56f
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Runtime/Prefabs/Watermark/NSR - Watermark.prefab
+  uploadId: 837838

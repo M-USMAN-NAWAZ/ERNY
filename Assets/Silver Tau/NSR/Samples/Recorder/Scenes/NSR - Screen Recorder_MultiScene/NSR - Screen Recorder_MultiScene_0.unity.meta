@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c52dd90385cff4c0b8f2d894635389d3
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Samples/Recorder/Scenes/NSR - Screen Recorder_MultiScene/NSR
+    - Screen Recorder_MultiScene_0.unity
+  uploadId: 837838

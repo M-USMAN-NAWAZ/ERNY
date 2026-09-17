@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c05ca3839ac99486c9dbf42e7b8b4cb1
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 256062
+  packageName: NSR - Screen Recorder - Cross-Platform Video Capture
+  packageVersion: 2.0.4
+  assetPath: Assets/Silver Tau/NSR/Samples/Recorder/Materials/env_demo_dynamic_camera_changes/cube.mat
+  uploadId: 837838

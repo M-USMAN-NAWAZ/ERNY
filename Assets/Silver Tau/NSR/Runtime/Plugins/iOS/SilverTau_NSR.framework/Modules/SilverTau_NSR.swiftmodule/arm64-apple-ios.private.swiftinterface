@@ -1,0 +1,37 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.2 effective-5.10 (swiftlang-6.2.0.19.9 clang-1700.3.19.1)
+// swift-module-flags: -target arm64-apple-ios12.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name SilverTau_NSR
+// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2
+import AVFoundation
+import Accelerate
+import AudioToolbox
+import CoreMedia
+import CoreVideo
+import Foundation
+import Swift
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class NSRVideoRecorder_iOS : ObjectiveC.NSObject {
+  public static let shared: SilverTau_NSR.NSRVideoRecorder_iOS
+  public var videoPixelBufferAdaptor: AVFoundation.AVAssetWriterInputPixelBufferAdaptor!
+  final public let prepQueue: Dispatch.DispatchQueue
+  public var isPreparing: Swift.Bool
+  public var wasStopRequestedDuringPrepare: Swift.Bool
+  public var useAsyncSetup: Swift.Bool
+  public func setupRecorder(outputURL: Foundation.URL, width: Swift.Int32, height: Swift.Int32, frameRate: Swift.Int32, videoCodec: Swift.String, videoFormat: Swift.String, keyframeInterval: Swift.Int32, audioCodec: Swift.String, videoBitRate: Swift.Int32, audioBitRate: Swift.Int32, audioSampleRate: Swift.Int32, channelCount: Swift.Int32, audioBitDepth: Swift.Int32)
+  public func startRecording()
+  public func stopRecording()
+  public func appendVideoFrame(pixelBuffer: CoreVideo.CVPixelBuffer, withPresentationTime pts: CoreMedia.CMTime)
+  public func appendAudioSamples(sampleBuffer: CoreMedia.CMSampleBuffer)
+  @objc deinit
+}
+@_cdecl("silvertau_nsr_start_recording")
+public func silvertau_nsr_start_recording(_ videoMime: Swift.UnsafePointer<Swift.CChar>, _ videoFormat: Swift.UnsafePointer<Swift.CChar>, _ filePath: Swift.UnsafePointer<Swift.CChar>, _ width: Swift.Int32, _ height: Swift.Int32, _ frameRate: Swift.Float, _ videoBitrate: Swift.Int32, _ keyframeInterval: Swift.Int32, _ audioMime: Swift.UnsafePointer<Swift.CChar>, _ channelCount: Swift.Int32, _ sampleRate: Swift.Int32, _ audioBitrate: Swift.Int32)
+@_cdecl("silvertau_nsr_stop_recording")
+public func silvertau_nsr_stop_recording()
+@_cdecl("silvertau_nsr_send_video_frame")
+public func silvertau_nsr_send_video_frame(_ data: Swift.UnsafePointer<Swift.UInt8>, _ sizeBytes: Swift.Int32, _ ptsNs: Swift.UInt64)
+@_cdecl("silvertau_nsr_send_audio_frame")
+public func silvertau_nsr_send_audio_frame(_ data: Swift.UnsafePointer<Swift.Float>, _ sizeBytes: Swift.Int32, _ ptsNs: Swift.UInt64)
+public func cmTimeFrom(nanoTimestamp: Swift.UInt64) -> CoreMedia.CMTime

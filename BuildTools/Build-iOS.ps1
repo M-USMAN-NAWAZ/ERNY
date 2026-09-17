@@ -1,0 +1,255 @@
+param(
+    [string]$AgentFolderName = "Erny-iOS",
+    [string]$Branch = "feat/add_api-_support",
+    [string]$FinalOutputDirectory = "C:\Usman\iOSBuilds",
+    [string]$BuildAgentsRoot = "C:\Usman\BuildAgents"
+)
+
+$ErrorActionPreference = "Stop"
+
+function Get-ProjectRoot {
+    return (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+}
+
+function Get-UnityVersion {
+    param([string]$ProjectPath)
+
+    $versionFile = Join-Path $ProjectPath "ProjectSettings\ProjectVersion.txt"
+    if (-not (Test-Path $versionFile)) {
+        throw "Unity version file not found: $versionFile"
+    }
+
+    $line = Get-Content $versionFile | Where-Object { $_ -like "m_EditorVersion:*" } | Select-Object -First 1
+    if (-not $line) {
+        throw "Could not read Unity editor version from $versionFile"
+    }
+
+    return ($line -split ":", 2)[1].Trim()
+}
+
+function Get-UnityEditorPath {
+    param([string]$ProjectPath)
+
+    if ($env:UNITY_EDITOR_PATH -and (Test-Path $env:UNITY_EDITOR_PATH)) {
+        return $env:UNITY_EDITOR_PATH
+    }
+
+    $unityVersion = Get-UnityVersion -ProjectPath $ProjectPath
+    $defaultPath = "C:\Program Files\Unity\Hub\Editor\$unityVersion\Editor\Unity.exe"
+    if (Test-Path $defaultPath) {
+        return $defaultPath
+    }
+
+    throw @"
+Unity.exe not found.
+
+Expected path:
+$defaultPath
+
+Either install that Unity version through Unity Hub or set UNITY_EDITOR_PATH to the full Unity.exe path.
+"@
+}
+
+function Remove-StaleUnityLocks {
+    param([string]$ProjectPath)
+
+    $lockPaths = @(
+        (Join-Path $ProjectPath "Temp\UnityLockfile"),
+        (Join-Path $ProjectPath "Library\ArtifactDB-lock"),
+        (Join-Path $ProjectPath "Library\SourceAssetDB-lock")
+    )
+
+    foreach ($lockPath in $lockPaths) {
+        if (Test-Path $lockPath) {
+            try {
+                Remove-Item -Path $lockPath -Force -ErrorAction Stop
+                Write-Host "Removed stale lock: $lockPath"
+            }
+            catch {
+                Write-Host "Could not remove lock file: $lockPath"
+                Write-Host "Please close any Unity instance using the build copy and run again."
+                throw
+            }
+        }
+    }
+}
+
+function Stop-BuildAgentUnityProcesses {
+    param([string]$ProjectPath)
+
+    try {
+        $unityProcesses = Get-CimInstance Win32_Process -Filter "Name = 'Unity.exe'" |
+            Where-Object { $_.CommandLine -like "*$ProjectPath*" }
+    }
+    catch {
+        Write-Host "Could not inspect Unity processes. Continuing with lock cleanup."
+        return
+    }
+
+    foreach ($process in $unityProcesses) {
+        Write-Host "Stopping stuck Unity build process: $($process.ProcessId)"
+        Stop-Process -Id $process.ProcessId -Force
+    }
+
+    if ($unityProcesses) {
+        Start-Sleep -Seconds 2
+    }
+}
+
+function Wait-BuildAgentUnityProcesses {
+    param(
+        [string]$ProjectPath,
+        [int]$TimeoutSeconds = 7200
+    )
+
+    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+
+    while ($true) {
+        try {
+            $unityProcesses = @(Get-CimInstance Win32_Process -Filter "Name = 'Unity.exe'" |
+                Where-Object { $_.CommandLine -like "*$ProjectPath*" })
+        }
+        catch {
+            Write-Host "Could not inspect Unity processes. Continuing without process wait."
+            return
+        }
+
+        if ($unityProcesses.Count -eq 0) {
+            return
+        }
+
+        if ((Get-Date) -ge $deadline) {
+            throw "Unity did not finish within $TimeoutSeconds seconds for $ProjectPath"
+        }
+
+        Write-Host "Unity is still importing/building in the build copy. Waiting..."
+        Start-Sleep -Seconds 10
+    }
+}
+
+function Sync-BuildAgentRepo {
+    param(
+        [string]$SourceRepoPath,
+        [string]$AgentRepoPath,
+        [string]$BranchName
+    )
+
+    $originUrl = (git -C $SourceRepoPath remote get-url origin).Trim()
+    if (-not $originUrl) {
+        throw "No git remote named 'origin' was found in $SourceRepoPath"
+    }
+
+    if (-not (Test-Path $AgentRepoPath)) {
+        Write-Host "Cloning clean iOS build copy into $AgentRepoPath"
+        git clone --branch $BranchName $originUrl $AgentRepoPath
+        if ($LASTEXITCODE -ne 0) {
+            throw "git clone failed"
+        }
+        return
+    }
+
+    Write-Host "Updating existing iOS build copy in $AgentRepoPath"
+    git -C $AgentRepoPath fetch origin
+    if ($LASTEXITCODE -ne 0) {
+        throw "git fetch failed"
+    }
+
+    git -C $AgentRepoPath checkout $BranchName
+    if ($LASTEXITCODE -ne 0) {
+        throw "git checkout failed"
+    }
+
+    git -C $AgentRepoPath reset --hard "origin/$BranchName"
+    if ($LASTEXITCODE -ne 0) {
+        throw "git reset failed"
+    }
+
+    git -C $AgentRepoPath clean -fd `
+      -e Library `
+      -e Temp `
+      -e UserSettings `
+      -e Builds `
+      -e Logs
+    if ($LASTEXITCODE -ne 0) {
+        throw "git clean failed"
+    }
+}
+
+function Invoke-UnityIOSBuild {
+    param(
+        [string]$UnityExePath,
+        [string]$ProjectPath,
+        [string]$LogPath,
+        [string]$IOSOutputPath
+    )
+
+    & $UnityExePath `
+      -quit `
+      -batchmode `
+      -nographics `
+      -accept-apiupdate `
+      -buildTarget iOS `
+      -projectPath $ProjectPath `
+      -executeMethod BuildScript.BuildIOS `
+      -iosOutputPath $IOSOutputPath `
+      -logFile $LogPath
+
+    Wait-BuildAgentUnityProcesses -ProjectPath $ProjectPath
+
+    return $LASTEXITCODE
+}
+
+$projectRoot = Get-ProjectRoot
+$agentRepoPath = Join-Path $BuildAgentsRoot $AgentFolderName
+$logsPath = Join-Path $BuildAgentsRoot "Logs"
+$logFile = Join-Path $logsPath "ios-build.log"
+
+New-Item -ItemType Directory -Force -Path $BuildAgentsRoot | Out-Null
+New-Item -ItemType Directory -Force -Path $logsPath | Out-Null
+New-Item -ItemType Directory -Force -Path $FinalOutputDirectory | Out-Null
+
+Sync-BuildAgentRepo -SourceRepoPath $projectRoot -AgentRepoPath $agentRepoPath -BranchName $Branch
+
+$unityPath = Get-UnityEditorPath -ProjectPath $agentRepoPath
+Stop-BuildAgentUnityProcesses -ProjectPath $agentRepoPath
+Remove-StaleUnityLocks -ProjectPath $agentRepoPath
+
+Write-Host "Unity path:       $unityPath"
+Write-Host "Build repo:       $agentRepoPath"
+Write-Host "Log file:         $logFile"
+
+$finalIOSPath = Join-Path $FinalOutputDirectory "Erny-iOS"
+
+$buildExitCode = Invoke-UnityIOSBuild -UnityExePath $unityPath -ProjectPath $agentRepoPath -LogPath $logFile -IOSOutputPath $finalIOSPath
+if ($buildExitCode -ne 0) {
+    Write-Host ""
+    Write-Host "iOS build failed."
+    Write-Host "Check log: $logFile"
+    exit $buildExitCode
+}
+
+if (-not (Test-Path $finalIOSPath)) {
+    Write-Host ""
+    Write-Host "First Unity run finished without producing the iOS Xcode project."
+    Write-Host "Retrying once now that the clean clone has finished importing and compiling..."
+
+    Stop-BuildAgentUnityProcesses -ProjectPath $agentRepoPath
+    Remove-StaleUnityLocks -ProjectPath $agentRepoPath
+
+    $buildExitCode = Invoke-UnityIOSBuild -UnityExePath $unityPath -ProjectPath $agentRepoPath -LogPath $logFile -IOSOutputPath $finalIOSPath
+    if ($buildExitCode -ne 0) {
+        Write-Host ""
+        Write-Host "iOS build failed on retry."
+        Write-Host "Check log: $logFile"
+        exit $buildExitCode
+    }
+
+    if (-not (Test-Path $finalIOSPath)) {
+        throw "Build finished but iOS Xcode project was not found at $finalIOSPath after retry"
+    }
+}
+
+Write-Host ""
+Write-Host "iOS build completed successfully."
+Write-Host "Final Xcode project path: $finalIOSPath"
+Write-Host "Log path: $logFile"

@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: ARTHEME
+  m_EditorClassIdentifier: 
+  m_GroupName: ARTHEME
+  m_GUID: cfeba3b3b59c6764ca132e973fac6550
+  m_SerializeEntries:
+  - m_GUID: 1adfde49bda6d9941895c8ddd7d6316e
+    m_Address: Assets/Prefab/Balon/baloon theme.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Remote
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: abf27c4180de9f5489156dc4f0a64d77
+    m_Address: Assets/Prefab/new try 32.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Remote
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 024f54854a443d24eae4503ca56b267d, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: b2b6b362ddeae6f41b5afbcb909ac7fb, type: 2}
+    - {fileID: 11400000, guid: d1090968320b2f740b8c23735b2f123d, type: 2}
