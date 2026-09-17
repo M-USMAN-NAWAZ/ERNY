@@ -39,6 +39,7 @@ ExportedObj/
 *.tmp
 *.lock
 *.lock.meta
+*-lock.json
 *.user
 *.userprefs
 *.pidb

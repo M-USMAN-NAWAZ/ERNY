@@ -188,54 +188,14 @@ public class NSRTapScreenshotHoldRecord : MonoBehaviour, IPointerDownHandler, IP
 
     private Texture2D CaptureCurrentFrame()
     {
-        RenderTexture previousRenderTexture = RenderTexture.active;
-        int captureWidth = previousRenderTexture != null
-            ? previousRenderTexture.width
-            : 0;
-        int captureHeight = previousRenderTexture != null
-            ? previousRenderTexture.height
-            : 0;
-
-        if (captureWidth <= 0 || captureHeight <= 0)
-        {
-            Camera captureCamera = Camera.main;
-            if (captureCamera != null)
-            {
-                captureWidth = captureCamera.pixelWidth;
-                captureHeight = captureCamera.pixelHeight;
-            }
-        }
-
-        if (captureWidth <= 0 || captureHeight <= 0)
-        {
-            captureWidth = Display.main.renderingWidth;
-            captureHeight = Display.main.renderingHeight;
-        }
-
-        if (captureWidth <= 0 || captureHeight <= 0)
-        {
-            return null;
-        }
-
         try
         {
-            Texture2D screenshot = new Texture2D(
-                captureWidth,
-                captureHeight,
-                TextureFormat.RGB24,
-                false);
-            screenshot.ReadPixels(new Rect(0, 0, captureWidth, captureHeight), 0, 0);
-            screenshot.Apply();
-            return screenshot;
+            return ScreenCapture.CaptureScreenshotAsTexture();
         }
         catch (System.Exception exception)
         {
             Debug.LogException(exception);
             return null;
-        }
-        finally
-        {
-            RenderTexture.active = previousRenderTexture;
         }
     }
 
