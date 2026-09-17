@@ -16,7 +16,7 @@ public class FirebaseMsg : MonoBehaviour
     private FirebaseFirestore db;
 	public string[] codes;
 	public static int firebasecheck,codebadge2, codebadge3;
-	public GameObject Cont;
+	//public GameObject Cont;
 	public GameObject canvas;
 
     public ContentSizeFitter vLayoutGroup;
@@ -29,10 +29,10 @@ public class FirebaseMsg : MonoBehaviour
         firebasecheck = 0;
         codebadge2 = 0;
         codebadge3 = 0;
-        eventgetter.instance.clubbadge.SetActive(false);
-        eventgetter.instance.clubbadge1.SetActive(false);
-        eventgetter.instance.clubbadge2.SetActive(false);
-        eventgetter.instance.clubbadge3.SetActive(false);
+        // eventgetter.instance.clubbadge.SetActive(false);
+        // eventgetter.instance.clubbadge1.SetActive(false);
+        // eventgetter.instance.clubbadge2.SetActive(false);
+        // eventgetter.instance.clubbadge3.SetActive(false);
         //Debug.LogError($"Firebase Start");
         if (baselink.firebaseioscheck < 1)
 		{
@@ -56,7 +56,7 @@ public class FirebaseMsg : MonoBehaviour
 
     public void IncreaseSize()
     {
-        StartCoroutine(IncreaseSizeCoroutine());
+        //StartCoroutine(IncreaseSizeCoroutine());
     }
 
 
@@ -124,10 +124,10 @@ public class FirebaseMsg : MonoBehaviour
                     codebadge2 = hasSlowAf ? 1 : 0;
                     codebadge3 = hasUrc ? 1 : 0;
 
-                    eventgetter.instance.clubbadge.SetActive(hasAnyClubBadge);
-                    eventgetter.instance.clubbadge2.SetActive(hasClubD3);
-                    eventgetter.instance.clubbadge3.SetActive(hasSlowAf);
-                    eventgetter.instance.clubbadge1.SetActive(hasUrc);
+                    // eventgetter.instance.clubbadge.SetActive(hasAnyClubBadge);
+                    // eventgetter.instance.clubbadge2.SetActive(hasClubD3);
+                    // eventgetter.instance.clubbadge3.SetActive(hasSlowAf);
+                    // eventgetter.instance.clubbadge1.SetActive(hasUrc);
 
                     if (hasAnyClubBadge)
                     {
@@ -140,10 +140,10 @@ public class FirebaseMsg : MonoBehaviour
                     firebasecheck = 0;
                     codebadge2 = 0;
                     codebadge3 = 0;
-                    eventgetter.instance.clubbadge.SetActive(false);
-                    eventgetter.instance.clubbadge2.SetActive(false);
-                    eventgetter.instance.clubbadge3.SetActive(false);
-                    eventgetter.instance.clubbadge1.SetActive(false);
+                    // eventgetter.instance.clubbadge.SetActive(false);
+                    // eventgetter.instance.clubbadge2.SetActive(false);
+                    // eventgetter.instance.clubbadge3.SetActive(false);
+                    // eventgetter.instance.clubbadge1.SetActive(false);
                 }
 			}
 			else
@@ -241,7 +241,7 @@ public class FirebaseMsg : MonoBehaviour
 
             await userRef.SetAsync(user);
             Debug.Log("User created in Firestore successfully");
-            eventgetter.instance.clubbadge.SetActive(true);
+            //eventgetter.instance.clubbadge.SetActive(true);
             firebasecheck = 1;
             Debug.Log("THIS IS THE NEW DEBUG");
             IncreaseSize();
@@ -309,8 +309,8 @@ public class FirebaseMsg : MonoBehaviour
 
             await userRef.SetAsync(user);
             Debug.Log("User created in Firestore successfully");
-            eventgetter.instance.clubbadge.SetActive(true);
-            eventgetter.instance.clubbadge3.SetActive(true);
+            // eventgetter.instance.clubbadge.SetActive(true);
+            // eventgetter.instance.clubbadge3.SetActive(true);
             codebadge2 = 1;
             IncreaseSize();
         }
@@ -377,8 +377,8 @@ public class FirebaseMsg : MonoBehaviour
 
             await userRef.SetAsync(user);
             Debug.Log("User created in Firestore successfully");
-            eventgetter.instance.clubbadge.SetActive(true);
-            eventgetter.instance.clubbadge1.SetActive(true);
+            // eventgetter.instance.clubbadge.SetActive(true);
+            // eventgetter.instance.clubbadge1.SetActive(true);
             codebadge3 = 1;
             IncreaseSize();
         }

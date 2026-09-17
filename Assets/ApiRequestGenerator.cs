@@ -13,7 +13,7 @@ public class ApiRequestGenerator : MonoBehaviour
 {
 
 
-    public GameObject loading, signin, signup, popup, forgott, signinn, popupnew, guestpopupp;
+    public GameObject loading, signin, signup, popup, oneTimePopup, forgott, signinn, popupnew, guestpopupp;
     public GameObject newloader;
     public string baseurl ;
     public string Json2send;
@@ -1065,6 +1065,21 @@ public class ApiRequestGenerator : MonoBehaviour
       //  guestpopup.instance.pp.Play("popp");
     }
 
+
+    public void OneTimePopup()
+    {
+        loading.SetActive(false);
+        oneTimePopup.SetActive(true);   
+        PlayerPrefs.SetInt("OnetimePopup", 1);
+       
+    }
+
+    public void OneTimePopupAutoLogin()
+    {
+        StartCoroutine(versionget(baseurl + "/v1/versionUpdate"));
+    }
+
+    
     IEnumerator versionget(string url)
     {
 
@@ -1093,38 +1108,59 @@ public class ApiRequestGenerator : MonoBehaviour
             {
                 if (apigetter.allofdata != "" && googlesignedin==0 && appleSignedin == 0)
                 {
-                    SignInUserData suserdata = new SignInUserData();
-
-                    suserdata.email = apigetter.email;
-                    suserdata.password = apigetter.password;
-                    String JsonVal = Newtonsoft.Json.JsonConvert.SerializeObject(suserdata);
-
-                    StartCoroutine(SignIN_Upload(baseurl + "/v1/user/login", JsonVal));
-                }
-                else if (googlesignedin == 1)
-                {
-                    Debug.Log("Auto Login");
-                    if (loginWithGoogle != null)
+                    if(PlayerPrefs.GetInt("OnetimePopup", 0) == 0)
                     {
-                        loginWithGoogle.AutoLogin();
+                        OneTimePopup();
                     }
                     else
                     {
-                        Debug.LogWarning("Auto Google login skipped because LoginWithGoogle reference is missing.");
-                        loading.SetActive(false);
+                        SignInUserData suserdata = new SignInUserData();
+
+                        suserdata.email = apigetter.email;
+                        suserdata.password = apigetter.password;
+                        String JsonVal = Newtonsoft.Json.JsonConvert.SerializeObject(suserdata);
+
+                        StartCoroutine(SignIN_Upload(baseurl + "/v1/user/login", JsonVal));
+                    }
+                }
+                else if (googlesignedin == 1)
+                {
+                    if(PlayerPrefs.GetInt("OnetimePopup", 0) == 0)
+                    {
+                        OneTimePopup();
+                    }
+                    else
+                    {
+                        Debug.Log("Auto Login");
+                        if (loginWithGoogle != null)
+                        {
+                            loginWithGoogle.AutoLogin();
+                        }
+                        else
+                        {
+                            Debug.LogWarning("Auto Google login skipped because LoginWithGoogle reference is missing.");
+                            loading.SetActive(false);
+                        }
                     }
 
                 }
                 else if (appleSignedin == 1)
                 {
-                    if (MainMenu != null)
+                    if(PlayerPrefs.GetInt("OnetimePopup", 0) == 0)
                     {
-                        MainMenu.GetAppleIdTokenOnly();
+                        OneTimePopup();
                     }
                     else
                     {
-                        Debug.LogWarning("Auto Apple login skipped because MainMenu reference is missing.");
-                        loading.SetActive(false);
+                        if (MainMenu != null)
+                        {
+                            MainMenu.GetAppleIdTokenOnly();
+                        }
+                        else
+                        {
+                            Debug.LogWarning("Auto Apple login skipped because MainMenu reference is missing.");
+                            loading.SetActive(false);
+                        }
                     }
 
                 }

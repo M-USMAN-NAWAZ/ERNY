@@ -187,7 +187,7 @@ public class eventgetter : MonoBehaviour
 
     public GameObject firebaseobject;
 
-    public GameObject clubbadge, clubbadge1, clubbadge2, clubbadge3;
+    //public GameObject clubbadge, clubbadge1, clubbadge2, clubbadge3;
     
     [Header("IAP 50% Off")]
     public GameObject HalfpricePanel;
@@ -4324,24 +4324,24 @@ public   int  checkcounter = 0;
         if (FirebaseMsg.firebasecheck == 1)
         { 
         
-            clubbadge.SetActive(true);
-			clubbadge2.SetActive(true);
+            // clubbadge.SetActive(true);
+			// clubbadge2.SetActive(true);
 
 		}
 
 		if (FirebaseMsg.codebadge2 == 1)
 		{
 
-			clubbadge.SetActive(true);
+			// clubbadge.SetActive(true);
 
-			clubbadge3.SetActive(true);
+			// clubbadge3.SetActive(true);
 		}
 		if (FirebaseMsg.codebadge3 == 1)
 		{
 
-			clubbadge.SetActive(true);
+			// clubbadge.SetActive(true);
 
-			clubbadge1.SetActive(true);
+			// clubbadge1.SetActive(true);
 		}
         //if (PlayerPrefs.GetInt("LogOutSubscription", 0) == 1)
         //{

@@ -25,6 +25,8 @@ public class NSRTapScreenshotHoldRecord : MonoBehaviour, IPointerDownHandler, IP
     private bool isRecording;
     private Coroutine pressCoroutine;
     private bool[] previousCaptureObjectStates;
+    private Graphic[] captureButtonGraphics;
+    private bool[] previousCaptureButtonGraphicStates;
     private Button recordButton;
 
     private IEnumerator Start()
@@ -34,6 +36,8 @@ public class NSRTapScreenshotHoldRecord : MonoBehaviour, IPointerDownHandler, IP
         {
             holdCountdownVisual = GetComponent<HoldCountdownVisual>();
         }
+
+        captureButtonGraphics = GetComponentsInChildren<Graphic>(true);
 
         // NSR adds its old Share callback during Start, so clear this dedicated
         // record button one frame later. Press handling comes from pointer events.
@@ -201,38 +205,51 @@ public class NSRTapScreenshotHoldRecord : MonoBehaviour, IPointerDownHandler, IP
 
     private void SetCaptureObjectsActiveForCapture()
     {
-        if (objectsToHideWhileCapturing == null)
+        if (objectsToHideWhileCapturing != null)
         {
-            return;
+            previousCaptureObjectStates = new bool[objectsToHideWhileCapturing.Length];
+
+            for (int i = 0; i < objectsToHideWhileCapturing.Length; i++)
+            {
+                GameObject obj = objectsToHideWhileCapturing[i];
+                if (obj != null)
+                {
+                    previousCaptureObjectStates[i] = obj.activeSelf;
+                    obj.SetActive(false);
+                }
+            }
         }
 
-        previousCaptureObjectStates = new bool[objectsToHideWhileCapturing.Length];
-
-        for (int i = 0; i < objectsToHideWhileCapturing.Length; i++)
+        previousCaptureButtonGraphicStates = new bool[captureButtonGraphics.Length];
+        for (int i = 0; i < captureButtonGraphics.Length; i++)
         {
-            GameObject obj = objectsToHideWhileCapturing[i];
-            if (obj != null)
-            {
-                previousCaptureObjectStates[i] = obj.activeSelf;
-                obj.SetActive(false);
-            }
+            previousCaptureButtonGraphicStates[i] = captureButtonGraphics[i].enabled;
+            captureButtonGraphics[i].enabled = false;
         }
     }
 
     private void RestoreCaptureObjects()
     {
-        if (objectsToHideWhileCapturing == null || previousCaptureObjectStates == null)
+        if (objectsToHideWhileCapturing != null && previousCaptureObjectStates != null)
+        {
+            for (int i = 0; i < objectsToHideWhileCapturing.Length && i < previousCaptureObjectStates.Length; i++)
+            {
+                GameObject obj = objectsToHideWhileCapturing[i];
+                if (obj != null)
+                {
+                    obj.SetActive(previousCaptureObjectStates[i]);
+                }
+            }
+        }
+
+        if (previousCaptureButtonGraphicStates == null)
         {
             return;
         }
 
-        for (int i = 0; i < objectsToHideWhileCapturing.Length && i < previousCaptureObjectStates.Length; i++)
+        for (int i = 0; i < captureButtonGraphics.Length && i < previousCaptureButtonGraphicStates.Length; i++)
         {
-            GameObject obj = objectsToHideWhileCapturing[i];
-            if (obj != null)
-            {
-                obj.SetActive(previousCaptureObjectStates[i]);
-            }
+            captureButtonGraphics[i].enabled = previousCaptureButtonGraphicStates[i];
         }
     }
 }

@@ -79,7 +79,7 @@ Material:
     - DstMode: 10
     - SrcMode: 5
     - _BlendMode: 1
-    - _Brightness: 1
+    - _Brightness: 2
     - _BumpScale: 1
     - _CullMode: 0
     - _Cutoff: 0.5
@@ -99,7 +99,7 @@ Material:
     - _InvFade: 1
     - _MaskStrength: 1
     - _MaxDepth: 3
-    - _Metallic: 0
+    - _Metallic: 1
     - _Mode: 0
     - _OcclusionBias: 0.02
     - _OcclusionStrength: 1
