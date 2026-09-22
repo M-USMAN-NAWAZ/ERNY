@@ -382,6 +382,9 @@ string[] textSplit ;
     public void edit()
     {
 
+        EventGalleryPicker.Instance?.PrepareForUpdate(
+            myreceivedata.galleryImages);
+
         update.totalpeople.text = myreceivedata.totalpeople;
         update.position.text = myreceivedata.position;
         update.eventImage = myreceivedata.image;
@@ -1049,6 +1052,10 @@ string[] textSplit ;
         public Distance distance { get; set; }
         public string @virtual { get; set; }
         public string image { get; set; }
+
+        public List<string> galleryImages { get; set; } =
+        new List<string>();
+
         public string theme { get; set; }
         public List<Goal> goals { get; set; }
         public Result result { get; set; }
@@ -3271,7 +3278,35 @@ string[] textSplit ;
 
 
 
+    public void ShowUploadedGallery()
+    {
+        if (EventGalleryViewer.Instance == null)
+        {
+            Debug.LogError("EventGalleryViewer is missing.");
+            return;
+        }
 
+        int count = myreceivedata?.galleryImages?.Count ?? 0;
+        Debug.Log("Current event gallery image count: " + count);
+
+        RectTransform galleryContent = ExpandOnClick.LastExpandedWindow;
+
+        if (galleryContent == null)
+        {
+            GameObject selectedButton =
+                UnityEngine.EventSystems.EventSystem.current
+                    ?.currentSelectedGameObject;
+            galleryContent = selectedButton != null
+                ? selectedButton.GetComponent<ExpandOnClick>()?.ExpandedWindow
+                : null;
+        }
+
+        EventGalleryViewer.Instance.ShowUploadedImages(
+            myreceivedata?.galleryImages,
+            myreceivedata?._id,
+            urls => myreceivedata.galleryImages = urls,
+            galleryContent);
+    }
 
 
 

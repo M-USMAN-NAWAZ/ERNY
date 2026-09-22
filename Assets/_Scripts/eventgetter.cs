@@ -26,6 +26,9 @@ using System.Timers;
 
 public class eventgetter : MonoBehaviour
 {
+    
+    public GameObject Saveloader;
+    //public List<string> galleryImages { get; set; }
     public GameObject confettieObj;
     public spawnmangr spawnmangr;
     public ARCameraManager cameraManager;
@@ -228,6 +231,7 @@ public class eventgetter : MonoBehaviour
     public ARCameraManager arCameraManager;
     public ARCameraBackground arCameraBackground;
     public TMP_Text halfPayWallHeadingText;
+
 
     public List<ContentSizeFitter> Contents = new List<ContentSizeFitter>();
     public void scrollerrest()
@@ -2389,6 +2393,8 @@ public static int checkappopened;
         public string race { get; set; }
         public string personarecord { get; set; }
         public string image { get; set; }
+        [Newtonsoft.Json.JsonProperty("images")]
+        public List<string> galleryImages { get; set; }
         public string theme { get; set; }
         public List<Goal> goals { get; set; }
         public List<Link> links { get; set; }
@@ -2702,7 +2708,7 @@ public static int checkappopened;
             }
             else
             {
-                
+                Saveloader.SetActive(true);
                 evententry();
                 save.interactable = false;
                 Debug.Log("Saved: " + yearToCheck + " " + monthToCheck);
@@ -2727,7 +2733,7 @@ public static int checkappopened;
     
 
 
-
+    
 
     //guestdata
     string gusteventdate, guestdistance, guesttime, guestvictorycatchp, gvr, gpr, gdistunit;
@@ -3165,10 +3171,7 @@ public static int checkappopened;
         guestlinkgoals = eventsenddata.links;
         if (ApiRequestGenerator.guestlogin == 0)
         {
-
-            json2send = Newtonsoft.Json.JsonConvert.SerializeObject(eventsenddata);
-
-            StartCoroutine(event_Upload(baseurl + "/v1/event", json2send));
+            StartCoroutine(CreateEventWithGallery(eventsenddata));
         }
         else
         { guestdata(); }
@@ -3386,6 +3389,120 @@ public static int checkappopened;
         }
     }
 
+    private IEnumerator CreateEventWithGallery(eventdata2send eventData)
+    {
+        EventGalleryPicker picker = EventGalleryPicker.Instance;
+        List<string> galleryUrls = picker != null
+            ? picker.ExistingUploadedUrls
+            : new List<string>();
+
+        if (picker != null)
+        {
+            List<Texture2D> images = picker.SelectedImages;
+
+            if (images.Count > 0)
+            {
+                List<string> uploadedUrls = null;
+                string uploadError = null;
+
+                loader.SetActive(true);
+                yield return UploadImageGallery(
+                    images,
+                    urls => uploadedUrls = urls,
+                    error => uploadError = error);
+
+                if (uploadedUrls == null)
+                {
+                    loader.SetActive(false);
+                    Debug.LogError(uploadError);
+                    yield break;
+                }
+
+                galleryUrls.AddRange(uploadedUrls);
+                picker.ApplyUploadedUrls(uploadedUrls);
+            }
+        }
+
+        eventData.galleryImages = galleryUrls;
+        Debug.Log("Sending gallery image URL count: " + galleryUrls.Count);
+        foreach (string galleryUrl in galleryUrls)
+        {
+            Debug.Log("Sending gallery image URL: " + galleryUrl);
+        }
+
+        json2send = Newtonsoft.Json.JsonConvert.SerializeObject(eventData);
+        yield return event_Upload(baseurl + "/v1/event", json2send);
+    }
+
+    public IEnumerator UploadImageGallery(
+        List<Texture2D> images,
+        Action<List<string>> onSuccess,
+        Action<string> onFailure)
+    {
+        List<string> urls = new List<string>();
+
+        for (int i = 0; i < images.Count; i++)
+        {
+            WWWForm form = new WWWForm();
+            form.AddBinaryData(
+                "image",
+                images[i].EncodeToJPG(85),
+                "gallery_" + i + ".jpg",
+                "image/jpeg");
+
+            using (UnityWebRequest request = UnityWebRequest.Post(
+                       baseurl + "/v1/user/upload-image", form))
+            {
+                yield return request.SendWebRequest();
+
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    onFailure(
+                        "Gallery image " + (i + 1) + " upload failed (" +
+                        request.responseCode + "): " +
+                        request.downloadHandler.text);
+                    yield break;
+                }
+
+                try
+                {
+                    Newtonsoft.Json.Linq.JToken response =
+                        Newtonsoft.Json.Linq.JToken.Parse(
+                            request.downloadHandler.text);
+                    string url = (string)response.SelectToken("$..url");
+
+                    if (string.IsNullOrWhiteSpace(url))
+                    {
+                        onFailure(
+                            "Gallery image " + (i + 1) +
+                            " upload returned no URL.");
+                        yield break;
+                    }
+
+                    string uploadedUrl = Uri.IsWellFormedUriString(
+                        url,
+                        UriKind.Absolute)
+                        ? url
+                        : baseurl.TrimEnd('/') + "/" + url.TrimStart('/');
+
+                    urls.Add(uploadedUrl);
+                    Debug.Log(
+                        "Uploaded gallery image URL " + (i + 1) + ": " +
+                        uploadedUrl);
+                }
+                catch (Exception exception)
+                {
+                    onFailure(
+                        "Invalid response for gallery image " + (i + 1) +
+                        ": " + exception.Message);
+                    yield break;
+                }
+            }
+        }
+
+        onSuccess(urls);
+    }
+
     IEnumerator event_Upload(string url, string bodyJsonString)
     {
         badges.instance.badgecount();
@@ -3408,6 +3525,7 @@ public static int checkappopened;
         //eventdata2send myDeserializedClass = Newtonsoft.Json.JsonConvert.DeserializeObject<Root>(request.downloadHandler.text);
         if (request.responseCode==200)
         {
+            EventGalleryPicker.Instance?.ResetImages();
             
             eventno();
             badges.instance.badgecount();
@@ -3481,6 +3599,8 @@ public static int checkappopened;
                     Debug.Log("image data: " + myDeserializedClass.response.@event.image);
                     obj.GetComponent<recievedata>().myreceivedata.image = myDeserializedClass.response.@event.image;
                 }
+                obj.GetComponent<recievedata>().myreceivedata.galleryImages =
+                    myDeserializedClass.response.@event.galleryImages ?? new List<string>();
                 obj.GetComponent<recievedata>().myreceivedata.theme = myDeserializedClass.response.@event.theme;
                 /*for (int x = 0; x < myDeserializedClass.response[i].goals.Count; x++)
                 {
@@ -3950,7 +4070,9 @@ public static int checkappopened;
 
 
 
-
+        obj.GetComponent<MyEventData>().myeventclass.galleryImages =
+        myDeserializedClass.response[i].galleryImages
+        ?? new List<string>();
 
 
 
@@ -4101,6 +4223,9 @@ public static int checkappopened;
         public Distance distance { get; set; }
         public string @virtual { get; set; }
         public string image { get; set; }
+        [Newtonsoft.Json.JsonProperty("images")]
+        public List<string> galleryImages { get; set; } =
+        new List<string>();
         public string theme { get; set; }
         public List<Goal> goals { get; set; }
         public Result result { get; set; }
@@ -4525,6 +4650,9 @@ public   int  checkcounter = 0;
         public DateTime createdAt { get; set; }
         public DateTime updatedAt { get; set; }
         public int __v { get; set; }
+        [Newtonsoft.Json.JsonProperty("images")]
+        public List<string> galleryImages { get; set; } =
+        new List<string>();
     }
 
     public class nGoal

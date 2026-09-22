@@ -87,6 +87,15 @@ public class updataeven : MonoBehaviour
     public string firstdistance, seconddistance, thirddistance;
     private Vector2 orignalgaolsizedelata;
     private Vector2 originalparentscroll;
+
+
+    public void TurnOnTheUpdateAgain()
+    {
+        updateBtn.interactable = true;
+        saveLoader.SetActive(false);
+    }
+
+
     public void eventnamecheck()
     {
               eventnamechecker = Eventname.text.Split(char.Parse(" "));
@@ -772,6 +781,9 @@ public class updataeven : MonoBehaviour
         public Distance distance { get; set; }
         public string @virtual { get; set; }
         public string image { get; set; }
+        [Newtonsoft.Json.JsonProperty("images")]
+        public List<string> galleryImages { get; set; } =
+            new List<string>();
         public string theme { get; set; }
         public List<Goal> goals { get; set; }
         public Result result { get; set; }
@@ -829,8 +841,14 @@ public class updataeven : MonoBehaviour
 
     public string mystring;
     public string mysecondstring,mythirdstring;
+
+    public GameObject saveLoader;
+    public Button updateBtn;
+
     public void senddata()
     {
+        updateBtn.interactable = false;
+        saveLoader.SetActive(true);
         Event eventsenddata = new Event();
         if (racerno.text != null)
         {
@@ -1208,9 +1226,7 @@ public class updataeven : MonoBehaviour
         eventsenddata.user = apigetter.id;
         if (ApiRequestGenerator.guestlogin == 0)
         {
-            json2send = Newtonsoft.Json.JsonConvert.SerializeObject(eventsenddata);
-
-            StartCoroutine(event_Upload(baseurl + "/v1/event", json2send));
+            StartCoroutine(UpdateEventWithGallery(eventsenddata));
         }
         else
         {
@@ -1221,6 +1237,48 @@ public class updataeven : MonoBehaviour
 
 
 
+    }
+
+    private IEnumerator UpdateEventWithGallery(Event eventData)
+    {
+        EventGalleryPicker picker = EventGalleryPicker.Instance;
+        List<string> galleryUrls = picker != null
+            ? picker.ExistingUploadedUrls
+            : new List<string>();
+
+        if (picker != null)
+        {
+            List<Texture2D> images = picker.SelectedImages;
+
+            if (images.Count > 0)
+            {
+                List<string> uploadedUrls = null;
+                string uploadError = null;
+
+                loader.SetActive(true);
+                yield return eventgetter.instance.UploadImageGallery(
+                    images,
+                    urls => uploadedUrls = urls,
+                    error => uploadError = error);
+
+                if (uploadedUrls == null)
+                {
+                    loader.SetActive(false);
+                    Debug.LogError(uploadError);
+                    yield break;
+                }
+
+                galleryUrls.AddRange(uploadedUrls);
+                picker.ApplyUploadedUrls(uploadedUrls);
+            }
+        }
+
+        eventData.galleryImages = galleryUrls;
+        Debug.Log(
+            "Updating gallery image URL count: " + galleryUrls.Count);
+
+        json2send = Newtonsoft.Json.JsonConvert.SerializeObject(eventData);
+        yield return event_Upload(baseurl + "/v1/event", json2send);
     }
 
     string gusteventdate, guestdistance, guesttime, guestvictorycatchp, gvr, gpr, gdistunit;
@@ -1485,6 +1543,11 @@ public class updataeven : MonoBehaviour
             obj.GetComponent<recievedata>().myreceivedata.@virtual = myDeserializedClass.response.@event.@virtual;
             obj.GetComponent<recievedata>().myreceivedata.personarecord = myDeserializedClass.response.@event.personarecord;
 
+            obj.GetComponent<recievedata>().myreceivedata.galleryImages =
+                myDeserializedClass.response.@event.galleryImages ??
+                EventGalleryPicker.Instance?.ExistingUploadedUrls ??
+                new List<string>();
+
 
             if (myDeserializedClass.response.@event.image != "")
             {
@@ -1570,6 +1633,8 @@ public class updataeven : MonoBehaviour
             obj.GetComponent<recievedata>().myreceivedata.updatedAt = myDeserializedClass.response.@event.updatedAt;
             obj.GetComponent<recievedata>().myreceivedata.__v = myDeserializedClass.response.@event.__v;
             obj.GetComponent<recievedata>().getdata();
+
+            EventGalleryPicker.Instance?.ResetImages();
 			//obj.GetComponent<recievedata>().StartCoroutine(obj.GetComponent<recievedata>().checkbaloonn());
 
 			imgcheck += 1;
@@ -1774,6 +1839,9 @@ public class updataeven : MonoBehaviour
         public nDistances distance { get; set; }
         public string @virtual { get; set; }
         public string image { get; set; }
+        [Newtonsoft.Json.JsonProperty("images")]
+        public List<string> galleryImages { get; set; } =
+            new List<string>();
         public string theme { get; set; }
         public List<Goal> goals { get; set; }
         public nResult result { get; set; }

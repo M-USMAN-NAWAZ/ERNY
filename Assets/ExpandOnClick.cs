@@ -2,10 +2,13 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ExpandOnClick : MonoBehaviour
 {
+    public static RectTransform LastExpandedWindow { get; private set; }
+
     public ScrollRect scrool;
     public RectTransform ExpandedWindow;
     public Image ExpandedIndicator;
@@ -26,6 +29,54 @@ public class ExpandOnClick : MonoBehaviour
         clicked = false;
 
         myexpandsize = ExpandedWindow.sizeDelta;
+    }
+
+    private void Update()
+    {
+        if (!clicked || ExpandedWindow == null ||
+            ExpandedWindow.name != "GalleryOpen" ||
+            !ExpandedWindow.gameObject.activeInHierarchy)
+            return;
+
+        Vector2 position;
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase != TouchPhase.Began)
+                return;
+            position = touch.position;
+        }
+        else if (Input.GetMouseButtonDown(0))
+            position = Input.mousePosition;
+        else
+            return;
+
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem == null)
+            return;
+
+        var hits = new List<RaycastResult>();
+        eventSystem.RaycastAll(
+            new PointerEventData(eventSystem) { position = position }, hits);
+        if (hits.Count == 0)
+            return;
+
+        Button button = hits[0].gameObject.GetComponentInParent<Button>();
+        if (button == null || !button.IsInteractable() ||
+            button.transform == transform ||
+            button.transform.IsChildOf(ExpandedWindow) ||
+            button.GetComponentInParent<ImageCropper>() != null)
+            return;
+
+        for (int i = 0; i < button.onClick.GetPersistentEventCount(); i++)
+        {
+            if (button.onClick.GetPersistentTarget(i) is EventGalleryPicker &&
+                (button.onClick.GetPersistentMethodName(i) == "PickFromGallery" ||
+                 button.onClick.GetPersistentMethodName(i) == "CaptureFromCamera"))
+                return;
+        }
+
+        Shrink();
     }
 
 
@@ -224,7 +275,8 @@ public class ExpandOnClick : MonoBehaviour
   
     public void Expand() 
     {
-
+        LastExpandedWindow = ExpandedWindow;
+        EventGalleryPicker.Instance?.BindImageRow(ExpandedWindow);
 
         Debug.Log("Expand Me");
         // ExpandedIndicator.sprite = expanded;
@@ -308,6 +360,8 @@ public class ExpandOnClick : MonoBehaviour
     public void Shrink() 
     {
         clicked = false;
+        if (LastExpandedWindow == ExpandedWindow)
+            LastExpandedWindow = null;
         Debug.Log("Shrink Me");
       //  ExpandedIndicator.sprite = shrunk;
        scrool.content.DOSizeDelta(new Vector2(scrool.content.sizeDelta.x, scrool.content.sizeDelta.y - myexpandsize.y), 0f, true);

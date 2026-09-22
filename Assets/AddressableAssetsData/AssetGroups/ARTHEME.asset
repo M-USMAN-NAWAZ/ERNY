@@ -22,6 +22,11 @@ MonoBehaviour:
     - Remote
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 85160b077465db44f9ce92e99cbb3f0b
+    m_Address: Assets/Materials/outside 3.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: abf27c4180de9f5489156dc4f0a64d77
     m_Address: Assets/Prefab/new try 32.prefab
     m_ReadOnly: 0

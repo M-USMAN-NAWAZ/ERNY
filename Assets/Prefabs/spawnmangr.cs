@@ -19,7 +19,7 @@ public class spawnmangr : MonoBehaviour
     public XROrigin arOrigin;
     public ARSession arses;
     public GameObject panel,tutorial;
-    public GameObject shutterbutton,poistionimage;
+    public GameObject shutterbutton, camRotateButton, poistionimage;
     private Pose placementpose;
     public bool placementposeisvalid;
     [SerializeField]
@@ -1143,6 +1143,7 @@ public class spawnmangr : MonoBehaviour
         
         poistionimage.SetActive(false);
         shutterbutton.SetActive(true);
+        camRotateButton.SetActive(true);
         facetoggle.SetActive(true);
     }
 

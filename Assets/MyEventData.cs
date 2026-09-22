@@ -87,6 +87,8 @@ public HorizontalLayoutGroup layoutGroup;
         public Distance distance { get; set; }
         public string @virtual { get; set; }
         public string image { get; set; }
+        public List<string> galleryImages { get; set; } =
+        new List<string>();
         public string theme { get; set; }
         public List<Goal> goals { get; set; }
         public Result result { get; set; }
@@ -112,6 +114,11 @@ public HorizontalLayoutGroup layoutGroup;
     {
         public List<string> id { get; set; }
     }
+
+
+    // public List<string> galleryImages { get; set; } =
+    // new List<string>();
+
 
    /* public class deleteevent
     {
@@ -535,6 +542,9 @@ public HorizontalLayoutGroup layoutGroup;
 
         }
 
+        obj.GetComponent<recievedata>().myreceivedata.galleryImages =
+        myeventclass.galleryImages ?? new List<string>();
+
         /*for (int x = 0; x < myDeserializedClass.response[i].goals.Count; x++)
         {
 
@@ -625,6 +635,32 @@ public HorizontalLayoutGroup layoutGroup;
 
 
 
+    public void ShowUploadedGallery()
+    {
+        if (EventGalleryViewer.Instance == null)
+        {
+            Debug.LogError("EventGalleryViewer is missing.");
+            return;
+        }
+
+        RectTransform galleryContent = ExpandOnClick.LastExpandedWindow;
+
+        if (galleryContent == null)
+        {
+            GameObject selectedButton =
+                UnityEngine.EventSystems.EventSystem.current
+                    ?.currentSelectedGameObject;
+            galleryContent = selectedButton != null
+                ? selectedButton.GetComponent<ExpandOnClick>()?.ExpandedWindow
+                : null;
+        }
+
+        EventGalleryViewer.Instance.ShowUploadedImages(
+            myeventclass.galleryImages,
+            myeventclass.id,
+            urls => myeventclass.galleryImages = urls,
+            galleryContent);
+    }
 
 
 
@@ -632,10 +668,7 @@ public HorizontalLayoutGroup layoutGroup;
 
 
 
-
-
-
-
+   
 
 
 

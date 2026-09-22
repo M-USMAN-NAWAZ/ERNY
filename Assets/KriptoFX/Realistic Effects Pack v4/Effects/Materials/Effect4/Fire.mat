@@ -8,11 +8,10 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Fire
-  m_Shader: {fileID: 4800000, guid: 18cc8fe7d50c89741b56c1ae6a5baa66, type: 3}
-  m_ValidKeywords:
-  - _BLENDMODE_BLEND
-  - _FADING_ON
-  - _FLIPBOOK_BLENDING
+  m_Shader: {fileID: 4800000, guid: 71bbd1a8f32ce7a4f9d2be1bbdeccd07, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
   m_InvalidKeywords:
   - BlendAlpha
   - Clip_ON
@@ -20,12 +19,16 @@ Material:
   - SoftParticles_ON
   - VertLight_OFF
   - _ALPHABLEND_ON
+  - _BLENDMODE_BLEND
+  - _FADING_ON
+  - _FLIPBOOK_BLENDING
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -54,7 +57,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: a90a2fe3e5bb7144e90070f3cdf7a8ae, type: 3}
+        m_Texture: {fileID: 2800000, guid: 99e028d292df8b74f9c71a07bf72341e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -92,6 +95,7 @@ Material:
     - _FresnelR0: 0.04
     - _Glossiness: 0.5
     - _InvFade: 8
+    - _MaskStrength: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -123,3 +127,4 @@ Material:
     - _Tiling: {r: 800, g: 800, b: 8, a: 8}
     - _TintColor: {r: 1.39772, g: 0.6872303, b: 0.43175638, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1

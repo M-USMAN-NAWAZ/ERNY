@@ -57,6 +57,18 @@ public class AddressableHandler : MonoBehaviour
 
     public void DownloadModel(int modelIndex)
     {
+        DownloadModel(modelIndex, false);
+    }
+
+    public void DownloadModelForUpdate(int modelIndex)
+    {
+        DownloadModel(modelIndex, true);
+    }
+
+
+
+    public void DownloadModel(int modelIndex, bool forUpdate)
+    {
         int modelCount = modelReferences != null ? modelReferences.Length : 0;
         if (modelIndex < 0 || modelIndex >= modelCount)
         {
@@ -71,7 +83,7 @@ public class AddressableHandler : MonoBehaviour
         {
             if (modelIndex == 3)
             {
-                StartCoroutine(DownloadModelWithProgress(modelReferences[modelIndex], modelIndex));
+                StartCoroutine(DownloadModelWithProgress(modelReferences[modelIndex], modelIndex, forUpdate));
                 StartCoroutine(DownloadModelWithProgressspartan(modelReferences[8], 8));
 
             }
@@ -79,7 +91,7 @@ public class AddressableHandler : MonoBehaviour
             else
             {
 
-                StartCoroutine(DownloadModelWithProgress(modelReferences[modelIndex], modelIndex));
+                StartCoroutine(DownloadModelWithProgress(modelReferences[modelIndex], modelIndex, forUpdate));
             }
 
         }
@@ -214,7 +226,7 @@ public class AddressableHandler : MonoBehaviour
 
 
 
-    private IEnumerator DownloadModelWithProgress(AssetReferenceGameObject modelReference, int modelIndex)
+    private IEnumerator DownloadModelWithProgress(AssetReferenceGameObject modelReference, int modelIndex, bool forUpdate)
     {
         AsyncOperationHandle<GameObject> downloadHandle = modelReference.LoadAssetAsync<GameObject>();
 		while (!downloadHandle.IsDone)
@@ -238,6 +250,15 @@ public class AddressableHandler : MonoBehaviour
             downloaded = 1;
             Debug.Log("Downloading completed");
             OnModelLoaded(downloadHandle, modelIndex);
+            if (modelIndex != 8)
+            {
+                int buttonIndex = modelIndex > 8 ? modelIndex - 1 : modelIndex;
+
+                if (forUpdate)
+                    upicturebutton[buttonIndex].onClick.Invoke();
+                else
+                    picturebutton[buttonIndex].onClick.Invoke();
+            }
          //   InstantiateModel(currentModels[modelIndex], modelIndex);
           //  progressText.text = "Download Complete!";
         }
