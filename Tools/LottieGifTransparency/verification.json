@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "format": "GIF",
+  "size": [
+    400,
+    400
+  ],
+  "source_frames": 121,
+  "expected_encoded_frames": 99,
+  "encoded_frames": 99,
+  "source_duration_ms": 4030,
+  "encoded_duration_ms": 4030,
+  "loop": 0,
+  "transparent_index": 255,
+  "all_frames_have_transparent_pixels": true,
+  "minimum_transparent_pixels_per_frame": 155268,
+  "all_frame_corners_transparent": false,
+  "all_frame_corners_match_source": true,
+  "mismatched_rgba_frames": 0,
+  "alpha_mask_mismatch_pixels": 0,
+  "frame_durations_match": true
+}
