@@ -13,6 +13,7 @@ public class GalleryThumbnailItem : MonoBehaviour, IPointerDownHandler,
     public Texture2D Texture { get; private set; }
     public string UploadedUrl { get; private set; }
     private Coroutine holdCoroutine;
+    private Coroutine hideCoroutine;
     private bool revealedByThisPress;
 
     public void Initialize(
@@ -48,7 +49,7 @@ public class GalleryThumbnailItem : MonoBehaviour, IPointerDownHandler,
     public void OnPointerClick(PointerEventData eventData)
     {
         if (!revealedByThisPress)
-            deleteButton.gameObject.SetActive(false);
+            HideDeleteButton();
     }
 
     public void OpenPreview()
@@ -71,6 +72,26 @@ public class GalleryThumbnailItem : MonoBehaviour, IPointerDownHandler,
         holdCoroutine = null;
         revealedByThisPress = true;
         deleteButton.gameObject.SetActive(true);
+        hideCoroutine = StartCoroutine(HideDeleteAfterDelay());
+    }
+
+    private IEnumerator HideDeleteAfterDelay()
+    {
+        yield return new WaitForSecondsRealtime(2f);
+        hideCoroutine = null;
+        HideDeleteButton();
+    }
+
+    private void HideDeleteButton()
+    {
+        if (hideCoroutine != null)
+        {
+            StopCoroutine(hideCoroutine);
+            hideCoroutine = null;
+        }
+
+        revealedByThisPress = false;
+        deleteButton.gameObject.SetActive(false);
     }
 
     private void CancelHold()
@@ -85,6 +106,12 @@ public class GalleryThumbnailItem : MonoBehaviour, IPointerDownHandler,
     private void OnDisable()
     {
         CancelHold();
+        if (hideCoroutine != null)
+        {
+            StopCoroutine(hideCoroutine);
+            hideCoroutine = null;
+        }
+        revealedByThisPress = false;
         if (deleteButton != null)
             deleteButton.gameObject.SetActive(false);
     }

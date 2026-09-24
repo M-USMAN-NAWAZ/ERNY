@@ -36,6 +36,7 @@ public class camerarotate : MonoBehaviour
     ARCameraManager m_CameraManager;
     private CameraFacingDirection selectedFacingDirection = CameraFacingDirection.World;
     private Coroutine enableFaceTrackingCoroutine;
+    private Coroutine enableWorldTrackingCoroutine;
 
     private void Start()
     {
@@ -52,6 +53,7 @@ public class camerarotate : MonoBehaviour
     private void OnDisable()
     {
         StopPendingFaceTrackingEnable();
+        StopPendingWorldTrackingEnable();
         ResolveArComponents();
         DestroyTrackedFaces();
         SetFaceTrackingEnabled(false);
@@ -64,6 +66,7 @@ public class camerarotate : MonoBehaviour
         }
 
         SetWorldTrackingManagersEnabled(true);
+        spawnMngr?.SetPlacementInputEnabled(true);
     }
 
     /// <summary>
@@ -145,6 +148,8 @@ public class camerarotate : MonoBehaviour
     private void ApplyCameraFacingDirection(CameraFacingDirection newFacingDirection)
     {
         ResolveArComponents();
+        StopPendingWorldTrackingEnable();
+        spawnMngr?.SetPlacementInputEnabled(false);
         selectedFacingDirection = newFacingDirection;
 
         bool sessionWasEnabled = arSession != null && arSession.enabled;
@@ -178,7 +183,7 @@ public class camerarotate : MonoBehaviour
                 arSession.requestedTrackingMode = TrackingMode.PositionAndRotation;
             }
 
-            SetWorldTrackingManagersEnabled(true);
+            SetWorldTrackingManagersEnabled(false);
         }
 
         if (m_CameraManager != null)
@@ -198,6 +203,11 @@ public class camerarotate : MonoBehaviour
         }
 
         StartCoroutine(ApplyCameraFacingDirectionAfterReset(newFacingDirection));
+
+        if (newFacingDirection == CameraFacingDirection.World)
+        {
+            enableWorldTrackingCoroutine = StartCoroutine(EnableWorldTrackingWhenBackCameraIsActive());
+        }
     }
 
     private IEnumerator EnableFaceTrackingWhenFrontCameraIsActive()
@@ -237,6 +247,48 @@ public class camerarotate : MonoBehaviour
 
         StopCoroutine(enableFaceTrackingCoroutine);
         enableFaceTrackingCoroutine = null;
+    }
+
+    private IEnumerator EnableWorldTrackingWhenBackCameraIsActive()
+    {
+        const int maxWaitFrames = 180;
+        yield return null;
+
+        for (int frame = 0; frame < maxWaitFrames; frame++)
+        {
+            if (selectedFacingDirection != CameraFacingDirection.World)
+            {
+                enableWorldTrackingCoroutine = null;
+                yield break;
+            }
+
+            if (m_CameraManager != null &&
+                m_CameraManager.currentFacingDirection == CameraFacingDirection.World)
+            {
+                SetWorldTrackingManagersEnabled(true);
+                spawnMngr?.SetPlacementInputEnabled(true);
+                enableWorldTrackingCoroutine = null;
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        Debug.LogWarning("Back camera did not become active before placement was restored.");
+        SetWorldTrackingManagersEnabled(true);
+        spawnMngr?.SetPlacementInputEnabled(true);
+        enableWorldTrackingCoroutine = null;
+    }
+
+    private void StopPendingWorldTrackingEnable()
+    {
+        if (enableWorldTrackingCoroutine == null)
+        {
+            return;
+        }
+
+        StopCoroutine(enableWorldTrackingCoroutine);
+        enableWorldTrackingCoroutine = null;
     }
 
     private IEnumerator ApplyCameraFacingDirectionAfterReset(CameraFacingDirection newFacingDirection)

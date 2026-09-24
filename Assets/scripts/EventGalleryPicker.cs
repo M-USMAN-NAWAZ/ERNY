@@ -211,6 +211,7 @@ public class EventGalleryPicker : MonoBehaviour
 
         thumbnails.Add(thumbnail);
         UpdateEmptyGalleryState();
+        ExpandOnClick.RefreshGalleryHeight(imageRow);
 
         addImageButton.interactable =
             thumbnails.Count < maximumImages;
@@ -228,6 +229,7 @@ public class EventGalleryPicker : MonoBehaviour
         Destroy(thumbnail.gameObject);
         KeepAddButtonAtTopLeft();
         UpdateEmptyGalleryState();
+        ExpandOnClick.RefreshGalleryHeight(imageRow);
 
         addImageButton.interactable =
             thumbnails.Count < maximumImages;
@@ -262,6 +264,7 @@ public class EventGalleryPicker : MonoBehaviour
 
         KeepAddButtonAtTopLeft();
         UpdateEmptyGalleryState();
+        ExpandOnClick.RefreshGalleryHeight(imageRow);
         addImageButton.interactable = thumbnails.Count < maximumImages;
 
         foreach (GalleryThumbnailItem thumbnail in thumbnails)
@@ -490,6 +493,7 @@ public class EventGalleryPicker : MonoBehaviour
         thumbnails.Clear();
         deletedUploadedUrls.Clear();
         UpdateEmptyGalleryState();
+        ExpandOnClick.RefreshGalleryHeight(imageRow);
         if (addImageButton != null)
             addImageButton.interactable = true;
     }

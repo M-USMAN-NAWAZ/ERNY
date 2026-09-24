@@ -87,6 +87,7 @@ public class EventGalleryViewer : MonoBehaviour
 
         if (imageCount == 0)
         {
+            ExpandOnClick.RefreshGalleryHeight(activeImageContent);
             Debug.LogWarning(
                 "This event does not contain any gallery image URLs.");
             return;
@@ -102,6 +103,8 @@ public class EventGalleryViewer : MonoBehaviour
             image.Initialize(null, url, DeleteImage);
             spawnedImages.Add(image);
         }
+
+        ExpandOnClick.RefreshGalleryHeight(activeImageContent);
 
         foreach (GalleryThumbnailItem image in spawnedImages)
             StartCoroutine(DownloadImage(image));
@@ -250,7 +253,9 @@ public class EventGalleryViewer : MonoBehaviour
         if (image.Texture != null)
             Destroy(image.Texture);
 
+        image.transform.SetParent(null, false);
         Destroy(image.gameObject);
+        ExpandOnClick.RefreshGalleryHeight(activeImageContent);
         onImagesChanged?.Invoke(new List<string>(currentUrls));
         Debug.Log("Deleted gallery image URL: " + image.UploadedUrl);
         deleteInProgress = false;

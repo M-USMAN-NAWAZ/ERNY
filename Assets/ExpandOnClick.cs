@@ -21,6 +21,9 @@ public class ExpandOnClick : MonoBehaviour
     public ScrollRect parentscroll;
     public GameObject[] collabbuttons;
     public int goalchec;
+    private float initialExpandedHeight;
+    private bool expandedSizeApplied;
+
     private void Start()
     {
         goalchec = 0;
@@ -29,6 +32,7 @@ public class ExpandOnClick : MonoBehaviour
         clicked = false;
 
         myexpandsize = ExpandedWindow.sizeDelta;
+        initialExpandedHeight = myexpandsize.y;
     }
 
     private void Update()
@@ -65,6 +69,7 @@ public class ExpandOnClick : MonoBehaviour
         if (button == null || !button.IsInteractable() ||
             button.transform == transform ||
             button.transform.IsChildOf(ExpandedWindow) ||
+            button.GetComponentInParent<GalleryPreviewPanel>() != null ||
             button.GetComponentInParent<ImageCropper>() != null)
             return;
 
@@ -257,6 +262,87 @@ public class ExpandOnClick : MonoBehaviour
 
 
 
+    public static void RefreshGalleryHeight(RectTransform gallery)
+    {
+        if (gallery == null)
+            return;
+
+        GridLayoutGroup grid = gallery.GetComponent<GridLayoutGroup>();
+        if (grid == null)
+            return;
+
+        int itemCount = 0;
+        foreach (Transform child in gallery)
+        {
+            LayoutElement childLayout = child.GetComponent<LayoutElement>();
+            if (child.gameObject.activeSelf &&
+                (childLayout == null || !childLayout.ignoreLayout))
+                itemCount++;
+        }
+
+        int columns = grid.constraint == GridLayoutGroup.Constraint.FixedColumnCount
+            ? Mathf.Max(1, grid.constraintCount)
+            : Mathf.Max(1, Mathf.FloorToInt(
+                (gallery.rect.width - grid.padding.horizontal + grid.spacing.x) /
+                (grid.cellSize.x + grid.spacing.x)));
+        int rows = itemCount == 0
+            ? 0
+            : Mathf.CeilToInt((float)itemCount / columns);
+        float contentHeight = grid.padding.vertical;
+
+        if (rows > 0)
+            contentHeight += rows * grid.cellSize.y +
+                (rows - 1) * grid.spacing.y;
+
+        ExpandOnClick[] expanders = FindObjectsByType<ExpandOnClick>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.None);
+
+        foreach (ExpandOnClick expander in expanders)
+        {
+            if (expander.ExpandedWindow == gallery)
+            {
+                expander.ApplyExpandedHeight(contentHeight);
+                return;
+            }
+        }
+    }
+
+    private void ApplyExpandedHeight(float contentHeight)
+    {
+        if (ExpandedWindow == null)
+            return;
+
+        if (initialExpandedHeight <= 0f)
+            initialExpandedHeight = Mathf.Max(
+                myexpandsize.y,
+                ExpandedWindow.rect.height);
+
+        float targetHeight = Mathf.Max(initialExpandedHeight, contentHeight);
+        float heightChange = targetHeight - myexpandsize.y;
+        myexpandsize.y = targetHeight;
+
+        LayoutElement layout = ExpandedWindow.GetComponent<LayoutElement>();
+        if (layout != null)
+            layout.preferredHeight = targetHeight;
+
+        ExpandedWindow.SetSizeWithCurrentAnchors(
+            RectTransform.Axis.Vertical,
+            targetHeight);
+
+        if (expandedSizeApplied && scrool != null && scrool.content != null &&
+            !Mathf.Approximately(heightChange, 0f))
+        {
+            scrool.content.sizeDelta = new Vector2(
+                scrool.content.sizeDelta.x,
+                scrool.content.sizeDelta.y + heightChange);
+        }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(ExpandedWindow);
+        if (scrool != null && scrool.content != null)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(scrool.content);
+    }
+
     public void Onclick() 
     {
         clicked = !clicked;
@@ -284,6 +370,7 @@ public class ExpandOnClick : MonoBehaviour
 
         scrool.content.GetComponent<VerticalLayoutGroup>().enabled = false;
         scrool.content.DOSizeDelta(new Vector2(scrool.content.sizeDelta.x, scrool.content.sizeDelta.y + myexpandsize.y), 0f, true);
+        expandedSizeApplied = true;
         //        scrool.content.sizeDelta = new Vector2(scrool.content.sizeDelta.x, scrool.content.sizeDelta.y+ myexpandsize.y);
         ExpandedWindow.gameObject.transform.DOScaleY(1, 0f);
         ExpandedWindow.gameObject.SetActive(true);
@@ -365,6 +452,7 @@ public class ExpandOnClick : MonoBehaviour
         Debug.Log("Shrink Me");
       //  ExpandedIndicator.sprite = shrunk;
        scrool.content.DOSizeDelta(new Vector2(scrool.content.sizeDelta.x, scrool.content.sizeDelta.y - myexpandsize.y), 0f, true);
+        expandedSizeApplied = false;
         //        scrool.content.sizeDelta = new Vector2(scrool.content.sizeDelta.x, scrool.content.sizeDelta.y - myexpandsize.y);
         ExpandedWindow.gameObject.transform.DOScaleY(0, 0);
         StartCoroutine(turnoffobjet(ExpandedWindow.gameObject));

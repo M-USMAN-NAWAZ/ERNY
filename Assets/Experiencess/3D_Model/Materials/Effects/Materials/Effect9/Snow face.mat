@@ -79,7 +79,7 @@ Material:
     - DstMode: 10
     - SrcMode: 5
     - _BlendMode: 1
-    - _Brightness: 2
+    - _Brightness: 3
     - _BumpScale: 1
     - _CullMode: 0
     - _Cutoff: 0.5
@@ -95,7 +95,7 @@ Material:
     - _FresnelFadeFactor: 3
     - _FresnelPow: 5
     - _FresnelR0: 0.04
-    - _Glossiness: 0.5
+    - _Glossiness: 0
     - _InvFade: 1
     - _MaskStrength: 1
     - _MaxDepth: 3
@@ -127,7 +127,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _CutoutColor: {r: 1, g: 1, b: 1, a: 1}
     - _DistortionSpeedScale: {r: 1, g: -1, b: 0.15, a: 0.15}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
     - _FogColorMultiplier: {r: 0, g: 0, b: 0, a: 0}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
     - _Tiling: {r: 800, g: 800, b: 8, a: 8}

@@ -19,7 +19,7 @@ public class spawnmangr : MonoBehaviour
     public XROrigin arOrigin;
     public ARSession arses;
     public GameObject panel,tutorial;
-    public GameObject shutterbutton, camRotateButton, poistionimage;
+    public GameObject shutterbutton, camRotateButton, camRotateButtonFirst, poistionimage;
     private Pose placementpose;
     public bool placementposeisvalid;
     [SerializeField]
@@ -44,6 +44,8 @@ public class spawnmangr : MonoBehaviour
 
     public bool objectSpawned = false;
     private bool waitingForFreshTouchRelease = true;
+    private bool placementInputEnabled = true;
+    private static readonly List<RaycastResult> s_UiRaycastResults = new List<RaycastResult>();
     // Start is called before the first frame update
     void Start()
     {
@@ -74,7 +76,7 @@ public class spawnmangr : MonoBehaviour
 
     bool TryGetTouchPosition(out Vector2 touchPosition)
     {
-        if (IsPrimaryTouchPressed())
+        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
         {
             touchPosition = Touchscreen.current.primaryTouch.position.ReadValue() ;
             return true;
@@ -84,24 +86,41 @@ public class spawnmangr : MonoBehaviour
         return false;
     }
 
-    private bool IsPointerOverUi()
+    private bool IsPointerOverUi(Vector2 pointerPosition)
     {
         if (EventSystem.current == null)
         {
             return false;
         }
 
-        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
+        PointerEventData pointerEventData = new PointerEventData(EventSystem.current)
         {
-            int touchId = Touchscreen.current.primaryTouch.touchId.ReadValue();
+            position = pointerPosition
+        };
 
-            if (EventSystem.current.IsPointerOverGameObject(touchId))
+        s_UiRaycastResults.Clear();
+        EventSystem.current.RaycastAll(pointerEventData, s_UiRaycastResults);
+
+        for (int i = 0; i < s_UiRaycastResults.Count; i++)
+        {
+            if (s_UiRaycastResults[i].gameObject.GetComponentInParent<Selectable>() != null)
             {
                 return true;
             }
         }
 
-        return EventSystem.current.IsPointerOverGameObject();
+        return false;
+    }
+
+    public void SetPlacementInputEnabled(bool enabled)
+    {
+        placementInputEnabled = enabled;
+        waitingForFreshTouchRelease = true;
+
+        if (!enabled && placementindicator != null)
+        {
+            placementindicator.SetActive(false);
+        }
     }
 
 
@@ -679,6 +698,11 @@ public class spawnmangr : MonoBehaviour
 
     private void Update()
     {
+        if (!placementInputEnabled)
+        {
+            return;
+        }
+
         if (bypassPlaneDetectionForSpawn)
         {
             placementindicator.SetActive(false);
@@ -699,7 +723,7 @@ public class spawnmangr : MonoBehaviour
                 return;
             }
 
-            if (IsPointerOverUi())
+            if (IsPointerOverUi(bypassTouchPosition))
             {
                 return;
             }
@@ -757,7 +781,7 @@ public class spawnmangr : MonoBehaviour
         if (!TryGetTouchPosition(out Vector2 touchPosition))
             return;
 
-        if (IsPointerOverUi())
+        if (IsPointerOverUi(touchPosition))
         {
             return;
         }
@@ -1142,6 +1166,7 @@ public class spawnmangr : MonoBehaviour
         yield return new WaitForSeconds(1);
         
         poistionimage.SetActive(false);
+        camRotateButtonFirst.SetActive(false);
         shutterbutton.SetActive(true);
         camRotateButton.SetActive(true);
         facetoggle.SetActive(true);
