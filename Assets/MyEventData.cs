@@ -128,19 +128,28 @@ public HorizontalLayoutGroup layoutGroup;
     public void deletethis()
     {
 
-        if (ss.content.transform.position.x > 100|| ss.content.transform.position.x < -50)
+        // if (ss.content.transform.position.x > 100|| ss.content.transform.position.x < -50)
+        // {
+        //     checkdel = !checkdel;
+        //     if (checkdel)
+        //     {
+        //         delete.SetActive(true);
+        //     }
+        //     else
+        //     {
+        //         delete.SetActive(false);
+        //     }
+        // }
+
+        if (ss.content.transform.position.x > 100 ||
+            ss.content.transform.position.x < -50)
         {
             checkdel = !checkdel;
-            if (checkdel)
-            {
-                delete.SetActive(true);
-            }
-            else
-            {
-                delete.SetActive(false);
-            }
-        }
+            delete.SetActive(checkdel);
 
+            GetComponent<FutureEventCountdown>()
+                ?.SetDeleteVisible(checkdel);
+        }
 
     }
     

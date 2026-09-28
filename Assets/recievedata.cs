@@ -387,6 +387,10 @@ string[] textSplit ;
 
         update.totalpeople.text = myreceivedata.totalpeople;
         update.position.text = myreceivedata.position;
+
+        EventGalleryPicker.Instance?.PrepareForUpdate(
+        myreceivedata.galleryImages);
+
         update.eventImage = myreceivedata.image;
         update.Eventname.text = myreceivedata.eventName;
         update.date.text = eventdatetoshow;//myreceivedata.eventDate;

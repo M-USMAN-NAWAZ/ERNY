@@ -11,6 +11,10 @@ using TMPro;
 //using AdvancedInputFieldPlugin;
 public class updataeven : MonoBehaviour
 {
+    [Header("Update Gallery")]
+    public RectTransform galleryOpenRow;
+
+
     public string[] eventnamechecker;
     public InputField distancecomplete, timecomplete;
     public Sprite defaultpic;

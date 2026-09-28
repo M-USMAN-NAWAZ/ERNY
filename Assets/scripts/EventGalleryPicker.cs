@@ -59,11 +59,14 @@ public class EventGalleryPicker : MonoBehaviour
         }
     }
 
-    // Previously uploaded images that the user kept.
     public List<string> ExistingUploadedUrls
     {
         get
         {
+            // Gallery was not opened, so return the saved event URLs.
+            if (loadPreparedImages && preparedUploadedUrls != null)
+                return new List<string>(preparedUploadedUrls);
+
             List<string> urls = new List<string>();
 
             foreach (GalleryThumbnailItem thumbnail in thumbnails)

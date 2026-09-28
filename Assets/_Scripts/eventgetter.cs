@@ -3991,7 +3991,8 @@ public static int checkappopened;
 
             string disableId = PlayerPrefs.GetString("DisableEventButtonId", "");
             bool disableSavedEvent = myDeserializedClass.response[i]._id == disableId;
-            bool disableFutureEvent = IsFutureYearEvent(myDeserializedClass.response[i].eventDate);
+            //bool disableFutureEvent = IsFutureYearEvent(myDeserializedClass.response[i].eventDate);
+            bool disableFutureEvent = FutureEventCountdown.IsFutureEvent(myDeserializedClass.response[i].eventDate);
 
             if (disableSavedEvent || disableFutureEvent)
             {
@@ -4139,7 +4140,15 @@ public static int checkappopened;
             obj.GetComponent<MyEventData>().myeventclass.updatedAt = myDeserializedClass.response[i].updatedAt;
             obj.GetComponent<MyEventData>().myeventclass.__v = myDeserializedClass.response[i].__v;
 
+            FutureEventCountdown countdown =
+                obj.GetComponent<FutureEventCountdown>();
 
+            if (countdown != null)
+            {
+                countdown.Initialize(
+                    myDeserializedClass.response[i].eventDate,
+                    !disableSavedEvent);
+            }
 
 
 
@@ -4169,31 +4178,31 @@ public static int checkappopened;
 
 
 
-    private bool IsFutureYearEvent(string eventDate)
-    {
-        if (string.IsNullOrEmpty(eventDate))
-        {
-            return false;
-        }
+    // private bool IsFutureYearEvent(string eventDate)
+    // {
+    //     if (string.IsNullOrEmpty(eventDate))
+    //     {
+    //         return false;
+    //     }
 
-        DateTime parsedDate;
-        if (DateTime.TryParse(eventDate, out parsedDate))
-        {
-            return parsedDate.Year > 2026;
-        }
+    //     DateTime parsedDate;
+    //     if (DateTime.TryParse(eventDate, out parsedDate))
+    //     {
+    //         return parsedDate.Year > 2026;
+    //     }
 
-        string[] dateParts = eventDate.Split(new[] { '/', '-', '.', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-        for (int i = dateParts.Length - 1; i >= 0; i--)
-        {
-            int year;
-            if (dateParts[i].Length == 4 && int.TryParse(dateParts[i], out year))
-            {
-                return year > 2026;
-            }
-        }
+    //     string[] dateParts = eventDate.Split(new[] { '/', '-', '.', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+    //     for (int i = dateParts.Length - 1; i >= 0; i--)
+    //     {
+    //         int year;
+    //         if (dateParts[i].Length == 4 && int.TryParse(dateParts[i], out year))
+    //         {
+    //             return year > 2026;
+    //         }
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
     private void SetEventCardButtonsInteractable(GameObject eventCard, bool interactable)
     {
