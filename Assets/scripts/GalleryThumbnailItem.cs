@@ -4,14 +4,23 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class GalleryThumbnailItem : MonoBehaviour, IPointerDownHandler,
-    IPointerUpHandler, IPointerClickHandler, IPointerExitHandler
+public class GalleryThumbnailItem : MonoBehaviour,
+    IPointerDownHandler,
+    IPointerUpHandler,
+    IPointerClickHandler,
+    IPointerExitHandler
 {
-    [SerializeField] private RawImage preview;
+    [Header("Thumbnail")]
+    [SerializeField] private Image preview;
+    //[SerializeField] private AspectRatioFitter previewAspect;
+
+    [Header("Delete")]
     [SerializeField] private Button deleteButton;
 
     public Texture2D Texture { get; private set; }
     public string UploadedUrl { get; private set; }
+
+    private Sprite runtimeSprite;
     private Coroutine holdCoroutine;
     private Coroutine hideCoroutine;
     private bool revealedByThisPress;
@@ -22,8 +31,53 @@ public class GalleryThumbnailItem : MonoBehaviour, IPointerDownHandler,
         Action<GalleryThumbnailItem> onDelete)
     {
         SetImage(texture, uploadedUrl);
+
         deleteButton.gameObject.SetActive(false);
         deleteButton.onClick.AddListener(() => onDelete(this));
+    }
+
+    public void SetImage(Texture2D texture, string uploadedUrl)
+    {
+        Texture = texture;
+        UploadedUrl = uploadedUrl;
+
+        if (runtimeSprite != null)
+        {
+            Destroy(runtimeSprite);
+            runtimeSprite = null;
+        }
+
+        // Keep the prefab placeholder while an uploaded image downloads.
+        if (texture == null)
+            return;
+
+        runtimeSprite = Sprite.Create(
+            texture,
+            new Rect(0f, 0f, texture.width, texture.height),
+            new Vector2(0.5f, 0.5f),
+            100f);
+
+        preview.sprite = runtimeSprite;
+        preview.preserveAspect = true;
+    }
+    public void OpenPreview()
+    {
+        if (revealedByThisPress || Texture == null)
+            return;
+
+        GalleryPreviewPanel panel =
+            FindFirstObjectByType<GalleryPreviewPanel>(
+                FindObjectsInactive.Include);
+
+        if (panel != null)
+        {
+            panel.Show(Texture);
+        }
+        else
+        {
+            Debug.LogError(
+                "No GalleryPreviewPanel was found in the scene.");
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -32,8 +86,12 @@ public class GalleryThumbnailItem : MonoBehaviour, IPointerDownHandler,
             return;
 
         revealedByThisPress = false;
+
         if (!deleteButton.gameObject.activeSelf)
-            holdCoroutine = StartCoroutine(RevealDeleteAfterHold());
+        {
+            holdCoroutine =
+                StartCoroutine(RevealDeleteAfterHold());
+        }
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -52,32 +110,22 @@ public class GalleryThumbnailItem : MonoBehaviour, IPointerDownHandler,
             HideDeleteButton();
     }
 
-    public void OpenPreview()
-    {
-        if (revealedByThisPress || preview.texture == null)
-            return;
-
-        GalleryPreviewPanel panel = FindFirstObjectByType<GalleryPreviewPanel>(
-            FindObjectsInactive.Include);
-
-        if (panel != null)
-            panel.Show(preview.texture);
-        else
-            Debug.LogError("No GalleryPreviewPanel was found in the scene.");
-    }
-
     private IEnumerator RevealDeleteAfterHold()
     {
         yield return new WaitForSecondsRealtime(0.5f);
+
         holdCoroutine = null;
         revealedByThisPress = true;
         deleteButton.gameObject.SetActive(true);
-        hideCoroutine = StartCoroutine(HideDeleteAfterDelay());
+
+        hideCoroutine =
+            StartCoroutine(HideDeleteAfterDelay());
     }
 
     private IEnumerator HideDeleteAfterDelay()
     {
         yield return new WaitForSecondsRealtime(2f);
+
         hideCoroutine = null;
         HideDeleteButton();
     }
@@ -106,21 +154,22 @@ public class GalleryThumbnailItem : MonoBehaviour, IPointerDownHandler,
     private void OnDisable()
     {
         CancelHold();
+
         if (hideCoroutine != null)
         {
             StopCoroutine(hideCoroutine);
             hideCoroutine = null;
         }
+
         revealedByThisPress = false;
+
         if (deleteButton != null)
             deleteButton.gameObject.SetActive(false);
     }
 
-    public void SetImage(Texture2D texture, string uploadedUrl)
+    private void OnDestroy()
     {
-        Texture = texture;
-        UploadedUrl = uploadedUrl;
-        if (texture != null)
-            preview.texture = texture;
+        if (runtimeSprite != null)
+            Destroy(runtimeSprite);
     }
 }

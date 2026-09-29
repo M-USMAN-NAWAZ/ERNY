@@ -87,8 +87,32 @@ public class EventGalleryPicker : MonoBehaviour
     {
         BindImageRow(ExpandOnClick.LastExpandedWindow);
 
-        if (thumbnails.Count < maximumImages)
-            sourcePopup.SetActive(true);
+        if (thumbnails.Count >= maximumImages)
+        {
+            ShowImageLimitPopup();
+            return;
+        }
+
+        sourcePopup.SetActive(true);
+    }
+
+    private void ShowImageLimitPopup()
+    {
+        if (pops.instance == null)
+        {
+            Debug.LogWarning("Gallery image limit reached, but the Pops component is unavailable.");
+            return;
+        }
+
+        pops.instance.popbox.SetActive(true);
+        pops.instance.header.text = "Uh oh!";
+        pops.instance.description.text =
+            $"You have exceeded the {maximumImages} photo limit. Kindly remove some photo selections.";
+
+        if (eventgetter.instance != null && eventgetter.instance.UpgradeBtn != null)
+            eventgetter.instance.UpgradeBtn.SetActive(false);
+
+        pops.instance.pp.Play("popp");
     }
 
     public void ClosePopup()
@@ -96,6 +120,36 @@ public class EventGalleryPicker : MonoBehaviour
         //imageBeingUpdated = null;
         sourcePopup.SetActive(false);
     }
+
+    // public void PickFromGallery()
+    // {
+    //     BindImageRow(ExpandOnClick.LastExpandedWindow);
+    //     sourcePopup.SetActive(false);
+
+    //     if (NativeGallery.IsMediaPickerBusy())
+    //         return;
+
+    //     NativeGallery.GetImageFromGallery(path =>
+    //     {
+    //         if (string.IsNullOrEmpty(path))
+    //             return;
+
+    //         Texture2D image = NativeGallery.LoadImageAtPath(
+    //             path,
+    //             maximumImageSize,
+    //             false);
+
+    //         if (image == null)
+    //         {
+    //             Debug.LogError("Could not load gallery image: " + path);
+    //             return;
+    //         }
+
+    //         OpenCropper(image);
+
+    //     }, "Select an image", "image/*");
+    // }
+
 
     public void PickFromGallery()
     {
@@ -105,31 +159,69 @@ public class EventGalleryPicker : MonoBehaviour
         if (NativeGallery.IsMediaPickerBusy())
             return;
 
-        NativeGallery.GetImageFromGallery(path =>
+        if (thumbnails.Count >= maximumImages)
         {
+            ShowImageLimitPopup();
+            return;
+        }
+
+        if (NativeGallery.CanSelectMultipleFilesFromGallery())
+        {
+            NativeGallery.GetImagesFromGallery(
+                AddSelectedImages,
+                "Select images",
+                "image/*");
+        }
+        else
+        {
+            // Unity Editor and devices without multi-select support.
+            NativeGallery.GetImageFromGallery(path =>
+            {
+                if (!string.IsNullOrEmpty(path))
+                    AddSelectedImages(new[] { path });
+            }, "Select an image", "image/*");
+        }
+    }
+
+    private void AddSelectedImages(string[] paths)
+    {
+        if (paths == null)
+            return;
+
+        foreach (string path in paths)
+        {
+            if (thumbnails.Count >= maximumImages)
+                break;
+
             if (string.IsNullOrEmpty(path))
-                return;
+                continue;
 
             Texture2D image = NativeGallery.LoadImageAtPath(
                 path,
                 maximumImageSize,
                 false);
 
-            if (image == null)
+            if (image != null)
+            {
+                AddImage(image);
+            }
+            else
             {
                 Debug.LogError("Could not load gallery image: " + path);
-                return;
             }
-
-            OpenCropper(image);
-
-        }, "Select an image", "image/*");
+        }
     }
 
     public void CaptureFromCamera()
     {
         BindImageRow(ExpandOnClick.LastExpandedWindow);
         sourcePopup.SetActive(false);
+
+        if (thumbnails.Count >= maximumImages)
+        {
+            ShowImageLimitPopup();
+            return;
+        }
 
         if (NativeCamera.IsCameraBusy())
             return;
@@ -150,7 +242,8 @@ public class EventGalleryPicker : MonoBehaviour
                 return;
             }
 
-            OpenCropper(image);
+            //OpenCropper(image);
+            AddImage(image);
 
         }, maximumImageSize, true, NativeCamera.PreferredCamera.Default);
     }
@@ -195,6 +288,13 @@ public class EventGalleryPicker : MonoBehaviour
     {
         BindImageRow(ExpandOnClick.LastExpandedWindow);
 
+        if (thumbnails.Count >= maximumImages)
+        {
+            Destroy(image);
+            ShowImageLimitPopup();
+            return;
+        }
+
         if (imageRow == null || addImageButton == null)
         {
             Debug.LogError("No editable GalleryOpen image row is active.");
@@ -216,8 +316,7 @@ public class EventGalleryPicker : MonoBehaviour
         UpdateEmptyGalleryState();
         ExpandOnClick.RefreshGalleryHeight(imageRow);
 
-        addImageButton.interactable =
-            thumbnails.Count < maximumImages;
+        addImageButton.interactable = true;
     }
 
     private void DeleteImage(GalleryThumbnailItem thumbnail)
@@ -234,8 +333,7 @@ public class EventGalleryPicker : MonoBehaviour
         UpdateEmptyGalleryState();
         ExpandOnClick.RefreshGalleryHeight(imageRow);
 
-        addImageButton.interactable =
-            thumbnails.Count < maximumImages;
+        addImageButton.interactable = true;
     }
 
     private void RememberDeletedUrl(string url)
@@ -268,7 +366,7 @@ public class EventGalleryPicker : MonoBehaviour
         KeepAddButtonAtTopLeft();
         UpdateEmptyGalleryState();
         ExpandOnClick.RefreshGalleryHeight(imageRow);
-        addImageButton.interactable = thumbnails.Count < maximumImages;
+        addImageButton.interactable = true;
 
         foreach (GalleryThumbnailItem thumbnail in thumbnails)
             StartCoroutine(DownloadUploadedImage(thumbnail));
