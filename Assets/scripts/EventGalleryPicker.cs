@@ -27,7 +27,7 @@ public class EventGalleryPicker : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private int maximumImages = 20;
-    [SerializeField] private int maximumImageSize = 4096;
+    [SerializeField] private int maximumImageSize = 2048;
     [SerializeField] private bool ovalCrop;
 
     private readonly List<GalleryThumbnailItem> thumbnails =
@@ -38,6 +38,7 @@ public class EventGalleryPicker : MonoBehaviour
 
     private List<string> preparedUploadedUrls;
     private bool loadPreparedImages;
+    private bool isImportingImages;
     private Text emptyGalleryMessage;
     private const int NormalTopPadding = 20;
     private const int EmptyTopPadding = 200;
@@ -85,6 +86,9 @@ public class EventGalleryPicker : MonoBehaviour
 
     public void OpenPopup()
     {
+        if (isImportingImages)
+            return;
+
         BindImageRow(ExpandOnClick.LastExpandedWindow);
 
         if (thumbnails.Count >= maximumImages)
@@ -167,8 +171,11 @@ public class EventGalleryPicker : MonoBehaviour
 
         if (NativeGallery.CanSelectMultipleFilesFromGallery())
         {
+            int remainingSlots = maximumImages - thumbnails.Count;
+
             NativeGallery.GetImagesFromGallery(
                 AddSelectedImages,
+                remainingSlots,
                 "Select images",
                 "image/*");
         }
@@ -185,8 +192,18 @@ public class EventGalleryPicker : MonoBehaviour
 
     private void AddSelectedImages(string[] paths)
     {
-        if (paths == null)
+        if (paths == null || isImportingImages)
             return;
+
+        StartCoroutine(AddSelectedImagesSequentially(paths));
+    }
+
+    private IEnumerator AddSelectedImagesSequentially(string[] paths)
+    {
+        isImportingImages = true;
+
+        bool exceededLimit =
+            paths.Length > maximumImages - thumbnails.Count;
 
         foreach (string path in paths)
         {
@@ -209,7 +226,14 @@ public class EventGalleryPicker : MonoBehaviour
             {
                 Debug.LogError("Could not load gallery image: " + path);
             }
+
+            yield return null;
         }
+
+        if (exceededLimit)
+            ShowImageLimitPopup();
+
+        isImportingImages = false;
     }
 
     public void CaptureFromCamera()
@@ -580,6 +604,7 @@ public class EventGalleryPicker : MonoBehaviour
     public void ResetImages()
     {
         StopAllCoroutines();
+        isImportingImages = false;
         sourcePopup.SetActive(false);
 
         foreach (GalleryThumbnailItem thumbnail in thumbnails)

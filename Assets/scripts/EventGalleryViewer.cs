@@ -106,8 +106,19 @@ public class EventGalleryViewer : MonoBehaviour
 
         ExpandOnClick.RefreshGalleryHeight(activeImageContent);
 
-        foreach (GalleryThumbnailItem image in spawnedImages)
-            StartCoroutine(DownloadImage(image));
+        StartCoroutine(DownloadImagesSequentially());
+    }
+
+    private IEnumerator DownloadImagesSequentially()
+    {
+        List<GalleryThumbnailItem> downloadQueue =
+            new List<GalleryThumbnailItem>(spawnedImages);
+
+        foreach (GalleryThumbnailItem image in downloadQueue)
+        {
+            if (image != null)
+                yield return DownloadImage(image);
+        }
     }
 
     private RectTransform FindActiveGalleryContent()

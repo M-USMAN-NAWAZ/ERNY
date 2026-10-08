@@ -378,6 +378,11 @@ public static class NativeGallery
 		return GetMultipleMediaFromGallery( callback, MediaType.Image, mime, title );
 	}
 
+	public static Permission GetImagesFromGallery( MediaPickMultipleCallback callback, int selectionLimit, string title = "", string mime = "image/*" )
+	{
+		return GetMultipleMediaFromGallery( callback, MediaType.Image, mime, title, selectionLimit );
+	}
+
 	public static Permission GetVideosFromGallery( MediaPickMultipleCallback callback, string title = "", string mime = "video/*" )
 	{
 		return GetMultipleMediaFromGallery( callback, MediaType.Video, mime, title );
@@ -636,7 +641,7 @@ public static class NativeGallery
 		return result;
 	}
 
-	private static Permission GetMultipleMediaFromGallery( MediaPickMultipleCallback callback, MediaType mediaType, string mime, string title )
+	private static Permission GetMultipleMediaFromGallery( MediaPickMultipleCallback callback, MediaType mediaType, string mime, string title, int selectionLimit = 0 )
 	{
 		Permission result = RequestPermission( PermissionType.Read, mediaType );
 		if( result == Permission.Granted && !IsMediaPickerBusy() )
@@ -656,7 +661,7 @@ public static class NativeGallery
 				else
 				{
 					NGMediaReceiveCallbackiOS.Initialize( null, callback );
-					_NativeGallery_PickMedia( SelectedMediaPath, (int) ( mediaType & ~MediaType.Audio ), PermissionFreeMode ? 1 : 0, 0 );
+					_NativeGallery_PickMedia( SelectedMediaPath, (int) ( mediaType & ~MediaType.Audio ), PermissionFreeMode ? 1 : 0, selectionLimit > 0 ? selectionLimit : 0 );
 				}
 #else
 				if( callback != null )

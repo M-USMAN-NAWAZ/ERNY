@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -1868,6 +1869,21 @@ public static int checkappopened;
         Debug.Log("entered screencurenter");
         currentscreen = screen;
 
+        CalendarScreenController.EnsureCreated(this);
+        if (screen == CalendarScreenController.ScreenIndex)
+        {
+            for (int i = 0; i < panels.Length; i++)
+            {
+                panels[i].SetActive(false);
+                icons[i].SetActive(false);
+            }
+
+            CalendarScreenController.Instance.Show();
+            return;
+        }
+
+        CalendarScreenController.Instance.Hide();
+
         if (freetrial == 1 && signuppaid == 0)
         {
           
@@ -1899,6 +1915,11 @@ public static int checkappopened;
 
     public void closeevent ()
     {
+
+        if (eventhandler == 1)
+        {
+            CalendarScreenController.CancelPendingCreation();
+        }
 
         if (freetrial == 1 && signuppaid == 0)
         {
@@ -2068,6 +2089,47 @@ public static int checkappopened;
         eventhandler = 1;
     }
 
+    public void OpenCalendarEventCreate(DateTime selectedDate)
+    {
+        Eventname.text = string.Empty;
+        cityname.text = string.Empty;
+        typegetter = "Other";
+
+        SetCalendarDropdownValue(
+            monthh,
+            selectedDate.Month.ToString(CultureInfo.InvariantCulture),
+            selectedDate.ToString("MMMM", CultureInfo.InvariantCulture),
+            selectedDate.ToString("MMM", CultureInfo.InvariantCulture));
+        SetCalendarDropdownValue(
+            year,
+            selectedDate.Year.ToString(CultureInfo.InvariantCulture));
+        SetCalendarDropdownValue(
+            date,
+            selectedDate.Day.ToString(CultureInfo.InvariantCulture),
+            selectedDate.Day.ToString("00", CultureInfo.InvariantCulture));
+
+        eventon();
+        openevent();
+    }
+
+    private static void SetCalendarDropdownValue(Dropdown dropdown, params string[] candidates)
+    {
+        int index = dropdown.options.FindIndex(option =>
+            candidates.Any(candidate => string.Equals(
+                option.text.Trim(),
+                candidate,
+                StringComparison.OrdinalIgnoreCase)));
+
+        if (index < 0)
+        {
+            dropdown.options.Add(new Dropdown.OptionData(candidates[0]));
+            index = dropdown.options.Count - 1;
+        }
+
+        dropdown.value = index;
+        dropdown.RefreshShownValue();
+    }
+
     public void updateon()
     {
         eventhandler = 3;
@@ -2141,6 +2203,7 @@ public static int checkappopened;
     {
         
         //Debug.Log("I am able to go inside the eventgertter start");
+        CalendarScreenController.EnsureCreated(this);
         Invoke("DeActiveAr", 5f);
 
         index = PlayerPrefs.GetInt("EventCount", 0);
@@ -2669,6 +2732,11 @@ public static int checkappopened;
 
     public void evententrycondiiton()
     {
+        if (CalendarScreenController.TrySubmitPendingManualEvent(this))
+        {
+            return;
+        }
+
         if (monthh.value != 0 && year.value != 0 && date.value != 0 && cityname.text != "" )
         {
             
@@ -3094,7 +3162,7 @@ public static int checkappopened;
 
        //link
         List<Link> linkgoals = new List<Link>();
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 20; i++)
         {
             
             if (links[i].isOn==true|| linksprites[i].activeSelf)
@@ -3104,8 +3172,6 @@ public static int checkappopened;
 
                 if (linksurl[i].text != "")
                 {
-
-
 
 
 

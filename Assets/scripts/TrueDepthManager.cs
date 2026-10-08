@@ -119,6 +119,8 @@ public class TrueDepthManager : MonoBehaviour
 
     private bool maskReadyLogged = false;
 
+    private bool trueDepthActive = false;
+
 
     private Material maskFilterMaterial;
 
@@ -333,6 +335,82 @@ public class TrueDepthManager : MonoBehaviour
             cameraManager.frameReceived -=
                 OnCameraFrameReceived;
         }
+
+
+        DisableDepthOutput();
+    }
+
+
+    private bool IsFrontCameraActive()
+    {
+        return
+            cameraManager != null &&
+            cameraManager.currentFacingDirection ==
+                CameraFacingDirection.User;
+    }
+
+
+    private void DisableDepthOutput()
+    {
+        trueDepthActive = false;
+        sessionConnected = false;
+        displayMatrixReceived = false;
+        maskReadyLogged = false;
+
+
+        Shader.SetGlobalMatrix(
+            "_TrueDepthDisplayMatrix",
+            Matrix4x4.identity
+        );
+
+
+        Shader.SetGlobalFloat(
+            "_TrueDepthReady",
+            0f
+        );
+
+
+        Shader.SetGlobalFloat(
+            "_TrueDepthMaskReady",
+            0f
+        );
+
+
+        Shader.SetGlobalFloat(
+            "_TrueDepthMatrixReady",
+            0f
+        );
+
+
+        Shader.SetGlobalTexture(
+            "_TrueDepthMaskTexture",
+            Texture2D.blackTexture
+        );
+
+
+#if UNITY_IOS && !UNITY_EDITOR
+
+        TrueDepth_SetSession(
+            IntPtr.Zero
+        );
+
+
+        if (maskHistory != null)
+        {
+            ClearRenderTexture(
+                maskHistory
+            );
+        }
+
+
+        if (maskOutput != null)
+        {
+            ClearRenderTexture(
+                maskOutput
+            );
+        }
+
+#endif
     }
 
 
@@ -353,6 +431,25 @@ public class TrueDepthManager : MonoBehaviour
             "_TrueDepthEdgeFade",
             edgeFade
         );
+
+
+        if (!IsFrontCameraActive())
+        {
+            if (trueDepthActive)
+            {
+                DisableDepthOutput();
+            }
+
+
+            return;
+        }
+
+
+        if (!trueDepthActive)
+        {
+            trueDepthActive = true;
+            sessionConnected = false;
+        }
 
 
 #if UNITY_IOS && !UNITY_EDITOR
@@ -379,6 +476,12 @@ public class TrueDepthManager : MonoBehaviour
         ARCameraFrameEventArgs args
     )
     {
+        if (!IsFrontCameraActive())
+        {
+            return;
+        }
+
+
         if (!args.displayMatrix.HasValue)
         {
             return;

@@ -40,7 +40,7 @@ public class recievedata : MonoBehaviour
     public Text type, theme;
     public int goalgetter;
     public Texture dd;
-    public string pot, garmin, strava, reddit, youtube, instagram, tiktok, facebook, athlinks, custom1, custom2, custom3;
+    public string PoT, Garmin, Strava, Social, Youtube, Instagram, Flight, Facebook, Athlinks, Custom1, Custom2, Custom3, CarRental, Lodging, Playlist, EventGuide, Shoping, Metrics, LiveTracking, Photos;
     // public Text vr, pr;
 
     //goals sent data
@@ -825,87 +825,182 @@ string[] textSplit ;
                 /// GameObject linkobj = Instantiate(linkspawn, linkscroll.content);
 
                 ///  linkscroll.content.GetChild(i).GetChild(0).GetComponent<Text>().text = myreceivedata.links[i].title + "    " + myreceivedata.links[i].url;
-
-                if (myreceivedata.links[i].title == "proofoftime")
+                Debug.Log("index is: "+ i);
+                Debug.Log("myreceivedata.links[ "+ i + "].title is: " + myreceivedata.links[i].title);
+                
+                if (myreceivedata.links[i].title == "PoT")
                 {
 
-                   update.linksprites[0].SetActive(true);
-                   update.linksurl[0].text = myreceivedata.links[i].url;
+                    links[0].interactable = true;
+                    PoT = myreceivedata.links[i].url;
+                    links[0].interactable = true;
+                    update.linksurl[0].text = Flight;
                 }
-                if (myreceivedata.links[i].title == "garmin")
+                if (myreceivedata.links[i].title == "Garmin")
                 {
 
-                    update.linksprites[1].SetActive(true);
-                    update.linksurl[1].text = myreceivedata.links[i].url;
+                    links[1].interactable = true;
+                    Garmin = myreceivedata.links[i].url;
+                    links[1].interactable = true;
+                    update.linksurl[1].text = Flight;
                 }
-                if (myreceivedata.links[i].title == "starva")
+                if (myreceivedata.links[i].title == "Starva")
                 {
 
-                    update.linksprites[2].SetActive(true);
-                    update.linksurl[2].text = myreceivedata.links[i].url;
+                    links[2].interactable = true;
+                    Strava = myreceivedata.links[i].url;
+                    links[2].interactable = true;
+                    update.linksurl[2].text = Flight;
                 }
-                if (myreceivedata.links[i].title == "reddit")
+                if (myreceivedata.links[i].title == "Athlinks")
                 {
 
-                    update.linksprites[3].SetActive(true);
-                    update.linksurl[3].text = myreceivedata.links[i].url;
-
+                    links[3].interactable = true;
+                    Athlinks = myreceivedata.links[i].url;
+                    links[3].interactable = true;
+                    update.linksurl[3].text = Flight;
                 }
-                if (myreceivedata.links[i].title == "youtube")
+                if (myreceivedata.links[i].title == "You Tube")
                 {
 
-                    update.linksprites[4].SetActive(true);
-                    update.linksurl[4].text = myreceivedata.links[i].url;
-
-                }
-                if (myreceivedata.links[i].title == "instagram")
-                {
-
-                    update.linksprites[5].SetActive(true);
-                    update.linksurl[5].text = myreceivedata.links[i].url;
-
-                }
-                if (myreceivedata.links[i].title == "tiktok")
-                {
-
-                    update.linksprites[6].SetActive(true);
-                    update.linksurl[6].text = myreceivedata.links[i].url;
+                    links[4].interactable = true;
+                    Youtube = myreceivedata.links[i].url;
+                    links[4].interactable = true;
+                    update.linksurl[4].text = Flight;
 
                 }
-                if (myreceivedata.links[i].title == "facebook")
+                if (myreceivedata.links[i].title == "Instagram")
                 {
-                    //Debug.LogError("facebook");
 
-                    update.linksprites[7].SetActive(true);
-                    update.linksurl[7].text = myreceivedata.links[i].url;
+                    links[5].interactable = true;
+                    Instagram = myreceivedata.links[i].url;
+                    links[5].interactable = true;
+                    update.linksurl[5].text = Flight;
 
                 }
-                if (myreceivedata.links[i].title == "athlinks")
+                
+                if (myreceivedata.links[i].title == "Facebook")
                 {
 
-                    update.linksprites[8].SetActive(true);
-                    update.linksurl[8].text = myreceivedata.links[i].url;
+                    links[6].interactable = true;
+                    Facebook = myreceivedata.links[i].url;
+                    links[6].interactable = true;
+                    update.linksurl[6].text = Flight;
 
                 }
-                if (myreceivedata.links[i].title == "custom1")
+                if (myreceivedata.links[i].title == "Social")
                 {
 
-                    update.linksprites[9].SetActive(true);
-                    update.linksurl[9].text = myreceivedata.links[i].url;
+                    links[7].interactable = true;
+                    Social = myreceivedata.links[i].url;
+                    links[7].interactable = true;
+                    update.linksurl[7].text = Flight;
 
                 }
-                if (myreceivedata.links[i].title == "custom2")
+                if (myreceivedata.links[i].title == "Flight")
                 {
-
-                    update.linksprites[10].SetActive(true);
-                    update.linksurl[10].text = myreceivedata.links[i].url;
+                    update.links[8].isOn = true;
+                    links[8].interactable = true;
+                    Flight = myreceivedata.links[i].url;
+                    update.linksurl[8].text = Flight;
+                }
+                
+                if (myreceivedata.links[i].title == "Car Rental")
+                {
+                    update.links[9].isOn = true;
+                    links[9].interactable = true;
+                    CarRental = myreceivedata.links[i].url;
+                    update.linksurl[9].text = CarRental;
 
                 }
-                if (myreceivedata.links[i].title == "custom3")
+                if (myreceivedata.links[i].title == "Lodging")
                 {
 
-                    update.linksprites[11].SetActive(true);
-                    update.linksurl[11].text = myreceivedata.links[i].url;
+                    links[10].interactable = true;
+                    Lodging = myreceivedata.links[i].url;
+                    update.linksurl[10].text = Lodging;
+                    update.linksurl[10].text = Flight;
+
+                }
+                if (myreceivedata.links[i].title == "Playlist")
+                {
+
+                    links[11].interactable = true;
+                    Playlist = myreceivedata.links[i].url;
+                    links[11].interactable = true;
+                    update.linksurl[11].text = Flight;
+
+                }
+                if (myreceivedata.links[i].title == "Event Guide")
+                {
+
+                    links[12].interactable = true;
+                    EventGuide = myreceivedata.links[i].url;
+                    links[12].interactable = true;
+                    update.linksurl[12].text = Flight;
+
+                }
+                if (myreceivedata.links[i].title == "Shoping")
+                {
+
+                    links[13].interactable = true;
+                    Shoping = myreceivedata.links[i].url;
+                    links[13].interactable = true;
+                    update.linksurl[13].text = Flight;
+
+                }
+                if (myreceivedata.links[i].title == "Metrics")
+                {
+
+                    links[14].interactable = true;
+                    Metrics = myreceivedata.links[i].url;
+                    links[14].interactable = true;
+                    update.linksurl[14].text = Flight;
+
+                }
+                if (myreceivedata.links[i].title == "Live Tracking")
+                {
+
+                    links[15].interactable = true;
+                    LiveTracking = myreceivedata.links[i].url;
+                    links[15].interactable = true;
+                    update.linksurl[15].text = Flight;
+
+                }
+                if (myreceivedata.links[i].title == "Photos")
+                {
+
+                    links[16].interactable = true;
+                    Photos = myreceivedata.links[i].url;
+                    links[16].interactable = true;
+                    update.linksurl[16].text = Flight;
+
+                }
+                 if (myreceivedata.links[i].title == "Custom1")
+                {
+
+                    links[17].interactable = true;
+                    Custom1 = myreceivedata.links[i].url;
+                    links[17].interactable = true;
+                    update.linksurl[17].text = Flight;
+
+                }
+                if (myreceivedata.links[i].title == "Custom2")
+                {
+
+                    links[18].interactable = true;
+                    Custom2 = myreceivedata.links[i].url;
+                    links[18].interactable = true;
+                    update.linksurl[18].text = Flight;
+
+                }
+                if (myreceivedata.links[i].title == "Custom3")
+                {
+
+                    links[19].interactable = true;
+                    Custom3 = myreceivedata.links[i].url;
+                    links[19].interactable = true;
+                    update.linksurl[19].text = Flight;
 
                 }
 
@@ -1594,87 +1689,287 @@ string[] textSplit ;
 
                 ///  linkscroll.content.GetChild(i).GetChild(0).GetComponent<Text>().text = myreceivedata.links[i].title + "    " + myreceivedata.links[i].url;
 
-                if (myreceivedata.links[i].title == "proofoftime")
+                // if (myreceivedata.links[i].title == "PoT")
+                // {
+
+                //     links[0].interactable = true;
+                //     PoT = myreceivedata.links[i].url;
+                // }
+                // if (myreceivedata.links[i].title == "Garmin")
+                // {
+
+                //     links[1].interactable = true;
+                //     Garmin = myreceivedata.links[i].url;
+                // }
+                // if (myreceivedata.links[i].title == "Starva")
+                // {
+
+                //     links[2].interactable = true;
+                //     Strava = myreceivedata.links[i].url;
+                // }
+                // if (myreceivedata.links[i].title == "Social")
+                // {
+
+                //     links[3].interactable = true;
+                //     Social = myreceivedata.links[i].url;
+
+                // }
+                // if (myreceivedata.links[i].title == "You Tube")
+                // {
+
+                //     links[4].interactable = true;
+                //     Youtube = myreceivedata.links[i].url;
+
+                // }
+                // if (myreceivedata.links[i].title == "Instagram")
+                // {
+
+                //     links[5].interactable = true;
+                //     Instagram = myreceivedata.links[i].url;
+
+                // }
+                // if (myreceivedata.links[i].title == "Flight")
+                // {
+
+                //     links[6].interactable = true;
+                //     Flight = myreceivedata.links[i].url;
+
+                // }
+                // if (myreceivedata.links[i].title == "Facebook")
+                // {
+
+                //     links[7].interactable = true;
+                // Ffacebook = myreceivedata.links[i].url;
+
+                // }
+                // if (myreceivedata.links[i].title == "Athlinks")
+                // {
+
+                //     links[8].interactable = true;
+                //     Athlinks = myreceivedata.links[i].url;
+
+                // }
+                // if (myreceivedata.links[i].title == "Custom1")
+                // {
+
+                //     links[9].interactable = true;
+                //     Custom1 = myreceivedata.links[i].url;
+
+                // }
+                // if (myreceivedata.links[i].title == "Custom2")
+                // {
+
+                //     links[10].interactable = true;
+                //     Custom2 = myreceivedata.links[i].url;
+
+                // }
+                // if (myreceivedata.links[i].title == "Custom3")
+                // {
+
+                //     links[11].interactable = true;
+                //     Custom3 = myreceivedata.links[i].url;
+
+                // }
+                // if (myreceivedata.links[i].title == "Car Rental")
+                // {
+
+                //     links[11].interactable = true;
+                //     CarRental = myreceivedata.links[i].url;
+
+                // }
+                // if (myreceivedata.links[i].title == "Lodging")
+                // {
+
+                //     links[11].interactable = true;
+                //     Lodging = myreceivedata.links[i].url;
+
+                // }
+                // if (myreceivedata.links[i].title == "Playlist")
+                // {
+
+                //     links[11].interactable = true;
+                //     Playlist = myreceivedata.links[i].url;
+
+                // }
+                // if (myreceivedata.links[i].title == "Event Guide")
+                // {
+
+                //     links[11].interactable = true;
+                //     EventGuide = myreceivedata.links[i].url;
+
+                // }
+                // if (myreceivedata.links[i].title == "Shoping")
+                // {
+
+                //     links[11].interactable = true;
+                //     Shoping = myreceivedata.links[i].url;
+
+                // }
+                // if (myreceivedata.links[i].title == "Metrics")
+                // {
+
+                //     links[11].interactable = true;
+                //     Metrics = myreceivedata.links[i].url;
+
+                // }
+                // if (myreceivedata.links[i].title == "Live Tracking")
+                // {
+
+                //     links[11].interactable = true;
+                //     LiveTracking = myreceivedata.links[i].url;
+
+                // }
+                // if (myreceivedata.links[i].title == "Photos")
+                // {
+
+                //     links[11].interactable = true;
+                //     Photos = myreceivedata.links[i].url;
+
+                // }
+
+
+
+
+                if (myreceivedata.links[i].title == "PoT")
                 {
 
                     links[0].interactable = true;
-                    pot = myreceivedata.links[i].url;
+                    PoT = myreceivedata.links[i].url;
                 }
-                if (myreceivedata.links[i].title == "garmin")
+                if (myreceivedata.links[i].title == "Garmin")
                 {
 
                     links[1].interactable = true;
-                    garmin = myreceivedata.links[i].url;
+                    Garmin = myreceivedata.links[i].url;
                 }
-                if (myreceivedata.links[i].title == "starva")
+                if (myreceivedata.links[i].title == "Starva")
                 {
 
                     links[2].interactable = true;
-                    strava = myreceivedata.links[i].url;
+                    Strava = myreceivedata.links[i].url;
                 }
-                if (myreceivedata.links[i].title == "reddit")
+                if (myreceivedata.links[i].title == "Athlinks")
                 {
 
                     links[3].interactable = true;
-                    reddit = myreceivedata.links[i].url;
+                    Athlinks = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "youtube")
+                if (myreceivedata.links[i].title == "You Tube")
                 {
 
                     links[4].interactable = true;
-                    youtube = myreceivedata.links[i].url;
+                    Youtube = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "instagram")
+                if (myreceivedata.links[i].title == "Instagram")
                 {
 
                     links[5].interactable = true;
-                    instagram = myreceivedata.links[i].url;
+                    Instagram = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "tiktok")
+                
+                if (myreceivedata.links[i].title == "Facebook")
                 {
 
                     links[6].interactable = true;
-                    tiktok = myreceivedata.links[i].url;
+                    Facebook = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "facebook")
+                if (myreceivedata.links[i].title == "Social")
                 {
 
                     links[7].interactable = true;
-                    facebook = myreceivedata.links[i].url;
+                    Social = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "athlinks")
+                if (myreceivedata.links[i].title == "Flight")
                 {
 
                     links[8].interactable = true;
-                    athlinks = myreceivedata.links[i].url;
+                    Flight = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "custom1")
+                
+                 if (myreceivedata.links[i].title == "Car Rental")
                 {
 
                     links[9].interactable = true;
-                    custom1 = myreceivedata.links[i].url;
+                    CarRental = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "custom2")
+                if (myreceivedata.links[i].title == "Lodging")
                 {
 
                     links[10].interactable = true;
-                    custom2 = myreceivedata.links[i].url;
+                    Lodging = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "custom3")
+                if (myreceivedata.links[i].title == "Playlist")
                 {
 
                     links[11].interactable = true;
-                    custom3 = myreceivedata.links[i].url;
+                    Playlist = myreceivedata.links[i].url;
 
                 }
+                if (myreceivedata.links[i].title == "Event Guide")
+                {
+
+                    links[12].interactable = true;
+                    EventGuide = myreceivedata.links[i].url;
+
+                }
+                if (myreceivedata.links[i].title == "Shoping")
+                {
+
+                    links[13].interactable = true;
+                    Shoping = myreceivedata.links[i].url;
+
+                }
+                if (myreceivedata.links[i].title == "Metrics")
+                {
+
+                    links[14].interactable = true;
+                    Metrics = myreceivedata.links[i].url;
+
+                }
+                if (myreceivedata.links[i].title == "Live Tracking")
+                {
+
+                    links[15].interactable = true;
+                    LiveTracking = myreceivedata.links[i].url;
+
+                }
+                if (myreceivedata.links[i].title == "Photos")
+                {
+
+                    links[16].interactable = true;
+                    Photos = myreceivedata.links[i].url;
+
+                }
+                 if (myreceivedata.links[i].title == "Custom1")
+                {
+
+                    links[17].interactable = true;
+                    Custom1 = myreceivedata.links[i].url;
+
+                }
+                if (myreceivedata.links[i].title == "Custom2")
+                {
+
+                    links[18].interactable = true;
+                    Custom2 = myreceivedata.links[i].url;
+
+                }
+                if (myreceivedata.links[i].title == "Custom3")
+                {
+
+                    links[19].interactable = true;
+                    Custom3 = myreceivedata.links[i].url;
+
+                }
+
 
 
 
@@ -2258,7 +2553,6 @@ string[] textSplit ;
     }
     public void getguestdata()
 	{
-		
 		scrollreset();
         if (myreceivedata.race != "")
         {
@@ -2517,85 +2811,143 @@ string[] textSplit ;
 
                 ///  linkscroll.content.GetChild(i).GetChild(0).GetComponent<Text>().text = myreceivedata.links[i].title + "    " + myreceivedata.links[i].url;
 
-                if (myreceivedata.links[i].title == "proofoftime")
+                if (myreceivedata.links[i].title == "PoT")
                 {
 
                     links[0].interactable = true;
-                    pot = myreceivedata.links[i].url;
+                    PoT = myreceivedata.links[i].url;
                 }
-                if (myreceivedata.links[i].title == "garmin")
+                if (myreceivedata.links[i].title == "Garmin")
                 {
 
                     links[1].interactable = true;
-                    garmin = myreceivedata.links[i].url;
+                    Garmin = myreceivedata.links[i].url;
                 }
-                if (myreceivedata.links[i].title == "starva")
+                if (myreceivedata.links[i].title == "Starva")
                 {
 
                     links[2].interactable = true;
-                    strava = myreceivedata.links[i].url;
+                    Strava = myreceivedata.links[i].url;
                 }
-                if (myreceivedata.links[i].title == "reddit")
+                if (myreceivedata.links[i].title == "Athlinks")
                 {
 
                     links[3].interactable = true;
-                    reddit = myreceivedata.links[i].url;
+                    Athlinks = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "youtube")
+                if (myreceivedata.links[i].title == "You Tube")
                 {
 
                     links[4].interactable = true;
-                    youtube = myreceivedata.links[i].url;
+                    Youtube = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "instagram")
+                if (myreceivedata.links[i].title == "Instagram")
                 {
 
                     links[5].interactable = true;
-                    instagram = myreceivedata.links[i].url;
+                    Instagram = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "tiktok")
+                
+                if (myreceivedata.links[i].title == "Facebook")
                 {
 
                     links[6].interactable = true;
-                    tiktok = myreceivedata.links[i].url;
+                    Facebook = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "facebook")
+                if (myreceivedata.links[i].title == "Social")
                 {
 
                     links[7].interactable = true;
-                    facebook = myreceivedata.links[i].url;
+                    Social = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "athlinks")
+                if (myreceivedata.links[i].title == "Flight")
                 {
 
                     links[8].interactable = true;
-                    athlinks = myreceivedata.links[i].url;
+                    Flight = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "custom1")
+                
+                 if (myreceivedata.links[i].title == "Car Rental")
                 {
 
                     links[9].interactable = true;
-                    custom1 = myreceivedata.links[i].url;
+                    CarRental = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "custom2")
+                if (myreceivedata.links[i].title == "Lodging")
                 {
 
                     links[10].interactable = true;
-                    custom2 = myreceivedata.links[i].url;
+                    Lodging = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "custom3")
+                if (myreceivedata.links[i].title == "Playlist")
                 {
 
                     links[11].interactable = true;
-                    custom3 = myreceivedata.links[i].url;
+                    Playlist = myreceivedata.links[i].url;
+
+                }
+                if (myreceivedata.links[i].title == "Event Guide")
+                {
+
+                    links[12].interactable = true;
+                    EventGuide = myreceivedata.links[i].url;
+
+                }
+                if (myreceivedata.links[i].title == "Shoping")
+                {
+
+                    links[13].interactable = true;
+                    Shoping = myreceivedata.links[i].url;
+
+                }
+                if (myreceivedata.links[i].title == "Metrics")
+                {
+
+                    links[14].interactable = true;
+                    Metrics = myreceivedata.links[i].url;
+
+                }
+                if (myreceivedata.links[i].title == "Live Tracking")
+                {
+
+                    links[15].interactable = true;
+                    LiveTracking = myreceivedata.links[i].url;
+
+                }
+                if (myreceivedata.links[i].title == "Photos")
+                {
+
+                    links[16].interactable = true;
+                    Photos = myreceivedata.links[i].url;
+
+                }
+                 if (myreceivedata.links[i].title == "Custom1")
+                {
+
+                    links[17].interactable = true;
+                    Custom1 = myreceivedata.links[i].url;
+
+                }
+                if (myreceivedata.links[i].title == "Custom2")
+                {
+
+                    links[18].interactable = true;
+                    Custom2 = myreceivedata.links[i].url;
+
+                }
+                if (myreceivedata.links[i].title == "Custom3")
+                {
+
+                    links[19].interactable = true;
+                    Custom3 = myreceivedata.links[i].url;
 
                 }
 
@@ -3227,58 +3579,99 @@ string[] textSplit ;
 
     public void proofoftimee()
     {
-        Application.OpenURL(pot);
+        Application.OpenURL(PoT);
     }
     public void garminn()
     {
-        Application.OpenURL(garmin);
+        Application.OpenURL(Garmin);
     }
     public void stravaa()
     {
-        Application.OpenURL(strava);
+        Application.OpenURL(Strava);
     }
-    public void redditt()
+    public void social()
     {
-        Application.OpenURL(reddit);
+        Application.OpenURL(Social);
     }
+
+    public void carRental()
+    {
+        Application.OpenURL(CarRental);
+    }
+
+
+
     public void youtubee()
     {
-        Application.OpenURL(youtube);
+        Application.OpenURL(Youtube);
     }
     public void instagramm()
     {
-        Application.OpenURL(instagram);
+        Application.OpenURL(Instagram);
     }
-    public void tiktokk()
+    public void flight()
     {
-        Application.OpenURL(tiktok);
+        Application.OpenURL(Flight);
     }
+
     public void facebokk()
     {
-        Application.OpenURL(facebook);
+        Application.OpenURL(Facebook);
     }
     public void athlinkss()
     {
-        Application.OpenURL(athlinks);
+        Application.OpenURL(Athlinks);
     }
     public void customone()
     {
-        Application.OpenURL(custom1);
+        Application.OpenURL(Custom1);
     }
     public void customtwo()
     {
-        Application.OpenURL(custom2);
+        Application.OpenURL(Custom2);
     }
     public void cusomthree()
     {
-        Application.OpenURL(custom3);
+        Application.OpenURL(Custom3);
+    }
+
+    public void lodging()
+    {
+        Application.OpenURL(Lodging);
+    }
+
+    public void playlist()
+    {
+        Application.OpenURL(Playlist);
+    }
+
+    public void eventGuide()
+    {
+        Application.OpenURL(EventGuide);
+    }
+
+    public void shoping()
+    {
+        Application.OpenURL(Shoping);
     }
 
 
+    public void metrics()
+    {
+        Application.OpenURL(Metrics);
+    }
 
 
+    public void liveTracking()
+    {
+        Application.OpenURL(LiveTracking);
+    }
 
 
+    public void photos()
+    {
+        Application.OpenURL(Photos);
+    }
 
 
 

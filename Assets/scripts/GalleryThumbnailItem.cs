@@ -12,7 +12,7 @@ public class GalleryThumbnailItem : MonoBehaviour,
 {
     [Header("Thumbnail")]
     [SerializeField] private Image preview;
-    //[SerializeField] private AspectRatioFitter previewAspect;
+    [SerializeField] private AspectRatioFitter previewAspect;
 
     [Header("Delete")]
     [SerializeField] private Button deleteButton;
@@ -59,6 +59,12 @@ public class GalleryThumbnailItem : MonoBehaviour,
 
         preview.sprite = runtimeSprite;
         preview.preserveAspect = true;
+
+        if (previewAspect == null)
+            previewAspect = preview.GetComponent<AspectRatioFitter>();
+
+        if (previewAspect != null)
+            previewAspect.aspectRatio = texture.width / (float)texture.height;
     }
     public void OpenPreview()
     {
