@@ -19,6 +19,7 @@ public class spawnmangr : MonoBehaviour
     public XROrigin arOrigin;
     public ARSession arses;
     public GameObject panel,tutorial;
+    [SerializeField] private GameObject movementTutorial;
     public GameObject shutterbutton, camRotateButton, camRotateButtonFirst, poistionimage;
     private Pose placementpose;
     public bool placementposeisvalid;
@@ -1162,7 +1163,12 @@ public class spawnmangr : MonoBehaviour
 
     IEnumerator turnofftutorial()
     {
-        tutorial.SetActive(false);
+        if (tutorial != null)
+            tutorial.SetActive(false);
+        if (movementTutorial != null)
+            movementTutorial.SetActive(false);
+        if (poistionimage != null)
+            poistionimage.SetActive(false);
         yield return new WaitForSeconds(1);
         
         poistionimage.SetActive(false);

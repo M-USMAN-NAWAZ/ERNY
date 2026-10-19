@@ -49,7 +49,7 @@ public class FutureEventCountdown : MonoBehaviour
         bool isFuture = daysLeft > 0;
 
         countdownRoot.SetActive(isFuture && !deleteVisible);
-        eventOpenButton.interactable = canOpenWhenReady && !isFuture;
+        eventOpenButton.interactable = canOpenWhenReady;
 
         if (isFuture)
             countdownText.text = daysLeft.ToString();

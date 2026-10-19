@@ -15,8 +15,8 @@ public sealed class CalendarScreenController : MonoBehaviour
 
     private static readonly Color Navy = Hex("#29375F");
     private static readonly Color Yellow = Hex("#F7C85A");
-    private static readonly Color Green = Hex("#97B56F");
-    private static readonly Color Red = Hex("#C15462");
+    private static readonly Color Green = Hex("#97B56FB3");
+    private static readonly Color Red = Hex("#C15462B3");
 
     public static CalendarScreenController Instance { get; private set; }
 
@@ -37,7 +37,13 @@ public sealed class CalendarScreenController : MonoBehaviour
     private Font font;
     private Sprite circleSprite;
     private DateTime displayedMonth;
-    private DateTime? pendingManualDate;
+    [SerializeField] private InputField eventNameInput;
+    [SerializeField] private Button monthYearButton;
+    [SerializeField] private GameObject yearPopup;
+    [SerializeField] private Button closeYearPopupButton;
+    [SerializeField] private RectTransform yearListContent;
+    private DateTime? selectedDate;
+    private bool isSaving;
     private int requestVersion;
 
     public static void EnsureCreated(eventgetter owner)
@@ -73,25 +79,6 @@ public sealed class CalendarScreenController : MonoBehaviour
         Instance.Initialize(owner);
     }
 
-    public static bool TrySubmitPendingManualEvent(eventgetter owner)
-    {
-        if (Instance == null || !Instance.pendingManualDate.HasValue)
-        {
-            return false;
-        }
-
-        Instance.SubmitPendingManualEvent(owner);
-        return true;
-    }
-
-    public static void CancelPendingCreation()
-    {
-        if (Instance != null)
-        {
-            Instance.pendingManualDate = null;
-        }
-    }
-
     private void Initialize(eventgetter owner)
     {
         eventScreen = owner;
@@ -115,6 +102,7 @@ public sealed class CalendarScreenController : MonoBehaviour
         {
             BindSavedInterface();
         }
+        BindEntryControls();
         WireCalendarNavigationButton();
         root.SetActive(false);
 
@@ -163,7 +151,7 @@ public sealed class CalendarScreenController : MonoBehaviour
             Transform template = transform.Find("Event Row Template");
             listRowTemplate = template != null ? template.gameObject : null;
         }
-        if (listRowTemplate != null)
+        if (listRowTemplate != null && listRowTemplate.scene.IsValid())
         {
             listRowTemplate.SetActive(false);
         }
@@ -176,7 +164,7 @@ public sealed class CalendarScreenController : MonoBehaviour
             addEventButton = transform.Find("Add Calendar Event").GetComponent<Button>();
         previousMonthButton.onClick.AddListener(() => ChangeMonth(-1));
         nextMonthButton.onClick.AddListener(() => ChangeMonth(1));
-        addEventButton.onClick.AddListener(() => OpenCreateForDate(DefaultCreationDate()));
+        addEventButton.onClick.AddListener(SubmitCalendarEvent);
 
         dayCells.Clear();
         for (int index = 0; index < 42; index++)
@@ -208,7 +196,10 @@ public sealed class CalendarScreenController : MonoBehaviour
             calendarSelectedIcon.SetActive(true);
         }
 
+        selectedDate = DateTime.Today;
+        displayedMonth = new DateTime(selectedDate.Value.Year, selectedDate.Value.Month, 1);
         RenderMonthShell();
+        RenderItems();
         LoadDisplayedMonth();
     }
 
@@ -228,6 +219,8 @@ public sealed class CalendarScreenController : MonoBehaviour
     public void Hide()
     {
         requestVersion++;
+        if (yearPopup != null)
+            yearPopup.SetActive(false);
         if (root != null)
         {
             root.SetActive(false);
@@ -321,7 +314,8 @@ public sealed class CalendarScreenController : MonoBehaviour
 
         Button add = CreateCircleButton("Add Calendar Event", transform, "+", Navy, 46);
         SetAnchors(add.GetComponent<RectTransform>(), 0.43f, 0.105f, 0.57f, 0.17f);
-        add.onClick.AddListener(() => OpenCreateForDate(DefaultCreationDate()));
+        addEventButton = add;
+        add.onClick.AddListener(SubmitCalendarEvent);
     }
 
     private ScrollRect CreateScrollView()
@@ -379,6 +373,8 @@ public sealed class CalendarScreenController : MonoBehaviour
     private void ChangeMonth(int offset)
     {
         displayedMonth = displayedMonth.AddMonths(offset);
+        selectedDate = null;
+        yearPopup.SetActive(false);
         RenderMonthShell();
         LoadDisplayedMonth();
     }
@@ -406,13 +402,15 @@ public sealed class CalendarScreenController : MonoBehaviour
             if (validDay)
             {
                 DateTime date = new DateTime(displayedMonth.Year, displayedMonth.Month, day);
-                cell.Button.onClick.AddListener(() => OpenCreateForDate(date));
+                cell.Button.onClick.AddListener(() => SelectDate(date));
             }
         }
 
+        items.Clear();
         ClearList();
-        statusText.text = "Loading events...";
-        statusText.gameObject.SetActive(true);
+        listContent.parent.parent.gameObject.SetActive(false);
+        statusText.text = string.Empty;
+        statusText.gameObject.SetActive(false);
     }
 
     private void LoadDisplayedMonth()
@@ -529,24 +527,29 @@ public sealed class CalendarScreenController : MonoBehaviour
                 continue;
             }
 
-            dayCells[index].Background.color = group.Any(item => item.IsManual) ? Red : Green;
+            dayCells[index].Background.color = group.Any(item => !item.IsManual) ? Red : Green;
         }
 
-        ClearList();
-        bool hasManualEvents = items.Any(item => item.IsManual);
-        List<CalendarItem> visibleItems = items
-            .Where(item => hasManualEvents ? item.IsManual : !item.IsManual)
-            .OrderBy(item => item.Date)
-            .ThenBy(item => item.Title)
-            .ToList();
-
-        statusText.gameObject.SetActive(visibleItems.Count == 0);
-        statusText.text = visibleItems.Count == 0 ? "No events this month." : string.Empty;
-
-        foreach (CalendarItem item in visibleItems)
+        if (selectedDate.HasValue)
         {
-            CreateListRow(item);
+            DayCell selectedCell = dayCells[firstColumn + selectedDate.Value.Day - 1];
+            selectedCell.Background.color = Yellow;
         }
+        ClearList();
+        List<CalendarItem> visibleItems = selectedDate.HasValue
+            ? items.Where(item => item.Date == selectedDate.Value.Date)
+                .OrderBy(item => item.Title).ToList()
+            : new List<CalendarItem>();
+        listContent.parent.parent.gameObject.SetActive(visibleItems.Count > 0);
+        statusText.gameObject.SetActive(false);
+        foreach (CalendarItem item in visibleItems)
+            CreateListRow(item);
+    }
+
+    private void SelectDate(DateTime date)
+    {
+        selectedDate = date.Date;
+        RenderItems();
     }
 
     private void CreateListRow(CalendarItem item)
@@ -555,10 +558,9 @@ public sealed class CalendarScreenController : MonoBehaviour
         {
             GameObject savedRow = Instantiate(listRowTemplate, listContent, false);
             savedRow.name = "Calendar Item " + item.Title;
-            savedRow.transform.Find("Type").GetComponent<Image>().color = item.IsManual ? Red : Green;
+            savedRow.transform.Find("Type").GetComponent<Image>().color = item.IsManual ? Green : Red;
             savedRow.transform.Find("Title").GetComponent<Text>().text =
-                item.Date.ToString("MMM d", CultureInfo.InvariantCulture) + "  "
-                + (string.IsNullOrWhiteSpace(item.Title) ? "Untitled event" : item.Title);
+                string.IsNullOrWhiteSpace(item.Title) ? "Untitled event" : item.Title;
             savedRow.SetActive(true);
             return;
         }
@@ -571,7 +573,7 @@ public sealed class CalendarScreenController : MonoBehaviour
         row.transform.SetParent(listContent, false);
         row.GetComponent<LayoutElement>().preferredHeight = 50f;
 
-        Image dot = CreateImage("Type", row.transform, item.IsManual ? Red : Green);
+        Image dot = CreateImage("Type", row.transform, item.IsManual ? Green : Red);
         dot.sprite = circleSprite;
         SetAnchors(dot.rectTransform, 0f, 0.20f, 0.07f, 0.80f);
 
@@ -579,7 +581,7 @@ public sealed class CalendarScreenController : MonoBehaviour
         Text label = CreateText(
             "Title",
             row.transform,
-            item.Date.ToString("MMM d", CultureInfo.InvariantCulture) + "  " + title,
+            title,
             22,
             Navy,
             TextAnchor.MiddleLeft,
@@ -602,95 +604,140 @@ public sealed class CalendarScreenController : MonoBehaviour
         }
     }
 
-    private DateTime DefaultCreationDate()
+    private void SubmitCalendarEvent()
     {
-        DateTime today = DateTime.Today;
-        if (today.Year == displayedMonth.Year && today.Month == displayedMonth.Month)
+        if (isSaving)
+            return;
+        if (!selectedDate.HasValue)
         {
-            return today;
-        }
-
-        return displayedMonth;
-    }
-
-    private void OpenCreateForDate(DateTime date)
-    {
-        pendingManualDate = date.Date;
-        eventScreen.OpenCalendarEventCreate(date.Date);
-    }
-
-    private void SubmitPendingManualEvent(eventgetter owner)
-    {
-        if (owner == null || !pendingManualDate.HasValue)
-        {
+            ShowPopup(eventScreen, "Uh oh!", "Please select a date first.");
             return;
         }
-
-        string title = owner.Eventname.text.Trim();
+        string title = eventNameInput.text.Trim();
         if (string.IsNullOrWhiteSpace(title))
         {
-            ShowPopup(owner, "Uh oh!", "An event name is required to add a calendar event.");
+            ShowPopup(eventScreen, "Uh oh!", "Please enter an event name.");
             return;
         }
-
-        owner.save.interactable = false;
-        if (owner.Saveloader != null)
-        {
-            owner.Saveloader.SetActive(true);
-        }
-
-        StartCoroutine(CreateManualEvent(
-            owner,
-            title,
-            pendingManualDate.Value,
-            owner.cityname.text.Trim(),
-            string.IsNullOrWhiteSpace(owner.typegetter) ? "Other" : owner.typegetter));
+        isSaving = true;
+        addEventButton.interactable = false;
+        eventNameInput.interactable = false;
+        eventScreen.StartCoroutine(CreateManualEvent(title, selectedDate.Value.Date));
     }
 
-    private IEnumerator CreateManualEvent(
-        eventgetter owner,
-        string title,
-        DateTime date,
-        string description,
-        string eventType)
+    private IEnumerator CreateManualEvent(string title, DateTime date)
     {
         JObject body = new JObject
         {
             ["title"] = title,
             ["date"] = date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
-            ["description"] = description,
-            ["eventType"] = eventType
+            ["description"] = string.Empty,
+            ["eventType"] = "Other"
         };
-
-        using (UnityWebRequest request = new UnityWebRequest(ApiBaseUrl() + "/v1/calendar", "POST"))
+        bool saved;
+        try
         {
-            request.SetRequestHeader("Authorization", "Bearer " + apigetter.jwt);
-            request.SetRequestHeader("Content-Type", "application/json");
-            request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body.ToString()));
-            request.downloadHandler = new DownloadHandlerBuffer();
-            yield return request.SendWebRequest();
-
-            owner.save.interactable = true;
-            if (owner.Saveloader != null)
+            using (UnityWebRequest request = new UnityWebRequest(ApiBaseUrl() + "/v1/calendar", "POST"))
             {
-                owner.Saveloader.SetActive(false);
-            }
-
-            if (request.result != UnityWebRequest.Result.Success)
-            {
-                Debug.LogError("Calendar event create failed (" + request.responseCode + "): " + request.downloadHandler.text);
-                ShowPopup(owner, "Uh oh!", "The calendar event could not be saved. Please try again.");
-                yield break;
+                request.SetRequestHeader("Authorization", "Bearer " + apigetter.jwt);
+                request.SetRequestHeader("Content-Type", "application/json");
+                request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body.ToString()));
+                request.downloadHandler = new DownloadHandlerBuffer();
+                yield return request.SendWebRequest();
+                saved = request.result == UnityWebRequest.Result.Success;
+                if (!saved)
+                    Debug.LogError("Calendar event create failed (" + request.responseCode + "): " + request.downloadHandler.text);
             }
         }
+        finally
+        {
+            isSaving = false;
+            if (addEventButton != null)
+                addEventButton.interactable = true;
+            if (eventNameInput != null)
+                eventNameInput.interactable = true;
+        }
+        if (this == null)
+            yield break;
+        if (!saved)
+        {
+            ShowPopup(eventScreen, "Uh oh!", "The calendar event could not be saved. Please try again.");
+            yield break;
+        }
+        eventNameInput.text = string.Empty;
+        if (root.activeInHierarchy)
+            LoadDisplayedMonth();
+    }
 
-        pendingManualDate = null;
-        owner.Eventname.text = string.Empty;
-        owner.cityname.text = string.Empty;
-        owner.typegetter = string.Empty;
-        owner.anim.Play("event off");
-        owner.closeevent();
-        owner.screencurenter(ScreenIndex);
+    private void BindEntryControls()
+    {
+        if (eventNameInput == null)
+            BuildEntryControls();
+        monthYearButton.onClick.AddListener(() =>
+        {
+            yearPopup.SetActive(true);
+            yearPopup.transform.SetAsLastSibling();
+            ScrollRect scroll = yearListContent.GetComponentInParent<ScrollRect>();
+            if (scroll != null)
+                scroll.verticalNormalizedPosition = Mathf.Clamp01(1f - (displayedMonth.Year - 1980) / 49f);
+        });
+        closeYearPopupButton.onClick.AddListener(() => yearPopup.SetActive(false));
+        foreach (Button button in yearListContent.GetComponentsInChildren<Button>(true))
+        {
+            int yearValue;
+            if (!int.TryParse(button.name.Replace("Year ", ""), out yearValue))
+                continue;
+            int selectedYear = yearValue;
+            button.onClick.AddListener(() =>
+            {
+                displayedMonth = new DateTime(selectedYear, displayedMonth.Month, 1);
+                selectedDate = null;
+                yearPopup.SetActive(false);
+                RenderMonthShell();
+                LoadDisplayedMonth();
+            });
+        }
+        yearPopup.SetActive(false);
+    }
+
+    private void BuildEntryControls()
+    {
+        Image background = CreateImage("Event Name", transform, Color.white);
+        SetAnchors(background.rectTransform, 0.145f, 0.18f, 0.855f, 0.235f);
+        eventNameInput = background.gameObject.AddComponent<InputField>();
+        Text inputText = CreateText("Text", background.transform, "", 26, Navy, TextAnchor.MiddleLeft, FontStyle.Normal);
+        Text placeholder = CreateText("Placeholder", background.transform, "Add Event", 26, Green, TextAnchor.MiddleCenter, FontStyle.Normal);
+        SetAnchors(inputText.rectTransform, 0.03f, 0f, 0.97f, 1f);
+        Stretch(placeholder.rectTransform);
+        eventNameInput.textComponent = inputText;
+        eventNameInput.placeholder = placeholder;
+        eventNameInput.targetGraphic = background;
+        monthYearButton = monthText.gameObject.AddComponent<Button>();
+        monthYearButton.targetGraphic = monthText;
+        monthText.raycastTarget = true;
+        Image popup = CreateImage("Year Popup", transform, new Color(0f, 0f, 0f, 0.5f));
+        yearPopup = popup.gameObject;
+        Stretch(popup.rectTransform);
+        Image window = CreateImage("Window", popup.transform, Color.white);
+        SetAnchors(window.rectTransform, 0.15f, 0.18f, 0.85f, 0.85f);
+        closeYearPopupButton = CreateCircleButton("Close", window.transform, "X", Navy, 24);
+        SetAnchors(closeYearPopupButton.GetComponent<RectTransform>(), 0.82f, 0.89f, 0.97f, 0.98f);
+        Text heading = CreateText("Heading", window.transform, "Select Year", 30, Navy, TextAnchor.MiddleCenter, FontStyle.Bold);
+        SetAnchors(heading.rectTransform, 0.05f, 0.85f, 0.80f, 0.98f);
+        RectTransform eventListContent = listContent;
+        ScrollRect years = CreateScrollView();
+        years.name = "Year List";
+        years.transform.SetParent(window.transform, false);
+        years.gameObject.AddComponent<Image>().color = Color.clear;
+        SetAnchors(years.GetComponent<RectTransform>(), 0.08f, 0.05f, 0.92f, 0.83f);
+        yearListContent = listContent;
+        listContent = eventListContent;
+        for (int year = 1980; year <= 2029; year++)
+        {
+            Button button = CreateCircleButton("Year " + year, yearListContent, year.ToString(), Navy, 26);
+            button.gameObject.AddComponent<LayoutElement>().preferredHeight = 60f;
+        }
+        SetAnchors(listContent.parent.parent.GetComponent<RectTransform>(), 0.07f, 0.245f, 0.93f, 0.392f);
     }
 
     private string ApiBaseUrl()

@@ -391,7 +391,9 @@ namespace NatSuite.Examples
                            //height /= 2;
                        });
 
+#if !UNITY_IOS && !PLATFORM_IOS
             NativeGallery.SaveImageToGallery(ss, "blingAr", "death.png");
+#endif
             //           sharepayload.Commit();
 
             //              Destroy(ss);

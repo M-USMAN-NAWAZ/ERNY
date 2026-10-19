@@ -322,6 +322,17 @@ public HorizontalLayoutGroup layoutGroup;
     {
         yield return new WaitForSeconds(1);
 
+        if (FutureEventCountdown.IsFutureEvent(myeventclass.eventDate))
+        {
+            recievedata eventCard = GameObject.Find("eventlist").GetComponent<recievedata>();
+            eventCard.eventdatetoshow = myeventclass.eventDate;
+            eventCard.edit();
+            eventgetter.instance.updateon();
+            eventgetter.instance.CanRefresh();
+            eventCard.update.TurnOnTheUpdateAgain();
+            yield break;
+        }
+
         eventgetter.instance.openevent();
 
     }
@@ -646,6 +657,9 @@ public HorizontalLayoutGroup layoutGroup;
 
     public void ShowUploadedGallery()
     {
+        if (FutureEventCountdown.IsFutureEvent(myeventclass.eventDate))
+            return;
+
         if (EventGalleryViewer.Instance == null)
         {
             Debug.LogError("EventGalleryViewer is missing.");

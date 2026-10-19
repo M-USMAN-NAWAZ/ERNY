@@ -834,7 +834,7 @@ string[] textSplit ;
                     links[0].interactable = true;
                     PoT = myreceivedata.links[i].url;
                     links[0].interactable = true;
-                    update.linksurl[0].text = Flight;
+                    update.linksurl[0].text = PoT;
                 }
                 if (myreceivedata.links[i].title == "Garmin")
                 {
@@ -842,7 +842,7 @@ string[] textSplit ;
                     links[1].interactable = true;
                     Garmin = myreceivedata.links[i].url;
                     links[1].interactable = true;
-                    update.linksurl[1].text = Flight;
+                    update.linksurl[1].text = Garmin;
                 }
                 if (myreceivedata.links[i].title == "Starva")
                 {
@@ -850,7 +850,7 @@ string[] textSplit ;
                     links[2].interactable = true;
                     Strava = myreceivedata.links[i].url;
                     links[2].interactable = true;
-                    update.linksurl[2].text = Flight;
+                    update.linksurl[2].text = Strava;
                 }
                 if (myreceivedata.links[i].title == "Athlinks")
                 {
@@ -858,7 +858,7 @@ string[] textSplit ;
                     links[3].interactable = true;
                     Athlinks = myreceivedata.links[i].url;
                     links[3].interactable = true;
-                    update.linksurl[3].text = Flight;
+                    update.linksurl[3].text = Athlinks;
                 }
                 if (myreceivedata.links[i].title == "You Tube")
                 {
@@ -866,8 +866,7 @@ string[] textSplit ;
                     links[4].interactable = true;
                     Youtube = myreceivedata.links[i].url;
                     links[4].interactable = true;
-                    update.linksurl[4].text = Flight;
-
+                    update.linksurl[4].text = Youtube;
                 }
                 if (myreceivedata.links[i].title == "Instagram")
                 {
@@ -875,7 +874,7 @@ string[] textSplit ;
                     links[5].interactable = true;
                     Instagram = myreceivedata.links[i].url;
                     links[5].interactable = true;
-                    update.linksurl[5].text = Flight;
+                    update.linksurl[5].text = Instagram;
 
                 }
                 
@@ -885,7 +884,7 @@ string[] textSplit ;
                     links[6].interactable = true;
                     Facebook = myreceivedata.links[i].url;
                     links[6].interactable = true;
-                    update.linksurl[6].text = Flight;
+                    update.linksurl[6].text = Facebook;
 
                 }
                 if (myreceivedata.links[i].title == "Social")
@@ -894,7 +893,7 @@ string[] textSplit ;
                     links[7].interactable = true;
                     Social = myreceivedata.links[i].url;
                     links[7].interactable = true;
-                    update.linksurl[7].text = Flight;
+                    update.linksurl[7].text = Social;
 
                 }
                 if (myreceivedata.links[i].title == "Flight")
@@ -919,7 +918,7 @@ string[] textSplit ;
                     links[10].interactable = true;
                     Lodging = myreceivedata.links[i].url;
                     update.linksurl[10].text = Lodging;
-                    update.linksurl[10].text = Flight;
+                    update.linksurl[10].text = Lodging;
 
                 }
                 if (myreceivedata.links[i].title == "Playlist")
@@ -928,7 +927,7 @@ string[] textSplit ;
                     links[11].interactable = true;
                     Playlist = myreceivedata.links[i].url;
                     links[11].interactable = true;
-                    update.linksurl[11].text = Flight;
+                    update.linksurl[11].text = Playlist;
 
                 }
                 if (myreceivedata.links[i].title == "Event Guide")
@@ -937,7 +936,7 @@ string[] textSplit ;
                     links[12].interactable = true;
                     EventGuide = myreceivedata.links[i].url;
                     links[12].interactable = true;
-                    update.linksurl[12].text = Flight;
+                    update.linksurl[12].text = EventGuide;
 
                 }
                 if (myreceivedata.links[i].title == "Shoping")
@@ -946,7 +945,7 @@ string[] textSplit ;
                     links[13].interactable = true;
                     Shoping = myreceivedata.links[i].url;
                     links[13].interactable = true;
-                    update.linksurl[13].text = Flight;
+                    update.linksurl[13].text = Shoping;
 
                 }
                 if (myreceivedata.links[i].title == "Metrics")
@@ -955,7 +954,7 @@ string[] textSplit ;
                     links[14].interactable = true;
                     Metrics = myreceivedata.links[i].url;
                     links[14].interactable = true;
-                    update.linksurl[14].text = Flight;
+                    update.linksurl[14].text = Metrics;
 
                 }
                 if (myreceivedata.links[i].title == "Live Tracking")
@@ -964,7 +963,7 @@ string[] textSplit ;
                     links[15].interactable = true;
                     LiveTracking = myreceivedata.links[i].url;
                     links[15].interactable = true;
-                    update.linksurl[15].text = Flight;
+                    update.linksurl[15].text = LiveTracking;
 
                 }
                 if (myreceivedata.links[i].title == "Photos")
@@ -973,7 +972,7 @@ string[] textSplit ;
                     links[16].interactable = true;
                     Photos = myreceivedata.links[i].url;
                     links[16].interactable = true;
-                    update.linksurl[16].text = Flight;
+                    update.linksurl[16].text = Photos;
 
                 }
                  if (myreceivedata.links[i].title == "Custom1")
@@ -982,7 +981,7 @@ string[] textSplit ;
                     links[17].interactable = true;
                     Custom1 = myreceivedata.links[i].url;
                     links[17].interactable = true;
-                    update.linksurl[17].text = Flight;
+                    update.linksurl[17].text = Custom1;
 
                 }
                 if (myreceivedata.links[i].title == "Custom2")
@@ -991,7 +990,7 @@ string[] textSplit ;
                     links[18].interactable = true;
                     Custom2 = myreceivedata.links[i].url;
                     links[18].interactable = true;
-                    update.linksurl[18].text = Flight;
+                    update.linksurl[18].text = Custom2;
 
                 }
                 if (myreceivedata.links[i].title == "Custom3")
@@ -1000,7 +999,7 @@ string[] textSplit ;
                     links[19].interactable = true;
                     Custom3 = myreceivedata.links[i].url;
                     links[19].interactable = true;
-                    update.linksurl[19].text = Flight;
+                    update.linksurl[19].text = Custom3;
 
                 }
 
@@ -1028,7 +1027,11 @@ string[] textSplit ;
 
 
 
-
+for (int i = 0; i < update.linksprites.Length; i++)
+{
+    update.linksprites[i].SetActive(
+        !string.IsNullOrWhiteSpace(update.linksurl[i].text));
+}
 
 
 

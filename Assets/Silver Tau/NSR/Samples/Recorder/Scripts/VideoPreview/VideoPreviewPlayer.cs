@@ -267,7 +267,9 @@ namespace SilverTau.NSR.Samples
 #if PLATFORM_STANDALONE || UNITY_EDITOR
             SilverTau.NSR.OpenInFileBrowser.OpenFileBrowser(_videoPath);
 #elif PLATFORM_IOS || PLATFORM_ANDROID
+#if !UNITY_IOS && !PLATFORM_IOS
             Utilities.Gallery.SaveVideoToGallery(_videoPath, galleryFolderPath);
+#endif
             Utilities.Share.ShareAndroidSetTitle(shareChooserTitle);
             Utilities.Share.ShareItem(_videoPath);
 #endif

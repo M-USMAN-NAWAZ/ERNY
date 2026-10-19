@@ -225,6 +225,7 @@ public class eventgetter : MonoBehaviour
     public Button settingsBtn;
     public Button profileBtn;
     public Button helpBtn;
+    public Button CalenderBtn;
     public GameObject reStoreBtn;
     public ARSession arSession;
     public XROrigin xrOrigin;
@@ -1421,6 +1422,7 @@ requestSendEmail();
         settingsBtn.interactable = false;
         profileBtn.interactable = false;
         helpBtn.interactable = false;
+        CalenderBtn.interactable = false;
         Invoke("SettingsActivate", 1f);
         yield return new WaitForSeconds(1f);
         addBtn.interactable = true;
@@ -1428,6 +1430,7 @@ requestSendEmail();
         settingsBtn.interactable = true;
         profileBtn.interactable = true;
         helpBtn.interactable = true;
+        CalenderBtn.interactable = true;
     }
 
     void SettingsActivate()
@@ -1872,6 +1875,54 @@ public static int checkappopened;
         CalendarScreenController.EnsureCreated(this);
         if (screen == CalendarScreenController.ScreenIndex)
         {
+            EventGalleryPicker.Instance?.ClosePopup();
+            foreach (GalleryPreviewPanel preview in FindObjectsByType<GalleryPreviewPanel>(
+                FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                preview.ClosePreview();
+            }
+            if (popup != null)
+                popup.SetActive(false);
+            if (popuppanel != null)
+            {
+                if (popuppanel.popbox != null)
+                    popuppanel.popbox.SetActive(false);
+                if (popuppanel.badgeIgmDiusplay != null)
+                    popuppanel.badgeIgmDiusplay.SetActive(false);
+                if (popuppanel.blackFade != null)
+                    popuppanel.blackFade.SetActive(false);
+                if (popuppanel.Sharebutton != null)
+                    popuppanel.Sharebutton.SetActive(false);
+            }
+
+            string closeAnimation = eventhandler == 1 ? "event off"
+                : eventhandler == 2 ? "eventlistoff"
+                : eventhandler == 3 ? "updateoff" : null;
+            if (closeAnimation != null)
+            {
+                // Finish closing the event overlay before revealing the calendar beneath it.
+                anim.Play(closeAnimation, 0, 1f);
+                anim.Update(0f);
+                if (eventhandler == 3)
+                {
+                    // updateoff reveals the card; Calendar navigation must close it as well.
+                    anim.Play("eventlistoff", 0, 1f);
+                    anim.Update(0f);
+                }
+            }
+            eventhandler = 0;
+            updatescreen = 0;
+
+            if (canv != null)
+            {
+                foreach (string panelName in new[] { "Panel", "Panel (1)", "mainscreenpanel", "update panel" })
+                {
+                    Transform overlay = canv.transform.Find(panelName);
+                    if (overlay != null)
+                        overlay.gameObject.SetActive(false);
+                }
+            }
+
             for (int i = 0; i < panels.Length; i++)
             {
                 panels[i].SetActive(false);
@@ -1915,11 +1966,6 @@ public static int checkappopened;
 
     public void closeevent ()
     {
-
-        if (eventhandler == 1)
-        {
-            CalendarScreenController.CancelPendingCreation();
-        }
 
         if (freetrial == 1 && signuppaid == 0)
         {
@@ -2732,11 +2778,6 @@ public static int checkappopened;
 
     public void evententrycondiiton()
     {
-        if (CalendarScreenController.TrySubmitPendingManualEvent(this))
-        {
-            return;
-        }
-
         if (monthh.value != 0 && year.value != 0 && date.value != 0 && cityname.text != "" )
         {
             
@@ -4057,10 +4098,7 @@ public static int checkappopened;
 
             string disableId = PlayerPrefs.GetString("DisableEventButtonId", "");
             bool disableSavedEvent = myDeserializedClass.response[i]._id == disableId;
-            //bool disableFutureEvent = IsFutureYearEvent(myDeserializedClass.response[i].eventDate);
-            bool disableFutureEvent = FutureEventCountdown.IsFutureEvent(myDeserializedClass.response[i].eventDate);
-
-            if (disableSavedEvent || disableFutureEvent)
+            if (disableSavedEvent)
             {
                 SetEventCardButtonsInteractable(obj, false);
             }

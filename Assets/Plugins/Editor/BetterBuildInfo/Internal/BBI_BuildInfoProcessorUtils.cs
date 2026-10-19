@@ -14,9 +14,15 @@ namespace Better.BuildInfo.Internal
     {
         public const string CompressedSizeKey = "CompressedSize";
 
+#if UNITY_6000_0_OR_NEWER
+        private static readonly Func<Texture, long> GetStorageMemorySize =
+            typeof(Editor).Assembly.GetType("UnityEditor.TextureUtil")
+            .CreateMethodDelegateOrThrow<Func<Texture, long>>("GetStorageMemorySizeLong", BindingFlags.Public | BindingFlags.Static);
+#else
         private static readonly Func<Texture, int> GetStorageMemorySize =
             typeof(Editor).Assembly.GetType("UnityEditor.TextureUtil")
             .CreateMethodDelegateOrThrow<Func<Texture, int>>("GetStorageMemorySize", BindingFlags.Public | BindingFlags.Static);
+#endif
 
         public static readonly Func<UnityEngine.Object> GetLightmapSettings =
             typeof(LightmapEditorSettings)
