@@ -147303,6 +147303,7 @@ MonoBehaviour:
   p1: {fileID: 7519769674024713411}
   p2: {fileID: 7519769673268456843}
   parent: {fileID: 7519769673164346962}
+  profileFacingRoot: {fileID: 0}
 --- !u!114 &7167228639287375530
 MonoBehaviour:
   m_ObjectHideFlags: 0

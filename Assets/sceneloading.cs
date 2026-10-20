@@ -28,11 +28,11 @@ public class sceneloading : MonoBehaviour
         
         if(prcheck==0)
         {
-            prbell.SetActive(false);
+            //prbell.SetActive(false);
         }
         else
         {
-            prbell.SetActive(true);
+            //prbell.SetActive(true);
 
         }
     }
