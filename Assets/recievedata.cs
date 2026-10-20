@@ -287,8 +287,10 @@ public class recievedata : MonoBehaviour
 		}
 		eventgetter.archeck = 1;
 
-        faceoff.interactable = true;
-        faceoff.isOn = true;
+        bool hasEventImage = !string.IsNullOrWhiteSpace(myreceivedata.image)
+            && apigetter.artexture != null;
+        faceoff.interactable = hasEventImage;
+        faceoff.SetIsOnWithoutNotify(hasEventImage);
         ardata.ename = myreceivedata.eventName;
         ardata.edistance = myreceivedata.distance.istance;
         ardata.edistenaceunit= myreceivedata.distance.unit;

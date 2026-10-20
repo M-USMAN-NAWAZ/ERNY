@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Name: WebGL
   m_EditorClassIdentifier: 
   features:
-  - {fileID: 7712483338580780202}
+  - {fileID: 1642205417573237716}
   customLoaderName: 
   m_renderMode: 1
   m_latencyOptimization: 0
@@ -479,7 +479,7 @@ MonoBehaviour:
   m_Name: iPhone
   m_EditorClassIdentifier: 
   features:
-  - {fileID: 1133457402702483503}
+  - {fileID: -4694298863104201695}
   customLoaderName: 
   m_renderMode: 1
   m_latencyOptimization: 0
@@ -717,7 +717,7 @@ MonoBehaviour:
   - {fileID: 5201167603869620003}
   - {fileID: 349713999625191586}
   - {fileID: -5814951949295344892}
-  - {fileID: 6808722952818048909}
+  - {fileID: -8771680864016143346}
   customLoaderName: 
   m_renderMode: 1
   m_latencyOptimization: 0
@@ -885,7 +885,7 @@ MonoBehaviour:
   - {fileID: 5581758473877463270}
   - {fileID: 3336534539221974517}
   - {fileID: 6804267206750627033}
-  - {fileID: 5320772135419610520}
+  - {fileID: -2196301406821044048}
   customLoaderName: 
   m_renderMode: 1
   m_latencyOptimization: 0

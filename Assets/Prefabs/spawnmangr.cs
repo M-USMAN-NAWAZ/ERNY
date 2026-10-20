@@ -46,6 +46,7 @@ public class spawnmangr : MonoBehaviour
     public bool objectSpawned = false;
     private bool waitingForFreshTouchRelease = true;
     private bool placementInputEnabled = true;
+    private Coroutine spawnUiRoutine;
     private static readonly List<RaycastResult> s_UiRaycastResults = new List<RaycastResult>();
     // Start is called before the first frame update
     void Start()
@@ -431,6 +432,12 @@ public class spawnmangr : MonoBehaviour
 
     public void ClearSpawnedObject(bool destroyExisting)
     {
+        if (spawnUiRoutine != null)
+        {
+            StopCoroutine(spawnUiRoutine);
+            spawnUiRoutine = null;
+        }
+
         if (destroyExisting && spawnedobject != null)
         {
             Destroy(spawnedobject);
@@ -684,7 +691,7 @@ public class spawnmangr : MonoBehaviour
 
         setallplaneinactive();
         panel.SetActive(false);
-        StartCoroutine(turnofftutorial());
+        spawnUiRoutine = StartCoroutine(turnofftutorial());
     }
 
     private void ConfigureSpawnedArObject(GameObject instance)
@@ -699,7 +706,7 @@ public class spawnmangr : MonoBehaviour
 
     private void Update()
     {
-        if (!placementInputEnabled)
+        if (!placementInputEnabled || spawnedobject != null || objectSpawned)
         {
             return;
         }
@@ -1131,7 +1138,7 @@ public class spawnmangr : MonoBehaviour
 
                     setallplaneinactive();
                     panel.SetActive(false);
-                    StartCoroutine(turnofftutorial());
+                    spawnUiRoutine = StartCoroutine(turnofftutorial());
 
 
                 }
@@ -1154,7 +1161,7 @@ public class spawnmangr : MonoBehaviour
             Debug.Log("Instantiated without planetracking");
             setallplaneinactive();
             panel.SetActive(false);
-            StartCoroutine(turnofftutorial());
+            spawnUiRoutine = StartCoroutine(turnofftutorial());
         }
 
 
@@ -1170,12 +1177,25 @@ public class spawnmangr : MonoBehaviour
         if (poistionimage != null)
             poistionimage.SetActive(false);
         yield return new WaitForSeconds(1);
-        
-        poistionimage.SetActive(false);
+
+        spawnUiRoutine = null;
+        if (spawnedobject == null)
+            yield break;
+
+        if (poistionimage != null)
+            poistionimage.SetActive(false);
         camRotateButtonFirst.SetActive(false);
         shutterbutton.SetActive(true);
         camRotateButton.SetActive(true);
-        facetoggle.SetActive(true);
+        bool hasEventImage = apigetter.artexture != null;
+        facetoggle.SetActive(hasEventImage);
+        Toggle imageToggle = facetoggle.GetComponent<Toggle>();
+        if (imageToggle != null)
+        {
+            imageToggle.interactable = hasEventImage;
+            if (!hasEventImage)
+                imageToggle.SetIsOnWithoutNotify(false);
+        }
     }
 
 

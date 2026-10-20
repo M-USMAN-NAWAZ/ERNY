@@ -23,6 +23,7 @@ public class ardata : MonoBehaviour
     public GameObject AR;
     int check;
     public GameObject p1, p2, parent;
+    [SerializeField] private Transform profileFacingRoot;
     private Texture lastAppliedArTexture;
     private bool profileImageVisible = true;
     private bool cameraRelativeTransformLocked;
@@ -369,6 +370,9 @@ public class ardata : MonoBehaviour
     {
         ApplyVictoryText();
 
+        if (profileFacingRoot != null && !cameraRelativeTransformLocked)
+            FaceProfileObjectsToCamera();
+
         if (!profileImageVisible)
         {
             SetProfileObjectsActive(false);
@@ -510,6 +514,12 @@ public class ardata : MonoBehaviour
 
         if (cameraTransform == null)
         {
+            return;
+        }
+
+        if (profileFacingRoot != null)
+        {
+            FaceTransformToCamera(profileFacingRoot, cameraTransform);
             return;
         }
 

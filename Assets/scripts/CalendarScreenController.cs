@@ -381,6 +381,10 @@ public sealed class CalendarScreenController : MonoBehaviour
 
     private void RenderMonthShell()
     {
+        DateTime today = DateTime.Today;
+        if (!selectedDate.HasValue && displayedMonth.Year == today.Year && displayedMonth.Month == today.Month)
+            selectedDate = today;
+
         monthText.text = displayedMonth.ToString("MMMM", CultureInfo.InvariantCulture).ToUpperInvariant()
             + "\n"
             + displayedMonth.Year;
@@ -411,6 +415,7 @@ public sealed class CalendarScreenController : MonoBehaviour
         listContent.parent.parent.gameObject.SetActive(false);
         statusText.text = string.Empty;
         statusText.gameObject.SetActive(false);
+        RenderItems();
     }
 
     private void LoadDisplayedMonth()
