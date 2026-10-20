@@ -1501,6 +1501,18 @@ public class updataeven : MonoBehaviour
         newsavessss myDeserializedClass = Newtonsoft.Json.JsonConvert.DeserializeObject<newsavessss>(request.downloadHandler.text);
         if (request.responseCode == 200)
         {
+            if (FutureEventCountdown.IsFutureEvent(myDeserializedClass.response.@event.eventDate))
+            {
+                EventGalleryPicker.Instance?.ResetImages();
+                loader.SetActive(false);
+                eventgetter.eventhandler = 0;
+                eventgetter.instance.updatescreen = 0;
+                eventgetter.currentscreen = 1;
+                eventgetter.instance.loader.SetActive(true);
+                SceneManager.LoadSceneAsync("4. MainScreens");
+                yield break;
+            }
+
             StartCoroutine(delaybadges()); // 
             loader.SetActive(false);
             // eventgetter.currentscreen = 1;
