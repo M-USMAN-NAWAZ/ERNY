@@ -84,7 +84,8 @@ public sealed class CalendarScreenController : MonoBehaviour
         eventScreen = owner;
         root = gameObject;
         gameObject.layer = 5;
-        displayedMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+        DateTime today = EventDateParser.Today;
+        displayedMonth = new DateTime(today.Year, today.Month, 1);
         font = owner.name != null && owner.name.font != null
             ? owner.name.font
             : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
@@ -196,7 +197,7 @@ public sealed class CalendarScreenController : MonoBehaviour
             calendarSelectedIcon.SetActive(true);
         }
 
-        selectedDate = DateTime.Today;
+        selectedDate = EventDateParser.Today;
         displayedMonth = new DateTime(selectedDate.Value.Year, selectedDate.Value.Month, 1);
         RenderMonthShell();
         RenderItems();
@@ -381,7 +382,7 @@ public sealed class CalendarScreenController : MonoBehaviour
 
     private void RenderMonthShell()
     {
-        DateTime today = DateTime.Today;
+        DateTime today = EventDateParser.Today;
         if (!selectedDate.HasValue && displayedMonth.Year == today.Year && displayedMonth.Month == today.Month)
             selectedDate = today;
 

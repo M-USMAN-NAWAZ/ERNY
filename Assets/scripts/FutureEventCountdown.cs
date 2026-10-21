@@ -44,7 +44,7 @@ public class FutureEventCountdown : MonoBehaviour
             return;
         }
 
-        int daysLeft = (eventDate.Date - DateTime.Today).Days;
+        int daysLeft = (eventDate.Date - EventDateParser.Today).Days;
         bool isFuture = daysLeft > 0;
 
         countdownRoot.SetActive(isFuture && !deleteVisible);
@@ -66,7 +66,7 @@ public class FutureEventCountdown : MonoBehaviour
     public static bool IsFutureEvent(string value)
     {
         return EventDateParser.TryParse(value, out DateTime date) &&
-               date.Date > DateTime.Today;
+               date.Date > EventDateParser.Today;
     }
 
 }
