@@ -469,7 +469,12 @@ public sealed class CalendarScreenController : MonoBehaviour
 
         try
         {
-            JArray array = JToken.Parse(json)["response"] as JArray;
+            JObject response = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(json,
+                new Newtonsoft.Json.JsonSerializerSettings
+                {
+                    DateParseHandling = Newtonsoft.Json.DateParseHandling.None
+                });
+            JArray array = response?["response"] as JArray;
             if (array == null)
             {
                 error = "Calendar response did not contain an event array.";
@@ -486,7 +491,7 @@ public sealed class CalendarScreenController : MonoBehaviour
                     ? (string)entry["date"]
                     : (string)entry["eventDate"];
 
-                if (!TryParseCalendarDate(dateValue, out DateTime date))
+                if (!EventDateParser.TryParse(dateValue, out DateTime date))
                 {
                     continue;
                 }
@@ -754,39 +759,6 @@ public sealed class CalendarScreenController : MonoBehaviour
         }
 
         return baseUrl.TrimEnd('/');
-    }
-
-    private static bool TryParseCalendarDate(string value, out DateTime date)
-    {
-        date = default(DateTime);
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            return false;
-        }
-
-        string[] formats =
-        {
-            "M/d/yyyy",
-            "MM/dd/yyyy",
-            "yyyy-MM-dd",
-            "yyyy-MM-dd'T'HH:mm:ss.FFFFFFFK"
-        };
-
-        if (DateTime.TryParseExact(
-                value,
-                formats,
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeUniversal,
-                out date))
-        {
-            return true;
-        }
-
-        return DateTime.TryParse(
-            value,
-            CultureInfo.InvariantCulture,
-            DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeUniversal,
-            out date);
     }
 
     private static void ShowPopup(eventgetter owner, string heading, string message)

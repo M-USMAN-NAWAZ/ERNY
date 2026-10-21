@@ -977,7 +977,7 @@ string[] textSplit ;
                     update.linksurl[16].text = Photos;
 
                 }
-                 if (myreceivedata.links[i].title == "Custom1")
+                 if (myreceivedata.links[i].title == "custom1")
                 {
 
                     links[17].interactable = true;
@@ -986,7 +986,7 @@ string[] textSplit ;
                     update.linksurl[17].text = Custom1;
 
                 }
-                if (myreceivedata.links[i].title == "Custom2")
+                if (myreceivedata.links[i].title == "custom2")
                 {
 
                     links[18].interactable = true;
@@ -995,7 +995,7 @@ string[] textSplit ;
                     update.linksurl[18].text = Custom2;
 
                 }
-                if (myreceivedata.links[i].title == "Custom3")
+                if (myreceivedata.links[i].title == "custom3")
                 {
 
                     links[19].interactable = true;
@@ -1953,21 +1953,21 @@ for (int i = 0; i < update.linksprites.Length; i++)
                     Photos = myreceivedata.links[i].url;
 
                 }
-                 if (myreceivedata.links[i].title == "Custom1")
+                 if (myreceivedata.links[i].title == "custom1")
                 {
 
                     links[17].interactable = true;
                     Custom1 = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "Custom2")
+                if (myreceivedata.links[i].title == "custom2")
                 {
 
                     links[18].interactable = true;
                     Custom2 = myreceivedata.links[i].url;
 
                 }
-                if (myreceivedata.links[i].title == "Custom3")
+                if (myreceivedata.links[i].title == "custom3")
                 {
 
                     links[19].interactable = true;

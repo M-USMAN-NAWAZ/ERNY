@@ -3647,8 +3647,6 @@ public static int checkappopened;
 
             if ((time1.text == "" && time2.text == "" && time3.text == "") || selectedYear > 2026)
             {
-                PlayerPrefs.SetString("DisableEventButtonId", myDeserializedClass.response.@event._id);
-                PlayerPrefs.Save();
                 screencurenter(1);
             }
             else
@@ -4096,19 +4094,6 @@ public static int checkappopened;
 
 
 
-            string disableId = PlayerPrefs.GetString("DisableEventButtonId", "");
-            bool disableSavedEvent = myDeserializedClass.response[i]._id == disableId;
-            if (disableSavedEvent)
-            {
-                SetEventCardButtonsInteractable(obj, false);
-            }
-
-            if (disableSavedEvent)
-            {
-                PlayerPrefs.DeleteKey("DisableEventButtonId");
-                PlayerPrefs.Save();
-            }
-
 
             obj.GetComponent<MyEventData>().myeventclass = new MyEventData.MyEvent();
             obj.GetComponent<MyEventData>().myeventclass.links = new List<MyEventData.Link>();
@@ -4251,7 +4236,7 @@ public static int checkappopened;
             {
                 countdown.Initialize(
                     myDeserializedClass.response[i].eventDate,
-                    !disableSavedEvent);
+                    true);
             }
 
 
@@ -4307,20 +4292,6 @@ public static int checkappopened;
 
     //     return false;
     // }
-
-    private void SetEventCardButtonsInteractable(GameObject eventCard, bool interactable)
-    {
-        if (eventCard == null)
-        {
-            return;
-        }
-
-        Button button = eventCard.GetComponentInChildren<Button>(true);
-        if (button != null)
-        {
-            button.interactable = interactable;
-        }
-    }
 
     public class Response
     {

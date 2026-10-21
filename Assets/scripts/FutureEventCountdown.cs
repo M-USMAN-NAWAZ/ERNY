@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +18,7 @@ public class FutureEventCountdown : MonoBehaviour
     public void Initialize(string date, bool canOpen)
     {
         canOpenWhenReady = canOpen;
-        hasValidDate = TryGetDate(date, out eventDate);
+        hasValidDate = EventDateParser.TryParse(date, out eventDate);
 
         if (refreshRoutine != null)
             StopCoroutine(refreshRoutine);
@@ -66,24 +65,8 @@ public class FutureEventCountdown : MonoBehaviour
 
     public static bool IsFutureEvent(string value)
     {
-        return TryGetDate(value, out DateTime date) &&
+        return EventDateParser.TryParse(value, out DateTime date) &&
                date.Date > DateTime.Today;
     }
 
-    private static bool TryGetDate(string value, out DateTime date)
-    {
-        string[] formats = { "M/d/yyyy", "MM/dd/yyyy" };
-
-        return DateTime.TryParseExact(
-                   value,
-                   formats,
-                   CultureInfo.InvariantCulture,
-                   DateTimeStyles.None,
-                   out date)
-               || DateTime.TryParse(
-                   value,
-                   CultureInfo.InvariantCulture,
-                   DateTimeStyles.None,
-                   out date);
-    }
 }
