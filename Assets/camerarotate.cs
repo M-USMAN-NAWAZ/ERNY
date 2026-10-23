@@ -37,6 +37,7 @@ public class camerarotate : MonoBehaviour
     private CameraFacingDirection selectedFacingDirection = CameraFacingDirection.World;
     private Coroutine enableFaceTrackingCoroutine;
     private Coroutine enableWorldTrackingCoroutine;
+    private GameObject frontCameraEventInfo;
 
     private void Start()
     {
@@ -57,6 +58,8 @@ public class camerarotate : MonoBehaviour
         ResolveArComponents();
         DestroyTrackedFaces();
         SetFaceTrackingEnabled(false);
+        SetFrontCameraEventInfoVisible(false);
+        spawnMngr?.SetImageToggleForFrontCamera(false);
 
         selectedFacingDirection = CameraFacingDirection.World;
 
@@ -151,6 +154,8 @@ public class camerarotate : MonoBehaviour
         StopPendingWorldTrackingEnable();
         spawnMngr?.SetPlacementInputEnabled(false);
         selectedFacingDirection = newFacingDirection;
+        SetFrontCameraEventInfoVisible(newFacingDirection == CameraFacingDirection.User);
+        spawnMngr?.SetImageToggleForFrontCamera(newFacingDirection == CameraFacingDirection.User);
 
         bool sessionWasEnabled = arSession != null && arSession.enabled;
         bool cameraWasEnabled = m_CameraManager != null && m_CameraManager.enabled;
@@ -431,6 +436,30 @@ public class camerarotate : MonoBehaviour
             AddressableHandler.Instance.SelectDefaultFace();
             faceManager.facePrefab = defaultFacePrefab;
         }
+    }
+
+    private void SetFrontCameraEventInfoVisible(bool visible)
+    {
+        if (!visible)
+        {
+            if (frontCameraEventInfo != null)
+                frontCameraEventInfo.SetActive(false);
+            frontCameraEventInfo = null;
+            return;
+        }
+
+        if (spawnMngr == null || spawnMngr.turnactiveobj == null || spawnMngr.turnactiveobj.Length == 0)
+            return;
+
+        foreach (GameObject info in spawnMngr.turnactiveobj)
+        {
+            if (info != null && info.activeSelf)
+                return;
+        }
+
+        frontCameraEventInfo = spawnMngr.turnactiveobj[0];
+        if (frontCameraEventInfo != null)
+            frontCameraEventInfo.SetActive(true);
     }
 
     private void SetCameraChildSpawnedObjectVisible(bool visible)

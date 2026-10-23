@@ -44,6 +44,7 @@ public sealed class CalendarScreenController : MonoBehaviour
     [SerializeField] private RectTransform yearListContent;
     private DateTime? selectedDate;
     private bool isSaving;
+    private readonly HashSet<string> deletingIds = new HashSet<string>();
     private int requestVersion;
 
     public static void EnsureCreated(eventgetter owner)
@@ -499,6 +500,7 @@ public sealed class CalendarScreenController : MonoBehaviour
 
                 items.Add(new CalendarItem
                 {
+                    Id = (string)entry["_id"],
                     IsManual = isManual,
                     Title = isManual
                         ? (string)entry["title"]
@@ -572,6 +574,9 @@ public sealed class CalendarScreenController : MonoBehaviour
             savedRow.transform.Find("Type").GetComponent<Image>().color = item.IsManual ? Green : Red;
             savedRow.transform.Find("Title").GetComponent<Text>().text =
                 string.IsNullOrWhiteSpace(item.Title) ? "Untitled event" : item.Title;
+            savedRow.GetComponent<CalendarEventRow>().Initialize(
+                item.IsManual, !string.IsNullOrEmpty(item.Id) && !deletingIds.Contains(item.Id),
+                () => DeleteCalendarEvent(item));
             savedRow.SetActive(true);
             return;
         }
@@ -598,6 +603,59 @@ public sealed class CalendarScreenController : MonoBehaviour
             TextAnchor.MiddleLeft,
             FontStyle.Normal);
         SetAnchors(label.rectTransform, 0.09f, 0f, 1f, 1f);
+    }
+
+    private void DeleteCalendarEvent(CalendarItem item)
+    {
+        if (!item.IsManual || string.IsNullOrEmpty(item.Id) || !deletingIds.Add(item.Id))
+            return;
+        RenderItems();
+        eventScreen.StartCoroutine(DeleteManualEvent(item));
+    }
+
+    private IEnumerator DeleteManualEvent(CalendarItem item)
+    {
+        bool deleted;
+        try
+        {
+            using (UnityWebRequest request = UnityWebRequest.Delete(
+                ApiBaseUrl() + "/v1/calendar/" + UnityWebRequest.EscapeURL(item.Id)))
+            {
+                request.SetRequestHeader("Authorization", "Bearer " + apigetter.jwt);
+                request.downloadHandler = new DownloadHandlerBuffer();
+                yield return request.SendWebRequest();
+                deleted = request.result == UnityWebRequest.Result.Success;
+                if (deleted && !string.IsNullOrWhiteSpace(request.downloadHandler.text))
+                {
+                    try
+                    {
+                        deleted = JObject.Parse(request.downloadHandler.text).Value<bool?>("success") != false;
+                    }
+                    catch (Newtonsoft.Json.JsonException)
+                    {
+                        deleted = false;
+                    }
+                }
+                if (!deleted)
+                    Debug.LogError("Calendar delete failed (" + request.responseCode + "): " + request.downloadHandler.text);
+            }
+        }
+        finally
+        {
+            deletingIds.Remove(item.Id);
+        }
+        if (this == null)
+            yield break;
+        if (deleted)
+            items.RemoveAll(candidate => candidate.IsManual && candidate.Id == item.Id);
+        else
+            ShowPopup(eventScreen, "Uh oh!", "The calendar event could not be deleted. Please try again.");
+        if (root.activeInHierarchy)
+        {
+            RenderItems();
+            if (deleted)
+                LoadDisplayedMonth();
+        }
     }
 
     private void ClearList()
@@ -684,6 +742,9 @@ public sealed class CalendarScreenController : MonoBehaviour
     {
         if (eventNameInput == null)
             BuildEntryControls();
+        eventNameInput.lineType = InputField.LineType.SingleLine;
+        eventNameInput.onSubmit.AddListener(_ => SubmitCalendarEvent());
+        addEventButton.gameObject.SetActive(false);
         monthYearButton.onClick.AddListener(() =>
         {
             yearPopup.SetActive(true);
@@ -921,6 +982,7 @@ public sealed class CalendarScreenController : MonoBehaviour
 
     private sealed class CalendarItem
     {
+        public string Id { get; set; }
         public bool IsManual { get; set; }
         public string Title { get; set; }
         public DateTime Date { get; set; }

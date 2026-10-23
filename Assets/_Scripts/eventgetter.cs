@@ -829,7 +829,7 @@ requestSendEmail();
     }
         void requestSendEmail()
 		{
-			string email = "member@blingar.co";
+			string email = "hello@runerny.com";
 			string subject = MyEscapeURL("𝗘𝗿𝗻𝘆 𝗔𝗽𝗽 𝗥𝗲𝗾𝘂𝗲𝘀𝘁");
 			string body = MyEscapeURL("");
 			Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);

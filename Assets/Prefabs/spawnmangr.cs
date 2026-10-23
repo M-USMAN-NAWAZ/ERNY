@@ -47,6 +47,7 @@ public class spawnmangr : MonoBehaviour
     private bool waitingForFreshTouchRelease = true;
     private bool placementInputEnabled = true;
     private Coroutine spawnUiRoutine;
+    private bool frontCameraActive;
     private static readonly List<RaycastResult> s_UiRaycastResults = new List<RaycastResult>();
     // Start is called before the first frame update
     void Start()
@@ -65,6 +66,7 @@ public class spawnmangr : MonoBehaviour
 
     private void OnEnable()
     {
+        frontCameraActive = false;
         waitingForFreshTouchRelease = true;
         ClearSpawnedObject(true);
         ClearExistingArItems();
@@ -1168,6 +1170,13 @@ public class spawnmangr : MonoBehaviour
     }
 
 
+    public void SetImageToggleForFrontCamera(bool frontCamera)
+    {
+        frontCameraActive = frontCamera;
+        if (facetoggle != null)
+            facetoggle.SetActive(!frontCamera && objectSpawned && apigetter.artexture != null);
+    }
+
     IEnumerator turnofftutorial()
     {
         if (tutorial != null)
@@ -1188,7 +1197,7 @@ public class spawnmangr : MonoBehaviour
         shutterbutton.SetActive(true);
         camRotateButton.SetActive(true);
         bool hasEventImage = apigetter.artexture != null;
-        facetoggle.SetActive(hasEventImage);
+        facetoggle.SetActive(hasEventImage && !frontCameraActive);
         Toggle imageToggle = facetoggle.GetComponent<Toggle>();
         if (imageToggle != null)
         {
