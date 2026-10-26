@@ -9,7 +9,7 @@ public class urlOpen : MonoBehaviour
 
 	public void HelpUrl()
 	{
-		Application.OpenURL("https://runnerny.com/faq");
+		Application.OpenURL("https://runerny.com/faq");
     }
 
 	public void openurl() 
