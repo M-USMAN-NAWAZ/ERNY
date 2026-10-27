@@ -3552,14 +3552,15 @@ public static int checkappopened;
         {
             WWWForm form = new WWWForm();
             form.AddBinaryData(
-                "image",
+                "images",
                 images[i].EncodeToJPG(85),
                 "gallery_" + i + ".jpg",
                 "image/jpeg");
 
             using (UnityWebRequest request = UnityWebRequest.Post(
-                       baseurl + "/v1/user/upload-image", form))
+                       baseurl + "/v1/user/upload-image-gallery", form))
             {
+                request.SetRequestHeader("Authorization", "Bearer " + apigetter.jwt);
                 yield return request.SendWebRequest();
 
                 if (request.result != UnityWebRequest.Result.Success)
@@ -3576,13 +3577,15 @@ public static int checkappopened;
                     Newtonsoft.Json.Linq.JToken response =
                         Newtonsoft.Json.Linq.JToken.Parse(
                             request.downloadHandler.text);
-                    string url = (string)response.SelectToken("$..url");
+                    string url = (string)response.SelectToken("response[0].url")
+                        ?? (string)response.SelectToken("data[0].url");
 
                     if (string.IsNullOrWhiteSpace(url))
                     {
                         onFailure(
                             "Gallery image " + (i + 1) +
-                            " upload returned no URL.");
+                            " upload returned no URL. Server response (" +
+                            request.responseCode + "): " + request.downloadHandler.text);
                         yield break;
                     }
 
