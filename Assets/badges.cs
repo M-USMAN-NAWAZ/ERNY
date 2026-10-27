@@ -38,6 +38,8 @@ public class badges : MonoBehaviour
 
     public int totalBadges;
     public Text totalBadgesText;
+    private Coroutine badgeAlertRoutine;
+    private bool badgeAlertCheckQueued;
 
     IEnumerator disable()
     {
@@ -103,30 +105,99 @@ public class badges : MonoBehaviour
 
         
 
-        StartCoroutine(delay());
+        CheckBadgeAlert();
 
 
 
     }
-    IEnumerator delay()
+    private void CheckBadgeAlert()
     {
+        if (string.IsNullOrEmpty(apigetter.id))
+            return;
+        if (badgeAlertRoutine != null)
+        {
+            badgeAlertCheckQueued = true;
+            return;
+        }
+        badgeAlertRoutine = StartCoroutine(CheckBadgeAlertCount());
+    }
 
-        yield return new WaitForSeconds(3f);
-        Debug.Log(" delay current value: " + currentvalue + " previous value: " + previousvalue);
+    private IEnumerator CheckBadgeAlertCount()
+    {
+        try
+        {
+            do
+            {
+                badgeAlertCheckQueued = false;
+                string userId = apigetter.id;
+                using (UnityWebRequest request = UnityWebRequest.Get(baseurl + "/v1/badges/count"))
+                {
+                    request.SetRequestHeader("Authorization", "Bearer " + apigetter.jwt);
+                    yield return request.SendWebRequest();
+                    if (userId != apigetter.id)
+                        continue;
+                    int count;
+                    if (request.result == UnityWebRequest.Result.Success &&
+                        TryReadBadgeAlertCount(request.downloadHandler.text, out count))
+                        ApplyBadgeAlertCount(userId, count);
+                    else
+                        Debug.LogWarning("Badge alert count check failed; saved count unchanged.");
+                }
+            }
+            while (badgeAlertCheckQueued && !string.IsNullOrEmpty(apigetter.id));
+        }
+        finally
+        {
+            badgeAlertRoutine = null;
+        }
+    }
 
-        if (currentvalue > previousvalue)
+    private static bool TryReadBadgeAlertCount(string json, out int count)
+    {
+        count = 0;
+        try
+        {
+            var response = Newtonsoft.Json.Linq.JObject.Parse(json);
+            var data = response["response"] as Newtonsoft.Json.Linq.JObject;
+            var total = data?["count"];
+            return response["success"]?.Type == Newtonsoft.Json.Linq.JTokenType.Boolean &&
+                (bool)response["success"] &&
+                total?.Type == Newtonsoft.Json.Linq.JTokenType.Integer &&
+                int.TryParse(total.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out count) &&
+                count >= 0;
+        }
+        catch (Newtonsoft.Json.JsonException)
+        {
+            return false;
+        }
+    }
+
+    private void ApplyBadgeAlertCount(string userId, int count)
+    {
+        string key = "BadgeAlertCount_" + userId;
+        bool increased = PlayerPrefs.HasKey(key) && count > PlayerPrefs.GetInt(key);
+        PlayerPrefs.SetInt(key, count);
+        if (increased)
         {
             coondition = 1;
-            PlayerPrefs.SetInt("condition", 1);
-            PlayerPrefs.Save();
-            previousvalue = currentvalue;
-            blingsound.Play();
-            notifybadge.SetActive(true);
-            Debug.Log("working sound");
+            PlayerPrefs.SetInt("BadgeAlertUnread_" + userId, 1);
         }
+        PlayerPrefs.Save();
+        if (increased)
+        {
+            if (blingsound != null)
+                blingsound.Play();
+            if (notifybadge != null)
+                notifybadge.SetActive(true);
+        }
+    }
 
-    
-
+    private void OnDisable()
+    {
+        if (badgeAlertRoutine != null)
+            StopCoroutine(badgeAlertRoutine);
+        badgeAlertRoutine = null;
+        badgeAlertCheckQueued = false;
     }
     public class EVENtreciver
     {
@@ -227,7 +298,7 @@ public class badges : MonoBehaviour
     public void turnoffnotification()
     {
         coondition = 0;
-        PlayerPrefs.SetInt("condition", coondition);
+        PlayerPrefs.SetInt("BadgeAlertUnread_" + apigetter.id, coondition);
         PlayerPrefs.Save();
     }
 
@@ -562,7 +633,7 @@ public class badges : MonoBehaviour
 
         baseurl = baselink.Url;
         badgecount();
-        coondition = PlayerPrefs.GetInt("condition", 0);
+        coondition = PlayerPrefs.GetInt("BadgeAlertUnread_" + apigetter.id, 0);
         singleitemsize = badgesscroll.content.sizeDelta;
         badgescrollera();
           if(PlayerPrefs.GetInt("OneTimeAppear", 0) == 1)
