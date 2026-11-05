@@ -1,0 +1,16 @@
+# These entry points are called from Unity/native code rather than Java.
+-keep class com.blingar.** { *; }
+-keep class com.yasirkula.** { *; }
+-keep class com.silvertau.** { *; }
+-keep class com.voxelbusters.** { *; }
+-keep class com.google.googlesignin.** { *; }
+-keep,includedescriptorclasses class com.google.android.gms.auth.api.signin.GoogleSignInAccount { *; }
+-keep class com.google.unity.** { *; }
+-keep class com.gindemit.** { *; }
+-keep class com.android.billingclient.** { *; }
+-keep class com.unity.purchasing.** { *; }
+-keepclasseswithmembernames,includedescriptorclasses class * {
+    native <methods>;
+}
+-keepattributes Signature,*Annotation*,InnerClasses,EnclosingMethod
+-dontobfuscate
