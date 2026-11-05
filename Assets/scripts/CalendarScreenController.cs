@@ -734,6 +734,7 @@ public sealed class CalendarScreenController : MonoBehaviour
             yield break;
         }
         eventNameInput.text = string.Empty;
+        eventScreen.RequestReviewAfterEventCreated();
         if (root.activeInHierarchy)
             LoadDisplayedMonth();
     }

@@ -2219,6 +2219,20 @@ public static int checkappopened;
     private static extern void requestReview();
 #endif
 
+    public void RequestReviewAfterEventCreated()
+    {
+#if (UNITY_IOS && !UNITY_EDITOR)
+        const string reviewKey = "ReviewRequestedAfterFirstEvent";
+        if (PlayerPrefs.GetInt(reviewKey, 0) != 0)
+            return;
+
+        // Keep this separate from the old first-launch flag, including for existing installs.
+        PlayerPrefs.SetInt(reviewKey, 1);
+        PlayerPrefs.Save();
+        StartCoroutine(checkreview());
+#endif
+    }
+
     IEnumerator checkreview()
     {
 
@@ -2267,16 +2281,6 @@ public static int checkappopened;
         {
 
             archeck = 0;
-            reviewcheck = PlayerPrefs.GetInt("reviewcheck", 1);
-
-
-            if (reviewcheck == 1)
-            {
-                StartCoroutine(checkreview());
-
-            }
-
-
             checksize = 0;
             ApplySubscriptionStateFromApi();
             CheckPurchase();
@@ -3635,6 +3639,8 @@ public static int checkappopened;
         //eventdata2send myDeserializedClass = Newtonsoft.Json.JsonConvert.DeserializeObject<Root>(request.downloadHandler.text);
         if (request.responseCode==200)
         {
+            if (myDeserializedClass != null && myDeserializedClass.success)
+                RequestReviewAfterEventCreated();
             EventGalleryPicker.Instance?.ResetImages();
             
             eventno();
