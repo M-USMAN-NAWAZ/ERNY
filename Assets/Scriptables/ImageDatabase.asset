@@ -3234,7 +3234,7 @@ MonoBehaviour:
     badgeHeading: 
   - id: 6ae0d5eeb098265ed6cfd9d6
     URL: uploads/badges/badge-dd89e979-9cf9-4e52-bb50-d3484bcb6d1b-1786570446717.png
-    badgeHeading: Boo To You!
+    badgeHeading: BOOYAH!
   - id: 6ae0cca6d917d59edd80aa95
     URL: 
     badgeHeading: 
@@ -3242,5 +3242,14 @@ MonoBehaviour:
     URL: 
     badgeHeading: 
   - id: 6ae0d5eeb098265ed6cfd9ee
+    URL: 
+    badgeHeading: 
+  - id: 6aec9e37c981a487c57a9e8a
+    URL: 
+    badgeHeading: 
+  - id: 6aec9e37c981a487c57a9e6d
+    URL: 
+    badgeHeading: 
+  - id: 6aec9d2ac981a487c57a9d5b
     URL: 
     badgeHeading: 
