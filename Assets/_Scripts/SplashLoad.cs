@@ -36,6 +36,9 @@ public class SplashLoad : MonoBehaviour
 		if (splashVideoPlayer != null)
 		{
 			splashVideoPlayer.loopPointReached += OnSplashVideoFinished;
+#if UNITY_ANDROID && !UNITY_EDITOR
+			StartCoroutine(LoadIfSplashStalls());
+#endif
 		}
 		else
 		{
@@ -55,6 +58,15 @@ public class SplashLoad : MonoBehaviour
 	{
 		LoadMainLevel();
 	}
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+	private IEnumerator LoadIfSplashStalls()
+	{
+		float clipDuration = splashVideoPlayer.clip != null ? (float)splashVideoPlayer.clip.length : 0f;
+		yield return new WaitForSecondsRealtime(Mathf.Max(fallbackDelay, clipDuration) + 3f);
+		LoadMainLevel();
+	}
+#endif
 
     public void LoadMainLevel() 
 	{

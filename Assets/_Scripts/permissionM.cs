@@ -19,6 +19,9 @@ public class permissionM : MonoBehaviour
     public Sprite grantedcam, grantedmic, grantedgallery, grantednotification;
     public GameObject permissionpanel, legendpanel, screenLoader;
     public Sprite rejectedcam, rejectedmic, rejectedgallery, rejectednotification;
+#if PLATFORM_ANDROID
+    private bool galleryPermissionPending;
+#endif
     // Start is called before the first frame update
     void Start()
     {
@@ -187,11 +190,24 @@ public class permissionM : MonoBehaviour
 
 #if PLATFORM_ANDROID
 
-        NativeGallery.RequestPermission(NativeGallery.PermissionType.Read, NativeGallery.MediaType.Image);
-        NativeGallery.RequestPermission(NativeGallery.PermissionType.Write, NativeGallery.MediaType.Image);
+        if (galleryPermissionPending)
+            return;
 
-        Debug.Log("Suepass the first pemission");
-        Invoke("checkpgallerypermission", 1.5f);
+        galleryPermissionPending = true;
+        NativeGallery.RequestPermissionAsync(readPermission =>
+        {
+            if (this == null)
+                return;
+
+            if (readPermission != NativeGallery.Permission.Granted)
+            {
+                FinishAndroidGalleryPermission();
+                return;
+            }
+
+            NativeGallery.RequestPermissionAsync(_ => FinishAndroidGalleryPermission(),
+                NativeGallery.PermissionType.Write, NativeGallery.MediaType.Image);
+        }, NativeGallery.PermissionType.Read, NativeGallery.MediaType.Image);
 #endif
 
 #if UNITY_IOS
@@ -211,6 +227,17 @@ public class permissionM : MonoBehaviour
 
 
     }
+
+#if PLATFORM_ANDROID
+    private void FinishAndroidGalleryPermission()
+    {
+        if (this == null)
+            return;
+
+        galleryPermissionPending = false;
+        checkpgallerypermission();
+    }
+#endif
 
     public void checkpgallerypermission()
     {
