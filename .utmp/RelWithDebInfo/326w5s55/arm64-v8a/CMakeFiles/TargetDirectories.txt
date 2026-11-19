@@ -1,0 +1,8 @@
+D:/Office_Projects/Git/ERNY/.utmp/RelWithDebInfo/326w5s55/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/Office_Projects/Git/ERNY/.utmp/RelWithDebInfo/326w5s55/arm64-v8a/CMakeFiles/rebuild_cache.dir
+D:/Office_Projects/Git/ERNY/.utmp/RelWithDebInfo/326w5s55/arm64-v8a/GameActivity/CMakeFiles/game.dir
+D:/Office_Projects/Git/ERNY/.utmp/RelWithDebInfo/326w5s55/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+D:/Office_Projects/Git/ERNY/.utmp/RelWithDebInfo/326w5s55/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir
+D:/Office_Projects/Git/ERNY/.utmp/RelWithDebInfo/326w5s55/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+D:/Office_Projects/Git/ERNY/.utmp/RelWithDebInfo/326w5s55/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+D:/Office_Projects/Git/ERNY/.utmp/RelWithDebInfo/326w5s55/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir

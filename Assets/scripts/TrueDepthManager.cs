@@ -22,6 +22,46 @@ public class TrueDepthManager : MonoBehaviour
     [SerializeField]
     private ARCameraManager cameraManager;
 
+    [SerializeField] private Shader androidPersonOcclusionShader;
+    [SerializeField] private Canvas androidCaptureCanvas;
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+    private AndroidPersonOcclusion androidPersonOcclusion;
+    private bool androidCameraPaused;
+
+    private bool CanSegmentAndroidFrontCamera() => !androidCameraPaused &&
+        arSession != null && arSession.isActiveAndEnabled &&
+        cameraManager != null && cameraManager.isActiveAndEnabled &&
+        cameraManager.requestedFacingDirection == CameraFacingDirection.User && IsFrontCameraActive();
+
+    private void LateUpdate()
+    {
+        if (CanSegmentAndroidFrontCamera())
+        {
+            androidPersonOcclusion?.Render();
+        }
+        else
+        {
+            ReleaseAndroidPersonOcclusion();
+        }
+    }
+
+    private void OnApplicationPause(bool paused)
+    {
+        androidCameraPaused = paused;
+        if (paused)
+        {
+            ReleaseAndroidPersonOcclusion();
+        }
+    }
+
+    private void ReleaseAndroidPersonOcclusion()
+    {
+        androidPersonOcclusion?.Dispose();
+        androidPersonOcclusion = null;
+    }
+#endif
+
 
     // ============================================================
     // MASK FILTER SHADER
@@ -330,6 +370,9 @@ public class TrueDepthManager : MonoBehaviour
 
     private void OnDisable()
     {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        ReleaseAndroidPersonOcclusion();
+#endif
         if (cameraManager != null)
         {
             cameraManager.frameReceived -=
@@ -476,6 +519,17 @@ public class TrueDepthManager : MonoBehaviour
         ARCameraFrameEventArgs args
     )
     {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        if (CanSegmentAndroidFrontCamera() && androidPersonOcclusionShader != null && androidPersonOcclusionShader.isSupported)
+        {
+            androidPersonOcclusion ??= new AndroidPersonOcclusion(cameraManager, androidPersonOcclusionShader, androidCaptureCanvas);
+            androidPersonOcclusion.OnCameraFrame(args);
+        }
+        else
+        {
+            ReleaseAndroidPersonOcclusion();
+        }
+#else
         if (!IsFrontCameraActive())
         {
             return;
@@ -509,6 +563,7 @@ public class TrueDepthManager : MonoBehaviour
                 "TRUE DEPTH: Display Matrix received!"
             );
         }
+#endif
     }
 
 

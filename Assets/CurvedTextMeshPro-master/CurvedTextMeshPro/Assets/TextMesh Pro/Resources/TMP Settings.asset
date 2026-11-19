@@ -35,13 +35,8 @@ MonoBehaviour:
   m_IsTextObjectScaleStatic: 0
   m_fallbackFontAssets:
   - {fileID: 11400000, guid: 3013c1b2580bf5a4e883d7fb063bc6af, type: 2}
-  - {fileID: 11400000, guid: 4614de617b5f2494da1ff4b11b58086a, type: 2}
-  - {fileID: 11400000, guid: 4a2c7e62489c200409081fc85bc1dea6, type: 2}
   - {fileID: 11400000, guid: 899f665c2f3c9614b9158b919e820aca, type: 2}
-  - {fileID: 11400000, guid: 3370507ffdd2666448ece6dbe6e8c2bb, type: 2}
-  - {fileID: 11400000, guid: 76235890741afb6419a2583c89a1e8c2, type: 2}
   - {fileID: 11400000, guid: e870fe30538f5794aa78e3682959d664, type: 2}
-  - {fileID: 11400000, guid: 904e087c170212f46870841f663c773a, type: 2}
   m_matchMaterialPreset: 1
   m_HideSubTextObjects: 0
   m_defaultSpriteAsset: {fileID: 11400000, guid: c41005c129ba4d66911b75229fd70b45, type: 2}

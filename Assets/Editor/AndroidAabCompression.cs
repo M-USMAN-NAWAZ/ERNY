@@ -10,6 +10,8 @@ using UnityEditor.Build.Reporting;
 // Repacking changes ZIP compression, not the signed contents of an Android App Bundle.
 public sealed class AndroidAabCompression : IPostprocessBuildWithReport
 {
+    private const double BundleSizeTargetMiB = 150d;
+
     public int callbackOrder => int.MaxValue;
 
     public void OnPostprocessBuild(BuildReport report)
@@ -52,10 +54,14 @@ public sealed class AndroidAabCompression : IPostprocessBuildWithReport
             VerifyContents(original, output);
             if (new FileInfo(output).Length < new FileInfo(original).Length)
                 File.Copy(output, original, true);
-            double size = new FileInfo(original).Length / (1024d * 1024d);
-            UnityEngine.Debug.Log("Losslessly compressed AAB: " + size.ToString("F2") + " MB | " + original);
-            if (size >= 150d)
-                throw new BuildFailedException("The compressed AAB exceeds the 150 MB limit. The file is preserved, but the build is not approved for release.");
+            double sizeMiB = new FileInfo(original).Length / (1024d * 1024d);
+            UnityEngine.Debug.Log($"Losslessly compressed AAB: {sizeMiB:F2} MiB | {original}");
+            if (sizeMiB > BundleSizeTargetMiB)
+            {
+                UnityEngine.Debug.LogWarning(
+                    $"The AAB exceeds the project's {BundleSizeTargetMiB:F0} MiB size target. " +
+                    "Google Play measures the compressed download size of the generated APKs.");
+            }
         }
         finally
         {

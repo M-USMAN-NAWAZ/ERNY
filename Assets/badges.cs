@@ -40,6 +40,8 @@ public class badges : MonoBehaviour
     public Text totalBadgesText;
     private Coroutine badgeAlertRoutine;
     private bool badgeAlertCheckQueued;
+    private Coroutine badgeListRoutine;
+    private bool badgeListRefreshQueued;
 
     IEnumerator disable()
     {
@@ -52,64 +54,21 @@ public class badges : MonoBehaviour
     public void badgescroller()
     {
         badgeee.interactable = false;
-        if (badgesscroll.content.childCount > 1)
-        {
-            for (int i = 0; i < badgesscroll.content.childCount; i++)
-            {
-                Destroy(badgesscroll.content.GetChild(i).gameObject);
-
-            }
-
-            badgesscroll.content.sizeDelta = singleitemsize;
-
-        }
         getbadges();
         StartCoroutine(disable());
     }
+
     public void deletebadgeevent()
     {
-
-        badgesscroll.content.sizeDelta = singleitemsize;
-        if (badgesscroll.content.childCount > 1)
-        {
-            for (int i = 0; i < badgesscroll.content.childCount; i++)
-            {
-                Destroy(badgesscroll.content.GetChild(i).gameObject);
-            }
-
-
-            getbadges();
-            //        newscroller.sizeDelta = singleitemsize;
-
-
-        }
+        getbadges();
     }
+
     public void badgescrollera()
     {
-
-        badgesscroll.content.sizeDelta = singleitemsize;
-        if (badgesscroll.content.childCount > 1)
-        {
-            for (int i = 0; i < badgesscroll.content.childCount; i++)
-            {
-                Destroy(badgesscroll.content.GetChild(i).gameObject);
-            }
-
-
-            getbadges();
-            //        newscroller.sizeDelta = singleitemsize;
-         
-            Debug.Log("working sound");
-
-        }
-
-        
-
+        getbadges();
         CheckBadgeAlert();
-
-
-
     }
+
     private void CheckBadgeAlert()
     {
         if (string.IsNullOrEmpty(apigetter.id))
@@ -198,6 +157,10 @@ public class badges : MonoBehaviour
             StopCoroutine(badgeAlertRoutine);
         badgeAlertRoutine = null;
         badgeAlertCheckQueued = false;
+        if (badgeListRoutine != null)
+            StopCoroutine(badgeListRoutine);
+        badgeListRoutine = null;
+        badgeListRefreshQueued = false;
     }
     public class EVENtreciver
     {
@@ -390,39 +353,72 @@ public class badges : MonoBehaviour
 
     public void getbadges()
     {
-        test = 0;
-        EVENtreciver getdata = new EVENtreciver();
-        getdata.id = apigetter.id;
-        Debug.Log(apigetter.id);
-        String JsonVal = Newtonsoft.Json.JsonConvert.SerializeObject(getdata);
-      //  Debug.Log("json val " + JsonVal);
-        StartCoroutine(getevetdata2(baseurl + "/v1/badges"));
+        if (!isActiveAndEnabled || string.IsNullOrEmpty(apigetter.jwt))
+            return;
+        if (badgeListRoutine != null)
+        {
+            badgeListRefreshQueued = true;
+            return;
+        }
+        badgeListRoutine = StartCoroutine(RefreshBadgeList());
     }
-    int test;
-   
-    IEnumerator getevetdata2(string url)
+
+    private IEnumerator RefreshBadgeList()
+    {
+        try
+        {
+            do
+            {
+                badgeListRefreshQueued = false;
+                yield return LoadBadgeList();
+            }
+            while (badgeListRefreshQueued && !string.IsNullOrEmpty(apigetter.jwt));
+        }
+        finally
+        {
+            badgeListRoutine = null;
+        }
+    }
+
+    private IEnumerator LoadBadgeList()
     {
         int page = 1;
         bool hasNextPage = true;
+        string sessionToken = apigetter.jwt;
 
         while (hasNextPage)
         {
-            string finalUrl = url + "?page=" + page + "&limit=40&paginate=true";
+            string url = baseurl + "/v1/badges?page=" + page + "&limit=40&paginate=true";
+            Root myDeserializedClass;
+            using (UnityWebRequest request = UnityWebRequest.Get(url))
+            {
+                request.SetRequestHeader("Authorization", "Bearer " + sessionToken);
+                request.timeout = 30;
+                yield return request.SendWebRequest();
+                if (sessionToken != apigetter.jwt)
+                    yield break;
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.LogWarning($"Badge list failed (HTTP {request.responseCode}).");
+                    yield break;
+                }
+                if (!TryReadBadgeList(request.downloadHandler.text, out myDeserializedClass))
+                {
+                    Debug.LogWarning("Badge list returned an invalid response.");
+                    yield break;
+                }
+            }
 
-            //var request = new UnityWebRequest(url, "GET");
-            var request = new UnityWebRequest(finalUrl, "GET");
-            request.SetRequestHeader("Authorization", "Bearer " + apigetter.jwt);
-          //  byte[] bodyRaw = Encoding.UTF8.GetBytes(bodyJsonString);
-            //  Debug.Log("value: " + bodyJsonString);
-    //        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-            request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-
-            request.SetRequestHeader("Content-Type", "application/json");
-            yield return request.SendWebRequest();
-    //        Debug.Log("Status Code: " + request.responseCode);
-
-            Debug.Log("getter data" + request.downloadHandler.text);
-            Root myDeserializedClass = Newtonsoft.Json.JsonConvert.DeserializeObject<Root>(request.downloadHandler.text);
+            if (page == 1)
+            {
+                RectTransform content = badgesscroll.content;
+                foreach (Transform child in content)
+                {
+                    child.gameObject.SetActive(false);
+                    Destroy(child.gameObject);
+                }
+                content.sizeDelta = singleitemsize;
+            }
             currentvalue = myDeserializedClass.response.badges.Count;
             Debug.Log("badges: "+myDeserializedClass.response.badges.Count);
             int c = myDeserializedClass.response.badges.Count;
@@ -462,11 +458,11 @@ public class badges : MonoBehaviour
                         if (Badgesname[j] == "Blingar Sign Up")
                         {
                             GameObject obj = Instantiate(Badges[j], badgetospawn.content);
-                            string x = myDeserializedClass.response.badges[i].badgeDate;
-                            DateTime result = new DateTime();
-                            x = x.Remove(x.IndexOf(" GMT"));
-                            result = Convert.ToDateTime(x);
-                           obj.transform.GetChild(1).GetComponent<Text>().text = result.Month + "/" + result.Day + "/" + result.Year;
+                            string date = myDeserializedClass.response.badges[i].badgeDate;
+                            obj.transform.GetChild(1).GetComponent<Text>().text =
+                                EventDateParser.TryParse(date, out DateTime day)
+                                    ? day.ToString("M/d/yyyy", CultureInfo.InvariantCulture)
+                                    : date;
 						    //obj.transform.GetChild(1).GetComponent<Text>().text = myDeserializedClass.response[i].badgeDate;
 
                             if(PlayerPrefs.GetInt("AutoOnce", 0) == 0 && currentvalue <= 1)
@@ -627,6 +623,20 @@ public class badges : MonoBehaviour
 
  
 
+    private static bool TryReadBadgeList(string json, out Root response)
+    {
+        try
+        {
+            response = Newtonsoft.Json.JsonConvert.DeserializeObject<Root>(json);
+            return response?.success == true && response.response?.badges != null;
+        }
+        catch (Newtonsoft.Json.JsonException)
+        {
+            response = null;
+            return false;
+        }
+    }
+
     private void Awake()
     {
         instance = this;
@@ -635,7 +645,7 @@ public class badges : MonoBehaviour
         badgecount();
         coondition = PlayerPrefs.GetInt("BadgeAlertUnread_" + apigetter.id, 0);
         singleitemsize = badgesscroll.content.sizeDelta;
-        badgescrollera();
+        CheckBadgeAlert();
           if(PlayerPrefs.GetInt("OneTimeAppear", 0) == 1)
         {
             for(int i = 0; i <= badges.instance.fakeBtns.Count-1; i++)
@@ -645,13 +655,6 @@ public class badges : MonoBehaviour
         }
        
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        test = 0;
-        
-      // getbadges();
-     }
 
     public class Badge
     {

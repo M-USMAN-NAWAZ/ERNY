@@ -2790,25 +2790,17 @@ public static int checkappopened;
 
             checkcounter = 0;
             x = "No_of_Entries_In_Year_" + yearToCheck;
-            for (int i = 0; i < PRracerecord.instance.reacerecords.Count; i++)
+            var records = PRracerecord.instance?.reacerecords;
+            if (records != null)
             {
-                string x = PRracerecord.instance.reacerecords[i].eventDate;
-                DateTime result = new DateTime();
-                 
-
-                Debug.Log("reacerecords is: " + PRracerecord.instance.reacerecords[i].eventDate + "Event name is: " + PRracerecord.instance.reacerecords[i].eventName);
-                  
-                result = Convert.ToDateTime(x);
-              string tempdate =  "" + result.Year;
-                
-                if (tempdate == yearToCheck.ToString())
+                foreach (var record in records)
                 {
-                    checkcounter++;
-
+                    if (EventDateParser.TryParse(record?.eventDate, out DateTime raceDate) &&
+                        raceDate.Year == yearToCheck)
+                    {
+                        checkcounter++;
+                    }
                 }
-
-
-
             }
 
             if (checkcounter > 9 && subsciptiontext.text == "Open")
@@ -2822,8 +2814,8 @@ public static int checkappopened;
             else
             {
                 Saveloader.SetActive(true);
-                evententry();
                 save.interactable = false;
+                evententry();
                 Debug.Log("Saved: " + yearToCheck + " " + monthToCheck);
             }
                 
@@ -3502,6 +3494,12 @@ public static int checkappopened;
 
     private IEnumerator CreateEventWithGallery(eventdata2send eventData)
     {
+        if (string.IsNullOrEmpty(apigetter.jwt))
+        {
+            ShowEventSaveFailure("Sign in to save your event and earn badges.");
+            yield break;
+        }
+
         EventGalleryPicker picker = EventGalleryPicker.Instance;
         List<string> galleryUrls = picker != null
             ? picker.ExistingUploadedUrls
@@ -3514,18 +3512,16 @@ public static int checkappopened;
             if (images.Count > 0)
             {
                 List<string> uploadedUrls = null;
-                string uploadError = null;
 
                 loader.SetActive(true);
                 yield return UploadImageGallery(
                     images,
                     urls => uploadedUrls = urls,
-                    error => uploadError = error);
+                    _ => Debug.LogWarning("Event photo upload failed."));
 
                 if (uploadedUrls == null)
                 {
-                    loader.SetActive(false);
-                    Debug.LogError(uploadError);
+                    ShowEventSaveFailure("The photos couldn't be uploaded. Please try again.");
                     yield break;
                 }
 
@@ -3617,32 +3613,53 @@ public static int checkappopened;
         onSuccess(urls);
     }
 
+    private void ShowEventSaveFailure(string message)
+    {
+        loader.SetActive(false);
+        Saveloader.SetActive(false);
+        save.interactable = true;
+        popup.SetActive(true);
+        UpgradeBtn.SetActive(false);
+        pops.instance.header.text = "Event couldn't be saved";
+        pops.instance.description.text = message;
+        pops.instance.pp.Play("popp");
+    }
+
     IEnumerator event_Upload(string url, string bodyJsonString)
     {
-        badges.instance.badgecount();
-
         loader.SetActive(true);
-        //WWWForm form = new WWWForm();
-        //Dictionary<string, string> headers = form.headers;
-      //  headers["JWT TOKEN"] = apigetter.jwt;
-        var request = new UnityWebRequest(url, "POST");
+        using var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
         request.SetRequestHeader("Authorization", "Bearer " + apigetter.jwt);
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(bodyJsonString);
         request.SetRequestHeader("Content-Type", "application/json");
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-       // request.SetRequestHeader("Content-Type", "application/json");
+        request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(bodyJsonString));
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.timeout = 45;
         yield return request.SendWebRequest();
-        Debug.Log("Status Code: " + request.responseCode);
-        Debug.Log(request.downloadHandler.text);
-        newsavessss myDeserializedClass = Newtonsoft.Json.JsonConvert.DeserializeObject<newsavessss>(request.downloadHandler.text);
-        //eventdata2send myDeserializedClass = Newtonsoft.Json.JsonConvert.DeserializeObject<Root>(request.downloadHandler.text);
-        if (request.responseCode==200)
+
+        if (request.result != UnityWebRequest.Result.Success)
         {
-            if (myDeserializedClass != null && myDeserializedClass.success)
-                RequestReviewAfterEventCreated();
+            Debug.LogWarning($"Event save failed (HTTP {request.responseCode}).");
+            string message = request.responseCode == 401
+                ? "Your session expired. Sign in again to save your event."
+                : "Check your event list before trying again.";
+            ShowEventSaveFailure(message);
+            yield break;
+        }
+
+        newsavessss myDeserializedClass = null;
+        try
+        {
+            myDeserializedClass = Newtonsoft.Json.JsonConvert.DeserializeObject<newsavessss>(request.downloadHandler.text);
+        }
+        catch (Newtonsoft.Json.JsonException)
+        {
+            Debug.LogWarning("Event save returned an invalid response.");
+        }
+        if (myDeserializedClass?.success == true)
+        {
+            RequestReviewAfterEventCreated();
             EventGalleryPicker.Instance?.ResetImages();
-            
+
             eventno();
             badges.instance.badgecount();
             currentscreen = 1;
@@ -3654,7 +3671,8 @@ public static int checkappopened;
             StartCoroutine(delaybadges());
             int selectedYear = int.Parse(year.options[year.value].text);
 
-            if ((time1.text == "" && time2.text == "" && time3.text == "") || selectedYear > 2026)
+            if ((time1.text == "" && time2.text == "" && time3.text == "") || selectedYear > 2026 ||
+                myDeserializedClass.response?.@event == null)
             {
                 screencurenter(1);
             }
@@ -3701,7 +3719,7 @@ public static int checkappopened;
 
 
 
-				obj.GetComponent<recievedata>().myreceivedata.victoryCity = myDeserializedClass.response.@event.victoryCity;
+                obj.GetComponent<recievedata>().myreceivedata.victoryCity = myDeserializedClass.response.@event.victoryCity;
                 obj.GetComponent<recievedata>().myreceivedata.time = myDeserializedClass.response.@event.time;
 
                 obj.GetComponent<recievedata>().myreceivedata.distance.istance = myDeserializedClass.response.@event.distance.istance;
@@ -3791,18 +3809,12 @@ public static int checkappopened;
 
                 recievedata eventCardData = obj.GetComponent<recievedata>();
                 eventCardData.getdata();
-
-
-                
             }
-        
-        
         }
         else
         {
-            loader.SetActive(false);
+            ShowEventSaveFailure("We couldn't confirm that your event was saved. Check your event list before trying again.");
         }
-       
     }
 
     IEnumerator deathh()
@@ -3811,6 +3823,8 @@ public static int checkappopened;
 
         eventgetter.instance.openevent();
         loader.SetActive(false);
+        Saveloader.SetActive(false);
+        save.interactable = true;
     }
     IEnumerator delaybadges()
     {

@@ -6,6 +6,9 @@ using UnityEngine.XR.ARSubsystems;
 using UnityEngine.Rendering;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.UI;
+#if UNITY_ANDROID && !UNITY_EDITOR
+using TMPro;
+#endif
 
 public class camerarotate : MonoBehaviour
 {
@@ -34,10 +37,142 @@ public class camerarotate : MonoBehaviour
 
     [SerializeField]
     ARCameraManager m_CameraManager;
+    [SerializeField] private RectTransform captureOverlayContent;
     private CameraFacingDirection selectedFacingDirection = CameraFacingDirection.World;
     private Coroutine enableFaceTrackingCoroutine;
     private Coroutine enableWorldTrackingCoroutine;
     private GameObject frontCameraEventInfo;
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+    private Vector3 captureOverlayScale;
+    private bool captureOverlayMirrored;
+    private bool captureTextUsesSelfieShader;
+    private Shader androidCaptureTextShader;
+    private TextMeshProUGUI[] captureLabels;
+    private Material[] originalCaptureLabelMaterials;
+    private readonly Dictionary<Material, Material> selfieLabelMaterials = new();
+
+    private void OnEnable()
+    {
+        if (captureOverlayContent != null)
+        {
+            captureOverlayScale = captureOverlayContent.localScale;
+        }
+    }
+
+    private void LateUpdate()
+    {
+        bool frontCameraActive = m_CameraManager != null &&
+            m_CameraManager.currentFacingDirection == CameraFacingDirection.User;
+        SetCaptureOverlayMirrored(frontCameraActive && m_CameraManager.subsystem?.invertCulling == true);
+        SetCaptureTextSelfieShader(frontCameraActive);
+    }
+
+    private void SetCaptureOverlayMirrored(bool mirrored)
+    {
+        if (captureOverlayContent == null || captureOverlayMirrored == mirrored)
+        {
+            return;
+        }
+
+        // ARCore mirrors the camera projection, including the canvas rendered by that camera.
+        Vector3 scale = captureOverlayScale;
+        if (mirrored)
+        {
+            scale.x = -scale.x;
+        }
+
+        captureOverlayContent.localScale = scale;
+        captureOverlayMirrored = mirrored;
+    }
+
+    private void SetCaptureTextSelfieShader(bool enabled)
+    {
+        if (captureTextUsesSelfieShader == enabled)
+        {
+            return;
+        }
+
+        if (enabled)
+        {
+            if (captureOverlayContent == null || spawnMngr == null || spawnMngr.turnactiveobj == null)
+            {
+                return;
+            }
+
+            androidCaptureTextShader ??= Resources.Load<Shader>("AndroidSelfieHudText");
+            if (androidCaptureTextShader == null || !androidCaptureTextShader.isSupported)
+            {
+                return;
+            }
+
+            if (captureLabels == null)
+            {
+                var labels = new List<TextMeshProUGUI>();
+                foreach (GameObject group in spawnMngr.turnactiveobj)
+                {
+                    if (group != null && group.transform.IsChildOf(captureOverlayContent))
+                    {
+                        labels.AddRange(group.GetComponentsInChildren<TextMeshProUGUI>(true));
+                    }
+                }
+                captureLabels = labels.ToArray();
+                originalCaptureLabelMaterials = new Material[captureLabels.Length];
+            }
+        }
+
+        for (int i = 0; i < captureLabels.Length; i++)
+        {
+            TextMeshProUGUI label = captureLabels[i];
+            if (label == null)
+            {
+                continue;
+            }
+
+            if (!enabled)
+            {
+                label.fontSharedMaterial = originalCaptureLabelMaterials[i];
+                continue;
+            }
+
+            Material original = originalCaptureLabelMaterials[i] = label.fontSharedMaterial;
+            Material fontMaterial = label.font != null ? label.font.material : null;
+            // Some event labels point at another font's atlas. Use the material that matches the glyph data.
+            Material source = original != null && (fontMaterial == null || original.mainTexture == fontMaterial.mainTexture)
+                ? original : fontMaterial;
+            if (source == null)
+            {
+                continue;
+            }
+
+            if (!selfieLabelMaterials.TryGetValue(source, out Material selfieMaterial))
+            {
+                selfieMaterial = new Material(androidCaptureTextShader) { hideFlags = HideFlags.HideAndDontSave };
+                selfieMaterial.CopyPropertiesFromMaterial(source);
+                selfieMaterial.shaderKeywords = System.Array.Empty<string>();
+                foreach (string keyword in source.shaderKeywords)
+                {
+                    if (selfieMaterial.shader.keywordSpace.FindKeyword(keyword).isValid)
+                    {
+                        selfieMaterial.EnableKeyword(keyword);
+                    }
+                }
+                selfieLabelMaterials.Add(source, selfieMaterial);
+            }
+            label.fontSharedMaterial = selfieMaterial;
+        }
+
+        captureTextUsesSelfieShader = enabled;
+    }
+
+    private void OnDestroy()
+    {
+        foreach (Material material in selfieLabelMaterials.Values)
+        {
+            Destroy(material);
+        }
+    }
+#endif
 
     private void Start()
     {
@@ -53,6 +188,10 @@ public class camerarotate : MonoBehaviour
 
     private void OnDisable()
     {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        SetCaptureOverlayMirrored(false);
+        SetCaptureTextSelfieShader(false);
+#endif
         StopPendingFaceTrackingEnable();
         StopPendingWorldTrackingEnable();
         ResolveArComponents();
