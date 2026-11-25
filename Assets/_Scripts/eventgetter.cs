@@ -121,6 +121,7 @@ public class eventgetter : MonoBehaviour
     public int countoflinks = 1;
     public int countofgoals = 1;
     public ScrollRect parentscroll;
+    private EventPacketPanel createPacket;
     string[] datesplit;
     string[] textSplit;
     public string eventdatetoshow;
@@ -1869,6 +1870,7 @@ public static int checkappopened;
 
     public void screencurenter(int screen)
     {  
+        RaceDiscoveryController.Instance?.Hide();
         Debug.Log("entered screencurenter");
         currentscreen = screen;
 
@@ -2265,6 +2267,8 @@ public static int checkappopened;
         //Debug.Log("I am able to go inside the eventgertter start");
         CalendarScreenController.EnsureCreated(this);
         Invoke("DeActiveAr", 5f);
+        RaceDiscoveryController.EnsureCreated(this);
+        createPacket = EventPacketPanel.Attach(parentscroll, EventPacketPanel.Mode.Create, links);
 
         index = PlayerPrefs.GetInt("EventCount", 0);
         //GetEvent();
@@ -2400,6 +2404,7 @@ public static int checkappopened;
 
     public void clearevent()
     {
+        createPacket?.ClearDraft();
 
       /*  for(int i=1;i<goalscroll.content.childCount;i++)
         {
@@ -3625,9 +3630,79 @@ public static int checkappopened;
         pops.instance.pp.Play("popp");
     }
 
-    IEnumerator event_Upload(string url, string bodyJsonString)
+    private static string DiscoveredRaceName(RaceDiscoveryController.RaceResult race, RaceDiscoveryController.RaceEntry entry)
     {
-        loader.SetActive(true);
+        return race.entries?.Length > 1 && !string.Equals(race.name, entry.name, StringComparison.OrdinalIgnoreCase)
+            ? race.name + " - " + entry.name : race.name;
+    }
+
+    internal static bool HasDiscoveredRace(RaceDiscoveryController.RaceResult race, RaceDiscoveryController.RaceEntry entry)
+    {
+        if (entry.date == default || ApiRequestGenerator.guestlogin != 0) return false;
+        string name = DiscoveredRaceName(race, entry);
+        return PRracerecord.instance?.reacerecords?.Any(record =>
+            EventDateParser.TryParse(record?.eventDate, out DateTime day) && day == entry.date.Date &&
+            (string.Equals(record.eventName, name, StringComparison.OrdinalIgnoreCase) ||
+             string.Equals(record.eventName, race.name, StringComparison.OrdinalIgnoreCase)) &&
+            string.Equals(record.city, race.location, StringComparison.OrdinalIgnoreCase)) == true;
+    }
+
+    internal void SaveDiscoveredRace(RaceDiscoveryController.RaceResult race,
+        RaceDiscoveryController.RaceEntry entry, Action<string> complete)
+    {
+        if (ApiRequestGenerator.guestlogin != 0 || string.IsNullOrEmpty(apigetter.jwt))
+        {
+            complete("Sign in to Erny before adding this race.");
+            return;
+        }
+        if (entry.date == default || string.IsNullOrWhiteSpace(race.location))
+        {
+            complete("RunSignup didn't provide a race date or city. Add this race manually in Erny.");
+            return;
+        }
+
+        if (HasDiscoveredRace(race, entry))
+        {
+            complete(null);
+            screencurenter(1);
+            return;
+        }
+        var records = PRracerecord.instance?.reacerecords;
+        int count = 0;
+        if (records != null)
+        {
+            foreach (var record in records)
+            {
+                if (!EventDateParser.TryParse(record?.eventDate, out DateTime day) || day.Year != entry.date.Year)
+                    continue;
+                count++;
+            }
+        }
+        if (count >= 10 && subsciptiontext.text == "Open")
+        {
+            complete("Your Open plan allows up to 10 races per calendar year.");
+            return;
+        }
+
+        var distance = RunSignupRaceSearch.ImportDistance(entry.distance, out string eventType);
+        var data = new eventdata2send {
+            eventName = race.name, city = race.location, eventType = eventType,
+            eventDate = entry.date.ToString("MMMM/dd/yyyy", CultureInfo.InvariantCulture),
+            time = "00:00:00",
+            distance = distance, race = "000000", theme = "baloon", victoryCity = "I DID IT!",
+            @virtual = "no", personarecord = "no", position = "", totalpeople = "", image = "",
+            goals = new List<Goal>(), galleryImages = new List<string>(),
+            journal = new Journal { pre = "", post = "", race = "", Next = "",
+                Notes = string.IsNullOrWhiteSpace(entry.startTime) ? "" : "Scheduled start (RunSignup): " + entry.startTime },
+            result = new Result { myAgeGroup = "", totalAgeGroup = "", myGender = "", totalGender = "" },
+            links = new List<Link> { new Link { title = "Event Guide", url = race.url } }
+        };
+        StartCoroutine(event_Upload(baseurl + "/v1/event", Newtonsoft.Json.JsonConvert.SerializeObject(data), complete));
+    }
+
+    IEnumerator event_Upload(string url, string bodyJsonString, Action<string> discoveryComplete = null)
+    {
+        if (discoveryComplete == null) loader.SetActive(true);
         using var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
         request.SetRequestHeader("Authorization", "Bearer " + apigetter.jwt);
         request.SetRequestHeader("Content-Type", "application/json");
@@ -3642,7 +3717,8 @@ public static int checkappopened;
             string message = request.responseCode == 401
                 ? "Your session expired. Sign in again to save your event."
                 : "Check your event list before trying again.";
-            ShowEventSaveFailure(message);
+            if (discoveryComplete != null) discoveryComplete(message);
+            else ShowEventSaveFailure(message);
             yield break;
         }
 
@@ -3657,7 +3733,16 @@ public static int checkappopened;
         }
         if (myDeserializedClass?.success == true)
         {
+            if (discoveryComplete == null && createPacket != null)
+                yield return createPacket.UploadDraft(myDeserializedClass.response?.@event?._id);
             RequestReviewAfterEventCreated();
+            if (discoveryComplete != null)
+            {
+                discoveryComplete(null);
+                badges.instance?.badgecount();
+                screencurenter(1);
+                yield break;
+            }
             EventGalleryPicker.Instance?.ResetImages();
 
             eventno();
@@ -3813,7 +3898,9 @@ public static int checkappopened;
         }
         else
         {
-            ShowEventSaveFailure("We couldn't confirm that your event was saved. Check your event list before trying again.");
+            const string message = "We couldn't confirm that your event was saved. Check your event list before trying again.";
+            if (discoveryComplete != null) discoveryComplete(message);
+            else ShowEventSaveFailure(message);
         }
     }
 

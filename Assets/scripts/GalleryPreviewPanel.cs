@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class GalleryPreviewPanel : MonoBehaviour
 {
     [SerializeField] private Image previewImage;
+    internal Image PreviewImage => previewImage;
 
     private Sprite runtimeSprite;
 

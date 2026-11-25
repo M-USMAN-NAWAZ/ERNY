@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ec48ae554abd4d35ad04a12a55202ab1
+PluginImporter:
+  serializedVersion: 3
+  platformData:
+    Android:
+      enabled: 1
+      settings: {}
+    Any:
+      enabled: 0
+      settings: {}
+    Editor:
+      enabled: 0
+      settings: {}

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: c40c13f5b5334288a35291b0adc7d9af
+PluginImporter:
+  externalObjects: {}
+  serializedVersion: 3
+  platformData:
+    Android:
+      enabled: 1
+      settings: {}
+    Any:
+      enabled: 0
+      settings: {}
+    Editor:
+      enabled: 0
+      settings:
+        DefaultValueInitialized: true

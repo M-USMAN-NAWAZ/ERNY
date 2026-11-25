@@ -1056,6 +1056,7 @@ for (int i = 0; i < update.linksprites.Length; i++)
         update.goalgetter = myreceivedata.goals.Count;
         update.linkgetter = myreceivedata.links.Count;
         update.id = myreceivedata._id;
+        EventPacketPanel.Attach(update.parentscroll, EventPacketPanel.Mode.Edit, update.links, update.id);
 
         update.racerno.text = myreceivedata.race;
 
@@ -1454,6 +1455,7 @@ for (int i = 0; i < update.linksprites.Length; i++)
 
 	public void getdata()
     {
+        EventPacketPanel.Attach(parentscroll, EventPacketPanel.Mode.Card, links, myreceivedata?._id);
         spartantheme = 0;
 
 		scrollreset();
